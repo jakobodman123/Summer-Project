@@ -5,7 +5,7 @@ import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';
 
 class AltChampsWidget extends StatelessWidget {
-  final String champName;
+  final String? champName;
   final int gamesPlayed;
   final int winrate;
   final String kda;

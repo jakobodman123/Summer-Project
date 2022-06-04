@@ -15,7 +15,8 @@ class BestChampionPicture extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: 10,
+      shadowColor: Colors.blue,
+      elevation: 20,
       child: Container(
         height: 400,
         width: 500,

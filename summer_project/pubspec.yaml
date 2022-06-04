@@ -40,6 +40,8 @@ dependencies:
   dio: ^4.0.6
   percent_indicator: 4.0.1
   flutter_glow: ^0.2.0
+  dart_lol: ^0.2.0
+  intro_slider: ^2.3.2
 
 
 dev_dependencies:

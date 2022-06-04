@@ -2,27 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:summer_project/itemBox.dart';
 import 'package:summer_project/matchParticipants.dart';
+import 'package:summer_project/matchStats.dart';
 
 class MHCard extends StatelessWidget {
-  final String gameType;
-  final String date;
+  final String? gameType;
+  final String? date;
   //gör alla dessa under till egna klasser
-  final String summoner1;
-  final String summoner2;
-  final String mastery1;
-  final String mastery2;
-  final String item1;
-  final String item2;
-  final String item3;
-  final String item4;
-  final String item5;
-  final String item6;
-  final String trinket;
-  final String champion;
-  final int kills;
-  final int deaths;
-  final int assists;
-  final bool win;
+  final String? summoner1;
+  final String? summoner2;
+  final String? mastery1;
+  final String? mastery2;
+  final String? item1;
+  final String? item2;
+  final String? item3;
+  final String? item4;
+  final String? item5;
+  final String? item6;
+  final String? trinket;
+  final String? champion;
+  final int? kills;
+  final int? deaths;
+  final int? assists;
+  final bool? win;
+  final List<Participants>? people;
 
   MHCard(
       {Key? key,
@@ -43,7 +45,8 @@ class MHCard extends StatelessWidget {
       required this.kills,
       required this.deaths,
       required this.assists,
-      required this.win})
+      required this.win,
+      required this.people})
       : super(key: key);
 
   @override
@@ -53,7 +56,7 @@ class MHCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      color: win
+      color: win!
           ? Color(0xFF6082B6).withOpacity(0.3)
           : Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
       child: IntrinsicHeight(
@@ -131,34 +134,37 @@ class MHCard extends StatelessWidget {
                       color: Colors.black.withOpacity(0.5)
                       //color: Colors.grey,
                       ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          ItemBox(itemID: item1),
-                          ItemBox(itemID: item2),
-                          ItemBox(itemID: item3),
-                          Container(
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover, image: AssetImage(
-                                        //3363 blue trink
-                                        "assets/img/item/${trinket}.png"))),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          ItemBox(itemID: item4),
-                          ItemBox(itemID: item5),
-                          ItemBox(itemID: item6),
-                        ],
-                      ),
-                      //borde göra listor för de man spelat med
-                    ],
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            ItemBox(itemID: item1),
+                            ItemBox(itemID: item2),
+                            ItemBox(itemID: item3),
+                            Container(
+                              height: 35,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover, image: AssetImage(
+                                          //3363 blue trink
+                                          "assets/img/item/${trinket}.png"))),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            ItemBox(itemID: item4),
+                            ItemBox(itemID: item5),
+                            ItemBox(itemID: item6),
+                          ],
+                        ),
+                        //borde göra listor för de man spelat med
+                      ],
+                    ),
                   ),
                   VerticalDivider(
                     thickness: 2,
@@ -182,16 +188,20 @@ class MHCard extends StatelessWidget {
                               //list[0].playerName;
                               //list[0].champion;
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![0].championName,
+                                  playerName: people![0].summonerName),
                               MatchParticipants(
-                                  champion: "Fizz",
-                                  playerName: "PLAY EASY CHAMPS"),
+                                  champion: people![1].championName,
+                                  playerName: people![1].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![2].championName,
+                                  playerName: people![2].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![3].championName,
+                                  playerName: people![3].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![4].championName,
+                                  playerName: people![4].summonerName),
                             ],
                           ),
                         ),
@@ -203,15 +213,20 @@ class MHCard extends StatelessWidget {
                               //list[0].playerName;
                               //list[0].champion;
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![5].championName,
+                                  playerName: people![5].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![6].championName,
+                                  playerName: people![6].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![7].championName,
+                                  playerName: people![7].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![8].championName,
+                                  playerName: people![8].summonerName),
                               MatchParticipants(
-                                  champion: "Senna", playerName: "TheOdmino"),
+                                  champion: people![9].championName,
+                                  playerName: people![9].summonerName),
                             ],
                           ),
                         ),
@@ -273,18 +288,18 @@ class MHCard extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          gameType,
+                          gameType!,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: win
+                            color: win!
                                 ? Color(0xFF6082B6).withOpacity(0.8)
                                 : Color.fromRGBO(255, 82, 82, 1)
                                     .withOpacity(0.8),
                           ),
                         ),
                         Text(
-                          date,
+                          date!,
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

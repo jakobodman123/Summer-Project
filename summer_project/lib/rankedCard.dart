@@ -16,23 +16,25 @@ class RankedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
-      elevation: 40,
+      shadowColor: Colors.blue,
+      elevation: 20,
       color: colorGrey,
       child: ClipPath(
         child: Container(
           height: 100,
-          decoration: const BoxDecoration(
-              border: Border(right: BorderSide(color: Colors.green, width: 5))),
+          decoration: BoxDecoration(
+              border: Border(
+                  right: BorderSide(
+                      color: Colors.blue.withOpacity(0.5), width: 5))),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 " " + rankedType,
                 style: const TextStyle(
-                  fontSize: 18,
-                  //fontWeight: FontWeight.bold,
-                  //color: Colors.white
-                ),
+                    fontSize: 18,
+                    //fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               const Divider(
                 //height: 20,
@@ -70,8 +72,9 @@ class RankedCard extends StatelessWidget {
                         ),
                         Text(
                           lp + "LP",
-                          style: const TextStyle(
-                              fontSize: 17.0, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.white.withOpacity(0.6)),
                         ),
                       ],
                     ),
@@ -81,15 +84,17 @@ class RankedCard extends StatelessWidget {
                     children: [
                       Text(
                         wins.toString() + "W " + losses.toString() + "L",
-                        style:
-                            const TextStyle(fontSize: 17.0, color: Colors.grey),
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.white.withOpacity(0.6)),
                       ),
                       Text(
                         "Winrate: " +
                             (wins * 100 ~/ (wins + losses)).toInt().toString() +
                             "%",
-                        style:
-                            const TextStyle(fontSize: 17.0, color: Colors.grey),
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.white.withOpacity(0.6)),
                       ),
                     ],
                   )

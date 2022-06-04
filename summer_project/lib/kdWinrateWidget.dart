@@ -17,7 +17,8 @@ class KdWinrateWidget extends StatelessWidget {
       width: 500,
       child: Card(
         color: colorGrey,
-        elevation: 10,
+        shadowColor: Colors.blue,
+        elevation: 20,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),

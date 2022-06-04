@@ -9,19 +9,18 @@ class MasteryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SizedBox(
       width: 500,
       child: Card(
         color: colorGrey,
-        elevation: 10,
+        shadowColor: Colors.blue,
+        elevation: 20,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Row(
           children: [
             Container(
-              color: Colors.black26,
               width: 100.0,
               height: 100.0,
               child: FittedBox(
