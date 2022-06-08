@@ -14,7 +14,7 @@ class MatchParticipants extends StatelessWidget {
   final String? playerName;
   final String server = "EUW1";
 
-  Future<Rank> getRankInfos2({String? summonerID}) async {
+  Future<Rank> getRankInfos2MP({String? summonerID}) async {
     var url =
         'https://$server.api.riotgames.com/lol/league/v4/entries/by-summoner/$summonerID?api_key=$apiToken';
     var response = await http.get(
@@ -38,7 +38,7 @@ class MatchParticipants extends StatelessWidget {
     }
   }
 
-  Future<List<MatchStats>?> getGameHistory(
+  Future<List<MatchStats>?> getGameHistoryMP(
       {String? puuid, int start = 0, int count = 20}) async {
     String europe = "europe";
     var url =
@@ -67,8 +67,7 @@ class MatchParticipants extends StatelessWidget {
     return matchHistoryList;
   }
 
-  const MatchParticipants(
-      {Key? key, required this.champion, required this.playerName})
+  const MatchParticipants({Key? key, this.champion, this.playerName})
       : super(key: key);
 
   @override
@@ -86,15 +85,15 @@ class MatchParticipants extends StatelessWidget {
           String? puuid = summoner.puuid;
           String? summmonerID = summoner.summonerID;
           String? summonerName = summoner.summonerName;
-          Rank ranksoloQ = await league.getRankInfos(summonerID: summmonerID);
+          Rank? ranksoloQ = await league.getRankInfos(summonerID: summmonerID);
           print(summoner);
 
-          Rank rankFlex = await getRankInfos2(summonerID: summmonerID);
+          Rank? rankFlex = await getRankInfos2MP(summonerID: summmonerID);
 
           List<ChampionMastery>? masteryList =
               await league.getChampionMasteries(summonerID: summmonerID);
 
-          List<MatchStats>? matchHistory = await getGameHistory(
+          List<MatchStats>? matchHistory = await getGameHistoryMP(
             puuid: summoner.puuid,
           );
 
@@ -132,7 +131,7 @@ class MatchParticipants extends StatelessWidget {
             height: 15,
             width: 75,
             child: Text(
-              playerName!,
+              (playerName != null) ? playerName! : "NameError",
               style: const TextStyle(fontSize: 14.0, color: Colors.grey),
               overflow: TextOverflow.ellipsis,
             ),

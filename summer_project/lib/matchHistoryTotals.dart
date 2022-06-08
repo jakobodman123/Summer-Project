@@ -1,4 +1,5 @@
 class MatchHistoryTotals {
+  final int? gamesPlayed;
   final int? baronKillsTotal;
   final int? killsTotal;
   final int? pinkWardsTotal;
@@ -154,5 +155,6 @@ class MatchHistoryTotals {
       this.wardsKilledTotal,
       this.alliedJungleMonsterKillsTotal,
       this.buffStolenTotal,
-      this.teamDamagePercentageTotal);
+      this.teamDamagePercentageTotal,
+      this.gamesPlayed);
 }

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
@@ -10,13 +11,14 @@ import 'package:flutter_glow/flutter_glow.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:summer_project/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:summer_project/matchByChamp.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'dart:convert';
 
 import 'package:summer_project/matchStats.dart';
 import 'package:summer_project/slides.dart';
 
-String apiToken = "Nerfa Zilean LoL";
+String apiToken = "joel";
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -30,6 +32,8 @@ class _SearchPageState extends State<SearchPage> {
   final summonerTextController = TextEditingController();
   List<Game>? gameList;
   List<MatchStats>? matchHistoryList;
+  List<String>? champNames = [];
+  List<MatchByChamp> matchByChampList = [];
 
   bool isLoading = false;
 
@@ -72,8 +76,9 @@ class _SearchPageState extends State<SearchPage> {
     return 0;
   }
 
-  void matchTotals(Participants player) {
-    int? baronKills = player.challenges!.baronTakedowns;
+  void matchTotals(Participants? player) {
+    gamesPlayedTotal = gamesPlayedTotal! + 1;
+    int? baronKills = player!.challenges!.baronTakedowns;
     baronKillsTotal = (baronKillsTotal! + baronKills!);
     int? kills = player.kills;
     killsTotal = (killsTotal! + kills!);
@@ -346,6 +351,22 @@ class _SearchPageState extends State<SearchPage> {
         (teamDamagePercentageTotal! + teamDamagePercentage!);
     int? wardsGuarded = player.challenges!.wardsGuarded;
     wardsGuardedTotal = (wardsGuardedTotal! + wardsGuarded!);
+
+    String? champName = player.championName;
+    //print(champName);
+
+    if (champName != null) {
+      champNames?.add(champName);
+    }
+  }
+
+  Future<void> addChampionToList(Participants player) async {
+    String? champName = player.championName;
+    print(champName);
+
+    if (champName != null) {
+      champNames?.add(champName);
+    }
   }
 
   Future<List<MatchStats>?> getGameHistory(
@@ -377,6 +398,8 @@ class _SearchPageState extends State<SearchPage> {
           findPersonUsingLoop(matchStats.info!.participants, summonerName)];
 
       matchTotals(player);
+      MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
+      matchByChampList.add(matchByChamp);
 
       matchHistoryList.add(
         MatchStats.fromJson(json.decode(json.encode(match))),
@@ -390,12 +413,117 @@ class _SearchPageState extends State<SearchPage> {
 // Do what you want
   }
 
+  void resetVariables() {
+    gamesPlayedTotal = 0;
+    baronKillsTotal = 0;
+    killsTotal = 0;
+    pinkWardsTotal = 0;
+    endGameLevelTotal = 0;
+    dmgToStructuresTotal = 0;
+    deathsTotal = 0;
+    dragonKillsTotal = 0;
+    firstBloodTotal = 0;
+    killingSpreeTotal = 0;
+    objectiveStealTotal = 0;
+    pentaKillsTotal = 0;
+    damageTotal = 0;
+    damageTakenTotal = 0;
+    turretKillsTotal = 0;
+    visionScoreTotal = 0;
+    wardsGuardedTotal = 0;
+    turretPlatesTakenTotal = 0;
+    soloKillsTotal = 0;
+    soloBaronKillsTotal = 0;
+    scuttleCrabKillsTotal = 0;
+    saveAllyFromDeathTotal = 0;
+    quickSoloKillsTotal = 0;
+    epicMonsterKillsNearEnemyJunglerTotal = 0;
+    enemyJungleMonsterKillsTotal = 0;
+    earlyLaningPhaseGoldExpAdvantageTotal = 0;
+    effectiveHealAndShieldingTotal = 0;
+    earliestBaronRecord = 0;
+    epicMonsterKillsWithin30SecondsOfSpawnTotal = 0;
+    fasterSupportQuestCompletionTotal = 0;
+    firstTurretKilledTimeRecord = 0;
+    gameLengthTotal = 0;
+    goldPerMinuteTotal = 0;
+    hadOpenNexusWinsTotal = 0;
+    immobilizeAndKillWithAllyTotal = 0;
+    jungleCsBefore10MinutesTotal = 0;
+    junglerKillsEarlyJungleTotal = 0;
+    kdaTotal = 0;
+    killAfterHiddenWithAllyTotal = 0;
+    killParticipationTotal = 0;
+    killsNearEnemyTurretTotal = 0;
+    killsOnLanersEarlyJungleAsJunglerTotal = 0;
+    killsOnOtherLanesEarlyJungleAsLanerTotal = 0;
+    killsUnderOwnTurretTotal = 0;
+    landSkillShotsEarlyGameTotal = 0;
+    laneMinionsFirst10MinutesTotal = 0;
+    maxCsAdvantageOnLaneOpponentTotal = 0;
+    legendaryCountTotal = 0;
+    lostAnInhibitorWinsTotal = 0;
+    multiTurretRiftHeraldCountTotal = 0;
+    perfectDragonSoulsTakenTotal = 0;
+    multikillsAfterAggressiveFlashTotal = 0;
+    multikillsTotal = 0;
+    outnumberedKillsTotal = 0;
+    perfectGameTotal = 0;
+    quickCleanseTotal = 0;
+    dodgeSkillShotsSmallWindowTotal = 0;
+    damageTakenOnTeamPercentageTotal = 0;
+    damagePerMinuteTotal = 0;
+    acesBefore15MinutesTotal = 0;
+    tripleKillsTotal = 0;
+    inhibitorTakedownsTotal = 0;
+    totalHealTotal = 0;
+    timeCCingOthersTotal = 0;
+    neutralMinionsKilledTotal = 0;
+    quadraKillsTotal = 0;
+    timePlayedTotal = 0;
+    gameEndedInSurrenderTotal = 0;
+    goldEarnedTotal = 0;
+    firstTowerTotal = 0;
+    damageSelfMitigatedTotal = 0;
+    doubleKillsTotal = 0;
+    assistsTotal = 0;
+    detectorWardsPlacedTotal = 0;
+    wardsPlacedTotal = 0;
+    wardsKilledTotal = 0;
+    alliedJungleMonsterKillsTotal = 0;
+    buffStolenTotal = 0;
+    teamDamagePercentageTotal = 0;
+  }
+
+  Future<Rank> getRankInfos({String? summonerID}) async {
+    var url =
+        'https://$server.api.riotgames.com/lol/league/v4/entries/by-summoner/$summonerID?api_key=$apiToken';
+    var response = await http.get(
+      Uri.parse(url),
+    );
+    if (response.body != '[]') {
+      return Rank.fromJson(
+        json.decode(
+          response.body,
+        )[0],
+      );
+    } else {
+      return Rank(
+          hotStreak: false,
+          leagueId: '0',
+          leaguePoints: 0,
+          losses: 0,
+          wins: 0,
+          rank: 'unranked',
+          tier: 'no tier');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: isLoading
-          //column med padding på textfield size.height * 0.5
           ? IntroSlider(
               slides: slides,
               onDonePress: onDonePress,
@@ -432,24 +560,24 @@ class _SearchPageState extends State<SearchPage> {
                           size: 50,
                         ),
                         onTap: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
                           final league =
                               League(apiToken: apiToken, server: server);
                           var summoner = await league.getSummonerInfo(
                               summonerName: summonerTextController.text);
                           print(summoner.puuid);
-                          if (1 == 1) {
+                          if (summoner.puuid != null) {
+                            setState(() {
+                              isLoading = true;
+                            });
                             String? accID = summoner.accID;
                             int? level = summoner.level;
                             int? profileIconID = summoner.profileIconID;
                             String? puuid = summoner.puuid;
                             String? summmonerID = summoner.summonerID;
                             String? summonerName = summoner.summonerName;
-                            Rank ranksoloQ = await league.getRankInfos(
-                                summonerID: summmonerID);
-                            Rank rankFlex =
+                            Rank? ranksoloQ =
+                                await getRankInfos(summonerID: summmonerID);
+                            Rank? rankFlex =
                                 await getRankInfos2(summonerID: summmonerID);
 
                             List<ChampionMastery>? masteryList = await league
@@ -463,85 +591,197 @@ class _SearchPageState extends State<SearchPage> {
 
                             MatchHistoryTotals matchHistoryTotals =
                                 MatchHistoryTotals(
-                              baronKillsTotal,
-                              killsTotal,
-                              pinkWardsTotal,
-                              endGameLevelTotal,
-                              dmgToStructuresTotal,
-                              deathsTotal,
-                              dragonKillsTotal,
-                              firstBloodTotal,
-                              killingSpreeTotal,
-                              objectiveStealTotal,
-                              pentaKillsTotal,
-                              damageTotal,
-                              damageTakenTotal,
-                              turretKillsTotal,
-                              visionScoreTotal,
-                              wardsGuardedTotal,
-                              turretPlatesTakenTotal,
-                              soloKillsTotal,
-                              soloBaronKillsTotal,
-                              scuttleCrabKillsTotal,
-                              saveAllyFromDeathTotal,
-                              quickSoloKillsTotal,
-                              epicMonsterKillsNearEnemyJunglerTotal,
-                              enemyJungleMonsterKillsTotal,
-                              earlyLaningPhaseGoldExpAdvantageTotal,
-                              effectiveHealAndShieldingTotal,
-                              earliestBaronRecord,
-                              epicMonsterKillsWithin30SecondsOfSpawnTotal,
-                              fasterSupportQuestCompletionTotal,
-                              firstTurretKilledTimeRecord,
-                              gameLengthTotal,
-                              goldPerMinuteTotal,
-                              hadOpenNexusWinsTotal,
-                              immobilizeAndKillWithAllyTotal,
-                              jungleCsBefore10MinutesTotal,
-                              junglerKillsEarlyJungleTotal,
-                              kdaTotal,
-                              killAfterHiddenWithAllyTotal,
-                              killParticipationTotal,
-                              killsNearEnemyTurretTotal,
-                              killsOnLanersEarlyJungleAsJunglerTotal,
-                              killsOnOtherLanesEarlyJungleAsLanerTotal,
-                              killsUnderOwnTurretTotal,
-                              landSkillShotsEarlyGameTotal,
-                              laneMinionsFirst10MinutesTotal,
-                              maxCsAdvantageOnLaneOpponentTotal,
-                              legendaryCountTotal,
-                              lostAnInhibitorWinsTotal,
-                              multiTurretRiftHeraldCountTotal,
-                              perfectDragonSoulsTakenTotal,
-                              multikillsAfterAggressiveFlashTotal,
-                              multikillsTotal,
-                              outnumberedKillsTotal,
-                              perfectGameTotal,
-                              quickCleanseTotal,
-                              dodgeSkillShotsSmallWindowTotal,
-                              damageTakenOnTeamPercentageTotal,
-                              damagePerMinuteTotal,
-                              acesBefore15MinutesTotal,
-                              tripleKillsTotal,
-                              inhibitorTakedownsTotal,
-                              totalHealTotal,
-                              timeCCingOthersTotal,
-                              neutralMinionsKilledTotal,
-                              quadraKillsTotal,
-                              timePlayedTotal,
-                              gameEndedInSurrenderTotal,
-                              goldEarnedTotal,
-                              firstTowerTotal,
-                              damageSelfMitigatedTotal,
-                              doubleKillsTotal,
-                              detectorWardsPlacedTotal,
-                              wardsPlacedTotal,
-                              wardsKilledTotal,
-                              alliedJungleMonsterKillsTotal,
-                              buffStolenTotal,
-                              teamDamagePercentageTotal,
+                              baronKillsTotal!,
+                              killsTotal!,
+                              pinkWardsTotal!,
+                              endGameLevelTotal!,
+                              dmgToStructuresTotal!,
+                              deathsTotal!,
+                              dragonKillsTotal!,
+                              firstBloodTotal!,
+                              killingSpreeTotal!,
+                              objectiveStealTotal!,
+                              pentaKillsTotal!,
+                              damageTotal!,
+                              damageTakenTotal!,
+                              turretKillsTotal!,
+                              visionScoreTotal!,
+                              wardsGuardedTotal!,
+                              turretPlatesTakenTotal!,
+                              soloKillsTotal!,
+                              soloBaronKillsTotal!,
+                              scuttleCrabKillsTotal!,
+                              saveAllyFromDeathTotal!,
+                              quickSoloKillsTotal!,
+                              epicMonsterKillsNearEnemyJunglerTotal!,
+                              enemyJungleMonsterKillsTotal!,
+                              earlyLaningPhaseGoldExpAdvantageTotal!,
+                              effectiveHealAndShieldingTotal!,
+                              earliestBaronRecord!,
+                              epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+                              fasterSupportQuestCompletionTotal!,
+                              firstTurretKilledTimeRecord!,
+                              gameLengthTotal!,
+                              goldPerMinuteTotal!,
+                              hadOpenNexusWinsTotal!,
+                              immobilizeAndKillWithAllyTotal!,
+                              jungleCsBefore10MinutesTotal!,
+                              junglerKillsEarlyJungleTotal!,
+                              kdaTotal!,
+                              killAfterHiddenWithAllyTotal!,
+                              killParticipationTotal!,
+                              killsNearEnemyTurretTotal!,
+                              killsOnLanersEarlyJungleAsJunglerTotal!,
+                              killsOnOtherLanesEarlyJungleAsLanerTotal!,
+                              killsUnderOwnTurretTotal!,
+                              landSkillShotsEarlyGameTotal!,
+                              laneMinionsFirst10MinutesTotal!,
+                              maxCsAdvantageOnLaneOpponentTotal!,
+                              legendaryCountTotal!,
+                              lostAnInhibitorWinsTotal!,
+                              multiTurretRiftHeraldCountTotal!,
+                              perfectDragonSoulsTakenTotal!,
+                              multikillsAfterAggressiveFlashTotal!,
+                              multikillsTotal!,
+                              outnumberedKillsTotal!,
+                              perfectGameTotal!,
+                              quickCleanseTotal!,
+                              dodgeSkillShotsSmallWindowTotal!,
+                              damageTakenOnTeamPercentageTotal!,
+                              damagePerMinuteTotal!,
+                              acesBefore15MinutesTotal!,
+                              tripleKillsTotal!,
+                              inhibitorTakedownsTotal!,
+                              totalHealTotal!,
+                              timeCCingOthersTotal!,
+                              neutralMinionsKilledTotal!,
+                              quadraKillsTotal!,
+                              timePlayedTotal!,
+                              gameEndedInSurrenderTotal!,
+                              goldEarnedTotal!,
+                              firstTowerTotal!,
+                              damageSelfMitigatedTotal!,
+                              doubleKillsTotal!,
+                              detectorWardsPlacedTotal!,
+                              wardsPlacedTotal!,
+                              wardsKilledTotal!,
+                              alliedJungleMonsterKillsTotal!,
+                              buffStolenTotal!,
+                              teamDamagePercentageTotal!,
+                              gamesPlayedTotal!,
                             );
 
+                            //Most Played Map
+
+                            var map = Map();
+                            champNames!.forEach((e) =>
+                                map.update(e, (x) => x + 1, ifAbsent: () => 1));
+                            print(map);
+
+                            var sortedKeys = map.keys.toList(growable: false)
+                              ..sort((k1, k2) => map[k2].compareTo(map[k1]));
+                            LinkedHashMap sortedMap =
+                                LinkedHashMap.fromIterable(sortedKeys,
+                                    key: (k) => k, value: (k) => map[k]);
+                            print(sortedMap);
+
+                            var sortedList = sortedMap.keys.toList();
+                            print(sortedList[0]);
+                            sortedList[1];
+                            sortedList[2];
+                            resetVariables();
+                            for (var player in matchByChampList) {
+                              if (player.champName == sortedList[0]) {
+                                //champTotals(player.playerInfo);
+                                matchTotals(player.playerInfo);
+                              }
+                            }
+
+                            MatchHistoryTotals matchHistoryTotalsChamp1 =
+                                MatchHistoryTotals(
+                              baronKillsTotal!,
+                              killsTotal!,
+                              pinkWardsTotal!,
+                              endGameLevelTotal!,
+                              dmgToStructuresTotal!,
+                              deathsTotal!,
+                              dragonKillsTotal!,
+                              firstBloodTotal!,
+                              killingSpreeTotal!,
+                              objectiveStealTotal!,
+                              pentaKillsTotal!,
+                              damageTotal!,
+                              damageTakenTotal!,
+                              turretKillsTotal!,
+                              visionScoreTotal!,
+                              wardsGuardedTotal!,
+                              turretPlatesTakenTotal!,
+                              soloKillsTotal!,
+                              soloBaronKillsTotal!,
+                              scuttleCrabKillsTotal!,
+                              saveAllyFromDeathTotal!,
+                              quickSoloKillsTotal!,
+                              epicMonsterKillsNearEnemyJunglerTotal!,
+                              enemyJungleMonsterKillsTotal!,
+                              earlyLaningPhaseGoldExpAdvantageTotal!,
+                              effectiveHealAndShieldingTotal!,
+                              earliestBaronRecord!,
+                              epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+                              fasterSupportQuestCompletionTotal!,
+                              firstTurretKilledTimeRecord!,
+                              gameLengthTotal!,
+                              goldPerMinuteTotal!,
+                              hadOpenNexusWinsTotal!,
+                              immobilizeAndKillWithAllyTotal!,
+                              jungleCsBefore10MinutesTotal!,
+                              junglerKillsEarlyJungleTotal!,
+                              kdaTotal!,
+                              killAfterHiddenWithAllyTotal!,
+                              killParticipationTotal!,
+                              killsNearEnemyTurretTotal!,
+                              killsOnLanersEarlyJungleAsJunglerTotal!,
+                              killsOnOtherLanesEarlyJungleAsLanerTotal!,
+                              killsUnderOwnTurretTotal!,
+                              landSkillShotsEarlyGameTotal!,
+                              laneMinionsFirst10MinutesTotal!,
+                              maxCsAdvantageOnLaneOpponentTotal!,
+                              legendaryCountTotal!,
+                              lostAnInhibitorWinsTotal!,
+                              multiTurretRiftHeraldCountTotal!,
+                              perfectDragonSoulsTakenTotal!,
+                              multikillsAfterAggressiveFlashTotal!,
+                              multikillsTotal!,
+                              outnumberedKillsTotal!,
+                              perfectGameTotal!,
+                              quickCleanseTotal!,
+                              dodgeSkillShotsSmallWindowTotal!,
+                              damageTakenOnTeamPercentageTotal!,
+                              damagePerMinuteTotal!,
+                              acesBefore15MinutesTotal!,
+                              tripleKillsTotal!,
+                              inhibitorTakedownsTotal!,
+                              totalHealTotal!,
+                              timeCCingOthersTotal!,
+                              neutralMinionsKilledTotal!,
+                              quadraKillsTotal!,
+                              timePlayedTotal!,
+                              gameEndedInSurrenderTotal!,
+                              goldEarnedTotal!,
+                              firstTowerTotal!,
+                              damageSelfMitigatedTotal!,
+                              doubleKillsTotal!,
+                              detectorWardsPlacedTotal!,
+                              wardsPlacedTotal!,
+                              wardsKilledTotal!,
+                              alliedJungleMonsterKillsTotal!,
+                              buffStolenTotal!,
+                              teamDamagePercentageTotal!,
+                              gamesPlayedTotal!,
+                            );
+
+                            //end
+                            //print(matchByChampList[0].champName);
+                            //print(matchByChampList[0].playerInfo);
                             setState(() {
                               isLoading = false;
                             });
@@ -561,8 +801,13 @@ class _SearchPageState extends State<SearchPage> {
                                         masteryList: masteryList,
                                         matchHistoryList: matchHistory,
                                         matchHistoryTotals: matchHistoryTotals,
+                                        matchHistoryTotalschamp1:
+                                            matchHistoryTotalsChamp1,
                                       )),
                             );
+                          } else {
+                            //alert no summoner with this name
+                            //print("Error");
                           }
                         },
                       ),
@@ -574,7 +819,8 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  //Variabler
+  //Variabler all games
+  int? gamesPlayedTotal = 0;
   int? baronKillsTotal = 0;
   int? killsTotal = 0;
   int? pinkWardsTotal = 0;

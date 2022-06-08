@@ -66,7 +66,8 @@ class TestPage extends StatefulWidget {
       required this.flexRank,
       required this.masteryList,
       required this.matchHistoryList,
-      this.matchHistoryTotals})
+      this.matchHistoryTotals,
+      this.matchHistoryTotalschamp1})
       : super(key: key);
 
   //TestPage();
@@ -83,6 +84,7 @@ class TestPage extends StatefulWidget {
   final List<ChampionMastery>? masteryList;
   final List<MatchStats>? matchHistoryList;
   final MatchHistoryTotals? matchHistoryTotals;
+  final MatchHistoryTotals? matchHistoryTotalschamp1;
 
   @override
   _TestPageState createState() => _TestPageState();
@@ -101,11 +103,8 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     print(widget.summonerID);
-    print(widget.matchHistoryTotals!.killsTotal);
-    print(widget.matchHistoryTotals!.visionScoreTotal);
-    print(widget.matchHistoryTotals!.pinkWardsTotal);
-    print(widget
-        .matchHistoryList![0].info!.participants![0].challenges!.abilityUses);
+    print(widget.matchHistoryTotals?.killsTotal);
+    print(widget.matchHistoryTotalschamp1?.killsTotal);
   }
 
   Widget _buildFloatingSearchBtn() {
@@ -167,7 +166,7 @@ class _TestPageState extends State<TestPage> {
     }
   }
 
-  Future<List<MatchStats>?> getGameHistory(
+  Future<List<MatchStats>?> getGameHistoryMP(
       {String? puuid, int start = 0, int count = 20}) async {
     String europe = "europe";
     var url =
@@ -246,7 +245,7 @@ class _TestPageState extends State<TestPage> {
                 List<ChampionMastery>? masteryList =
                     await league.getChampionMasteries(summonerID: summmonerID);
 
-                List<MatchStats>? matchHistory = await getGameHistory(
+                List<MatchStats>? matchHistory = await getGameHistoryMP(
                   puuid: summoner.puuid,
                 );
                 setState(() {});
@@ -312,7 +311,8 @@ class _TestPageState extends State<TestPage> {
                     champMastery: widget.masteryList![0].championPoints,
                     champName: widget.masteryList![0].championName
                         ?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
-                    matchHistoryTotals: widget.matchHistoryTotals,
+                    matchHistoryTotals: widget.matchHistoryTotalschamp1,
+                    gamesPlayed: widget.matchHistoryTotalschamp1?.gamesPlayed,
                   ),
                 ),
                 Column(

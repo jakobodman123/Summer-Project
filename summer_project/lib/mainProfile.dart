@@ -155,6 +155,7 @@ class MainProfileState extends State<MainProfile> {
                   ),
               child: AccoladesPage(
                 matchHistoryTotals: widget.matchHistoryTotals,
+                games: widget.matchHistoryTotals?.gamesPlayed,
               ),
             ),
           ],

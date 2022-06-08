@@ -13,6 +13,7 @@ class BestChampionCard extends StatelessWidget {
   final int? champMastery;
   final String? summonerName;
   final MatchHistoryTotals? matchHistoryTotals;
+  final int? gamesPlayed;
 
   String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -21,7 +22,8 @@ class BestChampionCard extends StatelessWidget {
       required this.champName,
       required this.champMastery,
       this.summonerName,
-      this.matchHistoryTotals})
+      this.matchHistoryTotals,
+      this.gamesPlayed})
       : super(key: key);
 
   @override
@@ -88,7 +90,10 @@ class BestChampionCard extends StatelessWidget {
           padding: const EdgeInsets.only(
             top: 5,
           ),
-          child: AccoladesPage(matchHistoryTotals: matchHistoryTotals),
+          child: AccoladesPage(
+            matchHistoryTotals: matchHistoryTotals,
+            games: gamesPlayed,
+          ),
         ),
       ]),
     );
