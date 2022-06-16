@@ -90,7 +90,8 @@ class RankedCard extends StatelessWidget {
                       ),
                       Text(
                         "Winrate: " +
-                            (wins * 100 ~/ (wins + losses)).toInt().toString() +
+                            ((wins / (wins + losses)) * 100)
+                                .toStringAsFixed(1) +
                             "%",
                         style: TextStyle(
                             fontSize: 17.0,

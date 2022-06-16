@@ -7,14 +7,14 @@ class AccoladesItem extends StatelessWidget {
   final double score;
   final bool positive;
 
-  AccoladesItem(
-      {Key? key,
-      required this.value,
-      required this.title,
-      required this.description,
-      required this.score,
-      required this.positive})
-      : super(key: key);
+  AccoladesItem({
+    Key? key,
+    required this.value,
+    required this.title,
+    required this.description,
+    required this.score,
+    required this.positive,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

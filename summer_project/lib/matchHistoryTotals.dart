@@ -1,4 +1,8 @@
 class MatchHistoryTotals {
+  final int? csTotals;
+  final int? assistsTotal;
+  final int? lossesTotal;
+  final int? winsTotal;
   final int? gamesPlayed;
   final int? baronKillsTotal;
   final int? killsTotal;
@@ -156,5 +160,9 @@ class MatchHistoryTotals {
       this.alliedJungleMonsterKillsTotal,
       this.buffStolenTotal,
       this.teamDamagePercentageTotal,
-      this.gamesPlayed);
+      this.gamesPlayed,
+      this.assistsTotal,
+      this.lossesTotal,
+      this.winsTotal,
+      this.csTotals);
 }

@@ -11,7 +11,7 @@ import 'package:summer_project/searchPage.dart';
 
 class MainProfile extends StatefulWidget {
   const MainProfile(this.iconID, this.level, this.summonerName, this.summonerID,
-      this.soloQRank, this.flexQRank, this.matchHistoryTotals);
+      this.soloQRank, this.flexQRank, this.matchHistoryTotals, this.lane);
 
   final String? iconID; //"4884"
   final String? level;
@@ -20,6 +20,7 @@ class MainProfile extends StatefulWidget {
   final Rank? soloQRank;
   final Rank? flexQRank;
   final MatchHistoryTotals? matchHistoryTotals;
+  final String? lane;
 
   @override
   MainProfileState createState() => MainProfileState();
@@ -70,8 +71,6 @@ class MainProfileState extends State<MainProfile> {
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    setState(() {});
-
     return Card(
       shape: BeveledRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -89,10 +88,23 @@ class MainProfileState extends State<MainProfile> {
               padding: EdgeInsets.only(
                 top: 60,
               ), //4884
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(80), // Image border
-                child:
-                    Image.asset('assets/img/profileicon/${widget.iconID}.png'),
+              child: Stack(
+                alignment: AlignmentDirectional.bottomEnd,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(80), // Image border
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Image.asset(
+                        'assets/img/profileicon/${widget.iconID}.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Image.asset(
+                      'assets/rankedIcons/Position_Diamond-${widget.lane}.png'),
+                ],
               ),
 
               //Image.asset('assets/img/profileicon/${iconID}.png'),

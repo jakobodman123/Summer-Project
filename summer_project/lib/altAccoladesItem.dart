@@ -5,20 +5,20 @@ import 'package:summer_project/accoladesItem.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
-class AccoladesPage extends StatelessWidget {
+class AltAccoladesItem extends StatelessWidget {
   List<AccoladesItem> accoladeList = [];
 
   final MatchHistoryTotals? matchHistoryTotals;
   final int? games;
   final String? champName;
 
-  AccoladesPage({Key? key, this.matchHistoryTotals, this.games, this.champName})
+  AltAccoladesItem(
+      {Key? key, this.matchHistoryTotals, this.games, this.champName})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Accolades accolades = Accolades(matchHistoryTotals, games);
-    accolades.accoladeList;
 
     if (champName != null &&
         matchHistoryTotals!.winsTotal! / games! >= 0.60 &&
@@ -41,7 +41,6 @@ class AccoladesPage extends StatelessWidget {
     if (champName != null && games! >= 15) {
       accoladeList.add(accolades.champMain(games!.toDouble(), champName));
     }
-
     if ((matchHistoryTotals!.killsTotal! / games!) >= 10) {
       accoladeList.add(
           accolades.bloodThirsty(matchHistoryTotals!.killsTotal! / games!));
@@ -261,7 +260,7 @@ class AccoladesPage extends StatelessWidget {
           .baronSolo(matchHistoryTotals!.soloBaronKillsTotal!.toDouble()));
     }
 
-    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 1) {
+    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 0.5) {
       accoladeList.add(accolades
           .guardianAngel(matchHistoryTotals!.saveAllyFromDeathTotal! / games!));
     }
@@ -270,6 +269,7 @@ class AccoladesPage extends StatelessWidget {
       accoladeList.add(accolades
           .scuttleWarrior(matchHistoryTotals!.scuttleCrabKillsTotal! / games!));
     }
+
     //error
     matchHistoryTotals!.earlyLaningPhaseGoldExpAdvantageTotal;
     //error
@@ -293,13 +293,13 @@ class AccoladesPage extends StatelessWidget {
         elevation: 20,
         color: colorGrey,
         child: Container(
-          height: 220,
-          width: 460,
+          height: 100,
+          width: 300,
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -310,75 +310,21 @@ class AccoladesPage extends StatelessWidget {
                           : accoladeList[0],
                     ),
                     (accoladeList.length < 2) ? SizedBox() : accoladeList[1],
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: (accoladeList.length < 3)
                           ? SizedBox()
                           : accoladeList[2],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 4)
-                          ? SizedBox()
-                          : accoladeList[3],
-                    ),
-                    (accoladeList.length < 5) ? SizedBox() : accoladeList[4],
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: (accoladeList.length < 6)
-                          ? SizedBox()
-                          : accoladeList[5],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 7)
-                          ? SizedBox()
-                          : accoladeList[6],
-                    ),
-                    (accoladeList.length < 8) ? SizedBox() : accoladeList[7],
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: (accoladeList.length < 9)
-                          ? SizedBox()
-                          : accoladeList[8],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 10)
-                          ? SizedBox()
-                          : accoladeList[9],
-                    ),
-                    (accoladeList.length < 11) ? SizedBox() : accoladeList[10],
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: (accoladeList.length < 12)
-                          ? SizedBox()
-                          : accoladeList[11],
-                    ),
+                    (accoladeList.length < 4) ? SizedBox() : accoladeList[3],
                   ],
                 ),
               ),

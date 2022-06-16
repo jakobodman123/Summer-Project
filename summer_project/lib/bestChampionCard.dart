@@ -7,6 +7,7 @@ import 'package:summer_project/kdWinrateWidget.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/masteryCard.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/statCard.dart';
 
 class BestChampionCard extends StatelessWidget {
   final String? champName;
@@ -38,10 +39,10 @@ class BestChampionCard extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Padding(
           padding: EdgeInsets.only(
-            top: 40,
+            top: 30,
           ),
           child: Text(
-            summonerName! + " should play " + champName!,
+            summonerName! + "'s most played is " + champName!,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -70,7 +71,13 @@ class BestChampionCard extends StatelessWidget {
             padding: const EdgeInsets.only(
               top: 5,
             ),
-            child: KdWinrateWidget("12.8/7.6/12.3", 59, 176)),
+            child: KdWinrateWidget(
+                matchHistoryTotals!.gamesPlayed,
+                matchHistoryTotals!.killsTotal,
+                matchHistoryTotals!.deathsTotal,
+                matchHistoryTotals!.assistsTotal,
+                matchHistoryTotals!.winsTotal,
+                matchHistoryTotals!.lossesTotal)),
         Padding(
             padding: const EdgeInsets.only(
               top: 5,
@@ -91,6 +98,25 @@ class BestChampionCard extends StatelessWidget {
             top: 5,
           ),
           child: AccoladesPage(
+              matchHistoryTotals: matchHistoryTotals,
+              games: gamesPlayed,
+              champName: champName),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            top: 5,
+          ),
+          child: Text(
+            'Champion Stats',
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 5,
+          ),
+          child: StatCard(
             matchHistoryTotals: matchHistoryTotals,
             games: gamesPlayed,
           ),

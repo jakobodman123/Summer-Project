@@ -11,14 +11,11 @@ class BestChampionPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
-      color: colorGrey,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
+      color: colorGrey.withOpacity(0),
       shadowColor: Colors.blue,
       elevation: 20,
       child: Container(
-        height: 400,
+        height: 300,
         width: 500,
         child: Image(
           fit: BoxFit.fitWidth,

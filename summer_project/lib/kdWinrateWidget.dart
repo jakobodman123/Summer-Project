@@ -5,11 +5,16 @@ import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';
 
 class KdWinrateWidget extends StatelessWidget {
-  final String kda;
-  final int winrate;
-  final int gamesPlayed;
+  final int? kills;
+  final int? deaths;
+  final int? assists;
 
-  KdWinrateWidget(this.kda, this.winrate, this.gamesPlayed);
+  final int? gamesPlayed;
+  final int? wins;
+  final int? losses;
+
+  KdWinrateWidget(this.gamesPlayed, this.kills, this.deaths, this.assists,
+      this.wins, this.losses);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +35,10 @@ class KdWinrateWidget extends StatelessWidget {
                 left: 40,
               ),
               child: KdaWidget(
-                  kills: 17000,
-                  deaths: 5043,
-                  assists: 12582,
-                  gamesPlayed: 1107),
+                  kills: kills,
+                  deaths: deaths,
+                  assists: assists,
+                  gamesPlayed: gamesPlayed),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -44,9 +49,9 @@ class KdWinrateWidget extends StatelessWidget {
                   CircularPercentIndicator(
                     radius: 40.0,
                     lineWidth: 5.0,
-                    percent: winrate.toDouble() / 100,
+                    percent: wins! / gamesPlayed!,
                     center: GlowText(
-                      winrate.toString(),
+                      ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,

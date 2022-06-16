@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:summer_project/altChampsWidget.dart';
 import 'package:summer_project/main.dart';
+import 'package:summer_project/matchHistoryTotals.dart';
 
 class AltChampsCard extends StatelessWidget {
+  final String? champName;
+  final int? champMastery;
+  final String? summonerName;
+  final MatchHistoryTotals? matchHistoryTotals;
+  final int? gamesPlayed;
+
+  const AltChampsCard(
+      {Key? key,
+      this.champName,
+      this.champMastery,
+      this.summonerName,
+      this.matchHistoryTotals,
+      this.gamesPlayed})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,15 +44,15 @@ class AltChampsCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 50),
-            child: AltChampsWidget("MissFortune", 173, 52, "10.2/4.5/12.7"),
+            //child: AltChampsWidget("MissFortune", 173, 52, "10.2/4.5/12.7"),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 50),
-            child: AltChampsWidget("Janna", 42, 61, "10.2/4.5/12.7"),
+            //child: AltChampsWidget("Janna", 42, 61, "10.2/4.5/12.7"),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 50),
-            child: AltChampsWidget("Nautilus", 23, 41, "10.2/4.5/12.7"),
+            //child: AltChampsWidget("Nautilus", 23, 41, "10.2/4.5/12.7"),
           ),
         ],
       ),

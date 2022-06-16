@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:summer_project/apiMethods.dart';
 import 'package:summer_project/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:summer_project/matchByChamp.dart';
@@ -35,6 +36,8 @@ class _SearchPageState extends State<SearchPage> {
   List<String>? champNames = [];
   List<MatchByChamp> matchByChampList = [];
 
+  List<String>? laneNames = [];
+
   bool isLoading = false;
 
   @override
@@ -42,158 +45,214 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
-  Future<Rank> getRankInfos2({String? summonerID}) async {
-    var url =
-        'https://$server.api.riotgames.com/lol/league/v4/entries/by-summoner/$summonerID?api_key=$apiToken';
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    if (response.body.toString() != '[]') {
-      return Rank.fromJson(
-        json.decode(
-          response.body,
-        )[1],
-      );
-    } else {
-      return Rank(
-          hotStreak: false,
-          leagueId: '0',
-          leaguePoints: 0,
-          losses: 0,
-          wins: 0,
-          rank: 'unranked',
-          tier: 'no tier');
-    }
-  }
-
-  int findPersonUsingLoop(List<Participants>? people, String? summonerName) {
-    for (var i = 0; i < people!.length; i++) {
-      if (people[i].summonerName == summonerName) {
-        // Found the person, stop the loop
-        return i;
-      }
-    }
-    return 0;
-  }
-
   void matchTotals(Participants? player) {
-    gamesPlayedTotal = gamesPlayedTotal! + 1;
-    int? baronKills = player!.challenges!.baronTakedowns;
-    baronKillsTotal = (baronKillsTotal! + baronKills!);
-    int? kills = player.kills;
-    killsTotal = (killsTotal! + kills!);
-    int? pinkWards = player.visionWardsBoughtInGame;
-    pinkWardsTotal = (pinkWardsTotal! + pinkWards!);
-    int? endGameLevel = player.champLevel;
-    endGameLevelTotal = (endGameLevelTotal! + endGameLevel!);
-    int? dmgToStructures = player.damageDealtToBuildings;
-    dmgToStructuresTotal = (dmgToStructuresTotal! + dmgToStructures!);
-    int? deaths = player.deaths;
-    deathsTotal = (deathsTotal! + deaths!);
-    int? dragonKills = player.dragonKills;
-    dragonKillsTotal = (dragonKillsTotal! + dragonKills!);
-    if (player.firstBloodKill!) {
-      int? firstBlood = 1;
-      firstBloodTotal = (firstBloodTotal! + firstBlood);
-    } else {
-      int? firstBlood = 0;
-      firstBloodTotal = (firstBloodTotal! + firstBlood);
-    }
-    if (player.firstBloodAssist!) {
-      int? firstBlood = 1;
-      firstBloodTotal = (firstBloodTotal! + firstBlood);
-    } else {
-      int? firstBlood = 0;
-      firstBloodTotal = (firstBloodTotal! + firstBlood);
-    }
-    int? killingSprees = player.killingSprees;
-    killingSpreeTotal = (killingSpreeTotal! + killingSprees!);
-    int? objectiveSteal = player.objectivesStolen;
-    objectiveStealTotal = (objectiveStealTotal! + objectiveSteal!);
-    int? pentaKills = player.pentaKills;
-    pentaKillsTotal = (pentaKillsTotal! + pentaKills!);
-    int? damage = player.totalDamageDealtToChampions;
-    damageTotal = (damageTotal! + damage!);
-    int? damageTaken = player.totalDamageTaken;
-    damageTakenTotal = (damageTakenTotal! + damageTaken!);
-    int? turretKills = player.turretKills;
-    turretKillsTotal = (turretKillsTotal! + turretKills!);
-    int? visionScore = player.visionScore;
-    visionScoreTotal = (visionScoreTotal! + visionScore!);
-    int? buffStolen = player.challenges!.buffsStolen;
-    buffStolenTotal = (buffStolenTotal! + buffStolen!);
-    double? alliedJungleMonsterKills =
-        player.challenges!.alliedJungleMonsterKills;
-    alliedJungleMonsterKillsTotal =
-        (alliedJungleMonsterKillsTotal! + alliedJungleMonsterKills!);
-    int? wardsKilled = player.wardsKilled;
-    wardsKilledTotal = (wardsKilledTotal! + wardsKilled!);
-    int? wardsPlaced = player.wardsPlaced;
-    wardsPlacedTotal = (wardsPlacedTotal! + wardsPlaced!);
-    int? detectorWardsPlaced = player.detectorWardsPlaced;
-    detectorWardsPlacedTotal =
-        (detectorWardsPlacedTotal! + detectorWardsPlaced!);
-    int? assists = player.assists;
-    assistsTotal = (assistsTotal! + assists!);
-    int? doubleKills = player.doubleKills;
-    doubleKillsTotal = (doubleKillsTotal! + doubleKills!);
-    int? damageSelfMitigated = player.damageSelfMitigated;
-    damageSelfMitigatedTotal =
-        (damageSelfMitigatedTotal! + damageSelfMitigated!);
-    if (player.firstTowerAssist!) {
-      int? firstTower = 1;
-      firstTowerTotal = (firstTowerTotal! + firstTower);
-    } else {
-      int? firstTower = 0;
-      firstTowerTotal = (firstTowerTotal! + firstTower);
-    }
-    if (player.firstTowerKill!) {
-      int? firstTower = 1;
-      firstTowerTotal = (firstTowerTotal! + firstTower);
-    } else {
-      int? firstTower = 0;
-      firstTowerTotal = (firstTowerTotal! + firstTower);
-    }
-    if (player.gameEndedInSurrender!) {
-      int? gameEndedInSurrender = 1;
-      gameEndedInSurrenderTotal =
-          (gameEndedInSurrenderTotal! + gameEndedInSurrender);
-    } else {
-      int? gameEndedInSurrender = 0;
-      gameEndedInSurrenderTotal =
-          (gameEndedInSurrenderTotal! + gameEndedInSurrender);
-    }
-    //player.individualPosition;
-    int? goldEarned = player.goldEarned;
-    goldEarnedTotal = (goldEarnedTotal! + goldEarned!);
-    int? timePlayed = player.timePlayed;
-    timePlayedTotal = (timePlayedTotal! + timePlayed!);
-    int? quadraKills = player.quadraKills;
-    quadraKillsTotal = (quadraKillsTotal! + quadraKills!);
-    int? neutralMinionsKilled = player.neutralMinionsKilled;
-    neutralMinionsKilledTotal =
-        (neutralMinionsKilledTotal! + neutralMinionsKilled!);
-    int? timeCCingOthers = player.timeCCingOthers;
-    timeCCingOthersTotal = (timeCCingOthersTotal! + timeCCingOthers!);
-    int? totalHeal = player.totalHeal;
-    totalHealTotal = (totalHealTotal! + totalHeal!);
-    int? inhibitorTakedowns = player.inhibitorTakedowns;
-    inhibitorTakedownsTotal = (inhibitorTakedownsTotal! + inhibitorTakedowns!);
-    int? tripleKills = player.tripleKills;
-    tripleKillsTotal = (tripleKillsTotal! + tripleKills!);
-    int? acesBefore15Minutes = player.challenges!.acesBefore15Minutes;
-    acesBefore15MinutesTotal =
-        (acesBefore15MinutesTotal! + acesBefore15Minutes!);
-    double? damagePerMinute = player.challenges!.damagePerMinute;
-    damagePerMinuteTotal = (damagePerMinuteTotal! + damagePerMinute!);
-    double? damageTakenOnTeamPercentage =
-        player.challenges!.damageTakenOnTeamPercentage;
-    damageTakenOnTeamPercentageTotal =
-        (damageTakenOnTeamPercentageTotal! + damageTakenOnTeamPercentage!);
-    int? dodgeSkillShotsSmallWindow =
-        player.challenges!.dodgeSkillShotsSmallWindow;
-    dodgeSkillShotsSmallWindowTotal =
-        (dodgeSkillShotsSmallWindowTotal! + dodgeSkillShotsSmallWindow!);
+    try {
+      //print(player!.challenges!.gameLength);
+      if (gamesPlayedTotal != null) {
+        gamesPlayedTotal = gamesPlayedTotal! + 1;
+      }
+      bool? playerWin = player?.win;
+      if (playerWin != null && playerWin == true) {
+        int? win = 1;
+        winsTotal = (winsTotal! + win);
+      }
+      if (player?.win! == false) {
+        int? loss = 1;
+        lossesTotal = (lossesTotal! + loss);
+      }
+
+      int? baronKills = player?.challenges?.baronTakedowns;
+      if (baronKills != null) {
+        baronKillsTotal = (baronKillsTotal! + baronKills);
+      }
+      int? kills = player?.kills;
+      if (kills != null) {
+        killsTotal = (killsTotal! + kills);
+      }
+      int? pinkWards = player?.visionWardsBoughtInGame;
+      if (pinkWards != null) {
+        pinkWardsTotal = (pinkWardsTotal! + pinkWards);
+      }
+      int? endGameLevel = player?.champLevel;
+      if (endGameLevel != null) {
+        endGameLevelTotal = (endGameLevelTotal! + endGameLevel);
+      }
+      int? dmgToStructures = player?.damageDealtToBuildings;
+      if (dmgToStructures != null) {
+        dmgToStructuresTotal = (dmgToStructuresTotal! + dmgToStructures);
+      }
+      int? deaths = player?.deaths;
+      if (deaths != null) {
+        deathsTotal = (deathsTotal! + deaths);
+      }
+      int? dragonKills = player?.dragonKills;
+      if (dragonKills != null) {
+        dragonKillsTotal = (dragonKillsTotal! + dragonKills);
+      }
+      bool? firstBloodKill = player?.firstBloodKill;
+      if (firstBloodKill != null && firstBloodKill == true) {
+        int? firstBlood = 1;
+        firstBloodTotal = (firstBloodTotal! + firstBlood);
+      } else {
+        int? firstBlood = 0;
+        firstBloodTotal = (firstBloodTotal! + firstBlood);
+      }
+      bool? firstBloodAssist = player?.firstBloodAssist;
+      if (firstBloodAssist != null && firstBloodAssist == true) {
+        int? firstBlood = 1;
+        firstBloodTotal = (firstBloodTotal! + firstBlood);
+      } else {
+        int? firstBlood = 0;
+        firstBloodTotal = (firstBloodTotal! + firstBlood);
+      }
+      int? killingSprees = player?.killingSprees;
+      if (killingSprees != null) {
+        killingSpreeTotal = (killingSpreeTotal! + killingSprees);
+      }
+      int? objectiveSteal = player?.objectivesStolen;
+      if (objectiveSteal != null) {
+        objectiveStealTotal = (objectiveStealTotal! + objectiveSteal);
+      }
+      int? pentaKills = player?.pentaKills;
+      if (pentaKills != null) {
+        pentaKillsTotal = (pentaKillsTotal! + pentaKills);
+      }
+      int? damage = player?.totalDamageDealtToChampions;
+      if (damage != null) {
+        damageTotal = (damageTotal! + damage);
+      }
+      int? damageTaken = player?.totalDamageTaken;
+      if (damageTaken != null) {
+        damageTakenTotal = (damageTakenTotal! + damageTaken);
+      }
+      int? turretKills = player?.turretKills;
+      if (turretKills != null) {
+        turretKillsTotal = (turretKillsTotal! + turretKills);
+      }
+      int? visionScore = player?.visionScore;
+      if (visionScore != null) {
+        visionScoreTotal = (visionScoreTotal! + visionScore);
+      }
+      int? buffStolen = player?.challenges?.buffsStolen;
+      if (buffStolen != null) {
+        buffStolenTotal = (buffStolenTotal! + buffStolen);
+      }
+      double? alliedJungleMonsterKills =
+          player?.challenges?.alliedJungleMonsterKills;
+      if (alliedJungleMonsterKills != null) {
+        alliedJungleMonsterKillsTotal =
+            (alliedJungleMonsterKillsTotal! + alliedJungleMonsterKills);
+      }
+      int? wardsKilled = player?.wardsKilled;
+      if (wardsKilled != null) {
+        wardsKilledTotal = (wardsKilledTotal! + wardsKilled);
+      }
+      int? wardsPlaced = player?.wardsPlaced;
+      if (wardsPlaced != null) {
+        wardsPlacedTotal = (wardsPlacedTotal! + wardsPlaced);
+      }
+      int? detectorWardsPlaced = player?.detectorWardsPlaced;
+      if (detectorWardsPlaced != null) {
+        detectorWardsPlacedTotal =
+            (detectorWardsPlacedTotal! + detectorWardsPlaced);
+      }
+      int? assists = player?.assists;
+      if (assists != null) {
+        assistsTotal = (assistsTotal! + assists);
+      }
+      int? doubleKills = player?.doubleKills;
+      if (doubleKills != null) {
+        doubleKillsTotal = (doubleKillsTotal! + doubleKills);
+      }
+      int? damageSelfMitigated = player?.damageSelfMitigated;
+      if (damageSelfMitigated != null) {
+        damageSelfMitigatedTotal =
+            (damageSelfMitigatedTotal! + damageSelfMitigated);
+      }
+      bool? firstTowerAssist = player?.firstTowerAssist;
+      if (firstTowerAssist != null && firstTowerAssist == true) {
+        int? firstTower = 1;
+        firstTowerTotal = (firstTowerTotal! + firstTower);
+      } else {
+        int? firstTower = 0;
+        firstTowerTotal = (firstTowerTotal! + firstTower);
+      }
+      bool? firstTowerKill = player?.firstTowerKill;
+      if (firstTowerKill != null && firstTowerKill == true) {
+        int? firstTower = 1;
+        firstTowerTotal = (firstTowerTotal! + firstTower);
+      } else {
+        int? firstTower = 0;
+        firstTowerTotal = (firstTowerTotal! + firstTower);
+      }
+      bool? gameEndedInSurrender = player?.gameEndedInSurrender;
+      if (gameEndedInSurrender != null && gameEndedInSurrender == true) {
+        int? gameEndedInSurrender = 1;
+        gameEndedInSurrenderTotal =
+            (gameEndedInSurrenderTotal! + gameEndedInSurrender);
+      } else {
+        int? gameEndedInSurrender = 0;
+        gameEndedInSurrenderTotal =
+            (gameEndedInSurrenderTotal! + gameEndedInSurrender);
+      }
+      //player.individualPosition;
+      int? goldEarned = player?.goldEarned;
+      if (goldEarned != null) {
+        goldEarnedTotal = (goldEarnedTotal! + goldEarned);
+      }
+      int? timePlayed = player?.timePlayed;
+      if (timePlayed != null) {
+        timePlayedTotal = (timePlayedTotal! + timePlayed);
+      }
+
+      int? quadraKills = player?.quadraKills;
+      if (quadraKills != null) {
+        quadraKillsTotal = (quadraKillsTotal! + quadraKills);
+      }
+      int? neutralMinionsKilled = player?.neutralMinionsKilled;
+      if (neutralMinionsKilled != null) {
+        neutralMinionsKilledTotal =
+            (neutralMinionsKilledTotal! + neutralMinionsKilled);
+      }
+      int? timeCCingOthers = player?.timeCCingOthers;
+      if (timeCCingOthers != null) {
+        timeCCingOthersTotal = (timeCCingOthersTotal! + timeCCingOthers);
+      }
+      int? totalHeal = player?.totalHeal;
+      if (totalHeal != null) {
+        totalHealTotal = (totalHealTotal! + totalHeal);
+      }
+      int? inhibitorTakedowns = player?.inhibitorTakedowns;
+      if (inhibitorTakedowns != null) {
+        inhibitorTakedownsTotal =
+            (inhibitorTakedownsTotal! + inhibitorTakedowns);
+      }
+      int? tripleKills = player?.tripleKills;
+      if (tripleKills != null) {
+        tripleKillsTotal = (tripleKillsTotal! + tripleKills);
+      }
+      int? acesBefore15Minutes = player?.challenges?.acesBefore15Minutes;
+      if (acesBefore15Minutes != null) {
+        acesBefore15MinutesTotal =
+            (acesBefore15MinutesTotal! + acesBefore15Minutes);
+      }
+
+      double? damagePerMinute = player?.challenges?.damagePerMinute;
+      if (damagePerMinute != null) {
+        damagePerMinuteTotal = (damagePerMinuteTotal! + damagePerMinute);
+      }
+      double? damageTakenOnTeamPercentage =
+          player?.challenges!.damageTakenOnTeamPercentage;
+      if (damageTakenOnTeamPercentage != null) {
+        damageTakenOnTeamPercentageTotal =
+            (damageTakenOnTeamPercentageTotal! + damageTakenOnTeamPercentage);
+      }
+      int? dodgeSkillShotsSmallWindow =
+          player?.challenges?.dodgeSkillShotsSmallWindow;
+      if (dodgeSkillShotsSmallWindow != null) {
+        dodgeSkillShotsSmallWindowTotal =
+            (dodgeSkillShotsSmallWindowTotal! + dodgeSkillShotsSmallWindow);
+      }
 /*
     double? earliestBaron = player.challenges!.earliestBaron;
     if (earliestBaron! < earliestBaronRecord!) {
@@ -202,11 +261,13 @@ class _SearchPageState extends State<SearchPage> {
       earliestBaronRecord = earliestBaronRecord;
     }
     */
-    //ram !!!!!!!!
-    double? effectiveHealAndShielding =
-        player.challenges!.effectiveHealAndShielding;
-    effectiveHealAndShieldingTotal =
-        (effectiveHealAndShieldingTotal! + effectiveHealAndShielding!);
+      //ram !!!!!!!!
+      double? effectiveHealAndShielding =
+          player?.challenges?.effectiveHealAndShielding;
+      if (effectiveHealAndShielding != null) {
+        effectiveHealAndShieldingTotal =
+            (effectiveHealAndShieldingTotal! + effectiveHealAndShielding);
+      }
 /*
     int? earlyLaningPhaseGoldExpAdvantage =
         player.challenges!.earlyLaningPhaseGoldExpAdvantage;
@@ -214,20 +275,26 @@ class _SearchPageState extends State<SearchPage> {
         (earlyLaningPhaseGoldExpAdvantageTotal! +
             earlyLaningPhaseGoldExpAdvantage!);
             */
-    double? enemyJungleMonsterKills =
-        player.challenges!.enemyJungleMonsterKills;
-    enemyJungleMonsterKillsTotal =
-        (enemyJungleMonsterKillsTotal! + enemyJungleMonsterKills!);
-    int? epicMonsterKillsNearEnemyJungler =
-        player.challenges!.epicMonsterKillsNearEnemyJungler;
-    epicMonsterKillsNearEnemyJunglerTotal =
-        (epicMonsterKillsNearEnemyJunglerTotal! +
-            epicMonsterKillsNearEnemyJungler!);
-    int? epicMonsterKillsWithin30SecondsOfSpawn =
-        player.challenges!.epicMonsterKillsWithin30SecondsOfSpawn;
-    epicMonsterKillsWithin30SecondsOfSpawnTotal =
-        (epicMonsterKillsWithin30SecondsOfSpawnTotal! +
-            epicMonsterKillsWithin30SecondsOfSpawn!);
+      double? enemyJungleMonsterKills =
+          player?.challenges?.enemyJungleMonsterKills;
+      if (enemyJungleMonsterKills != null) {
+        enemyJungleMonsterKillsTotal =
+            (enemyJungleMonsterKillsTotal! + enemyJungleMonsterKills);
+      }
+      int? epicMonsterKillsNearEnemyJungler =
+          player?.challenges?.epicMonsterKillsNearEnemyJungler;
+      if (epicMonsterKillsNearEnemyJungler != null) {
+        epicMonsterKillsNearEnemyJunglerTotal =
+            (epicMonsterKillsNearEnemyJunglerTotal! +
+                epicMonsterKillsNearEnemyJungler);
+      }
+      int? epicMonsterKillsWithin30SecondsOfSpawn =
+          player?.challenges?.epicMonsterKillsWithin30SecondsOfSpawn;
+      if (epicMonsterKillsWithin30SecondsOfSpawn != null) {
+        epicMonsterKillsWithin30SecondsOfSpawnTotal =
+            (epicMonsterKillsWithin30SecondsOfSpawnTotal! +
+                epicMonsterKillsWithin30SecondsOfSpawn);
+      }
 /*
     int? fasterSupportQuestCompletion =
         player.challenges!.fasterSupportQuestCompletion;
@@ -242,38 +309,58 @@ class _SearchPageState extends State<SearchPage> {
       firstTurretKilledTimeRecord = firstTurretKilledTimeRecord;
     }
     */
-    double? gameLength = player.challenges!.gameLength;
-    gameLengthTotal = (gameLengthTotal! + gameLength!);
-    double? goldPerMinute = player.challenges!.goldPerMinute;
-    goldPerMinuteTotal = (goldPerMinuteTotal! + goldPerMinute!);
-    if ((player.challenges!.hadOpenNexus! >= 1) && player.win!) {
-      int? hadOpenNexusWins = 1;
-      hadOpenNexusWinsTotal = (hadOpenNexusWinsTotal! + hadOpenNexusWins);
-    }
-    //player.challenges!.highestChampionDamage;
-    int? immobilizeAndKillWithAlly =
-        player.challenges!.immobilizeAndKillWithAlly;
-    immobilizeAndKillWithAllyTotal =
-        (immobilizeAndKillWithAllyTotal! + immobilizeAndKillWithAlly!);
-    double? jungleCsBefore10Minutes =
-        player.challenges!.jungleCsBefore10Minutes;
-    jungleCsBefore10MinutesTotal =
-        (jungleCsBefore10MinutesTotal! + jungleCsBefore10Minutes!);
-    /*
+      double? gameLength = player?.challenges?.gameLength;
+      if (gameLength != null) {
+        gameLengthTotal = (gameLengthTotal! + gameLength);
+      }
+      double? goldPerMinute = player?.challenges?.goldPerMinute;
+      if (goldPerMinute != null) {
+        goldPerMinuteTotal = (goldPerMinuteTotal! + goldPerMinute);
+      }
+      int? hadOpenNexus = player?.challenges?.hadOpenNexus;
+      if ((hadOpenNexus != null && hadOpenNexus >= 1) &&
+          playerWin != null &&
+          playerWin == true) {
+        int? hadOpenNexusWins = 1;
+        hadOpenNexusWinsTotal = (hadOpenNexusWinsTotal! + hadOpenNexusWins);
+      }
+      //player.challenges!.highestChampionDamage;
+      int? immobilizeAndKillWithAlly =
+          player?.challenges?.immobilizeAndKillWithAlly;
+      if (immobilizeAndKillWithAlly != null) {
+        immobilizeAndKillWithAllyTotal =
+            (immobilizeAndKillWithAllyTotal! + immobilizeAndKillWithAlly);
+      }
+      double? jungleCsBefore10Minutes =
+          player?.challenges?.jungleCsBefore10Minutes;
+      if (jungleCsBefore10Minutes != null) {
+        jungleCsBefore10MinutesTotal =
+            (jungleCsBefore10MinutesTotal! + jungleCsBefore10Minutes);
+      }
+      /*
     int? junglerKillsEarlyJungle = player.challenges!.junglerKillsEarlyJungle;
     junglerKillsEarlyJungleTotal =
         (junglerKillsEarlyJungleTotal! + junglerKillsEarlyJungle!);
         */
-    double? kda = player.challenges!.kda;
-    kdaTotal = (kdaTotal! + kda!);
-    int? killAfterHiddenWithAlly = player.challenges!.killAfterHiddenWithAlly;
-    killAfterHiddenWithAllyTotal =
-        (killAfterHiddenWithAllyTotal! + killAfterHiddenWithAlly!);
-    double? killParticipation = player.challenges!.killParticipation;
-    killParticipationTotal = (killParticipationTotal! + killParticipation!);
-    int? killsNearEnemyTurret = player.challenges!.killsNearEnemyTurret;
-    killsNearEnemyTurretTotal =
-        (killsNearEnemyTurretTotal! + killsNearEnemyTurret!);
+      double? kda = player?.challenges?.kda;
+      if (kda != null) {
+        kdaTotal = (kdaTotal! + kda);
+      }
+      int? killAfterHiddenWithAlly =
+          player?.challenges?.killAfterHiddenWithAlly;
+      if (killAfterHiddenWithAlly != null) {
+        killAfterHiddenWithAllyTotal =
+            (killAfterHiddenWithAllyTotal! + killAfterHiddenWithAlly);
+      }
+      double? killParticipation = player?.challenges?.killParticipation;
+      if (killParticipation != null) {
+        killParticipationTotal = (killParticipationTotal! + killParticipation);
+      }
+      int? killsNearEnemyTurret = player?.challenges?.killsNearEnemyTurret;
+      if (killsNearEnemyTurret != null) {
+        killsNearEnemyTurretTotal =
+            (killsNearEnemyTurretTotal! + killsNearEnemyTurret);
+      }
 /*
     int? killsOnLanersEarlyJungleAsJungler =
         player.challenges!.killsOnLanersEarlyJungleAsJungler;
@@ -281,91 +368,128 @@ class _SearchPageState extends State<SearchPage> {
         (killsOnLanersEarlyJungleAsJunglerTotal! +
             killsOnLanersEarlyJungleAsJungler!);
             */
-    /*
+      /*
     int? killsOnOtherLanesEarlyJungleAsLaner =
         player.challenges!.killsOnOtherLanesEarlyJungleAsLaner;
     killsOnOtherLanesEarlyJungleAsLanerTotal =
         (killsOnOtherLanesEarlyJungleAsLanerTotal! +
             killsOnOtherLanesEarlyJungleAsLaner!);
             */
-    int? killsUnderOwnTurret = player.challenges!.killsUnderOwnTurret;
-    killsUnderOwnTurretTotal =
-        (killsUnderOwnTurretTotal! + killsUnderOwnTurret!);
-    int? landSkillShotsEarlyGame = player.challenges!.landSkillShotsEarlyGame;
-    landSkillShotsEarlyGameTotal =
-        (landSkillShotsEarlyGameTotal! + landSkillShotsEarlyGame!);
-    int? laneMinionsFirst10Minutes =
-        player.challenges!.laneMinionsFirst10Minutes;
-    laneMinionsFirst10MinutesTotal =
-        (laneMinionsFirst10MinutesTotal! + laneMinionsFirst10Minutes!);
-    /*  
+      int? killsUnderOwnTurret = player?.challenges?.killsUnderOwnTurret;
+      if (killsUnderOwnTurret != null) {
+        killsUnderOwnTurretTotal =
+            (killsUnderOwnTurretTotal! + killsUnderOwnTurret);
+      }
+      int? landSkillShotsEarlyGame =
+          player?.challenges?.landSkillShotsEarlyGame;
+      if (landSkillShotsEarlyGame != null) {
+        landSkillShotsEarlyGameTotal =
+            (landSkillShotsEarlyGameTotal! + landSkillShotsEarlyGame);
+      }
+      int? laneMinionsFirst10Minutes =
+          player?.challenges?.laneMinionsFirst10Minutes;
+      if (laneMinionsFirst10Minutes != null) {
+        laneMinionsFirst10MinutesTotal =
+            (laneMinionsFirst10MinutesTotal! + laneMinionsFirst10Minutes);
+      }
+      /*  
     double? maxCsAdvantageOnLaneOpponent =
         player.challenges!.maxCsAdvantageOnLaneOpponent;
     maxCsAdvantageOnLaneOpponentTotal =
         (maxCsAdvantageOnLaneOpponentTotal! + maxCsAdvantageOnLaneOpponent!);
         */
 
-    //player.challenges!.maxKillDeficit;
-    //player.win;
-    int? legendaryCount = player.challenges!.legendaryCount;
-    legendaryCountTotal = (legendaryCountTotal! + legendaryCount!);
-    if ((player.challenges!.lostAnInhibitor! >= 1) && player.win!) {
-      int? lostAnInhibitorWins = 1;
-      lostAnInhibitorWinsTotal =
-          (lostAnInhibitorWinsTotal! + lostAnInhibitorWins);
-    }
-    int? multiTurretRiftHeraldCount =
-        player.challenges!.multiTurretRiftHeraldCount;
-    multiTurretRiftHeraldCountTotal =
-        (multiTurretRiftHeraldCountTotal! + multiTurretRiftHeraldCount!);
-    int? perfectDragonSoulsTaken = player.challenges!.perfectDragonSoulsTaken;
-    perfectDragonSoulsTakenTotal =
-        (perfectDragonSoulsTakenTotal! + perfectDragonSoulsTaken!);
-    int? multikillsAfterAggressiveFlash =
-        player.challenges!.multikillsAfterAggressiveFlash;
-    multikillsAfterAggressiveFlashTotal =
-        (multikillsAfterAggressiveFlashTotal! +
-            multikillsAfterAggressiveFlash!);
-    int? multikills = player.challenges!.multikills;
-    multikillsTotal = (multikillsTotal! + multikills!);
-    int? outnumberedKills = player.challenges!.outnumberedKills;
-    outnumberedKillsTotal = (outnumberedKillsTotal! + outnumberedKills!);
-    int? perfectGame = player.challenges!.perfectGame;
-    perfectGameTotal = (perfectGameTotal! + perfectGame!);
-    int? quickCleanse = player.challenges!.quickCleanse;
-    quickCleanseTotal = (quickCleanseTotal! + quickCleanse!);
-    int? quickSoloKills = player.challenges!.quickSoloKills;
-    quickSoloKillsTotal = (quickSoloKillsTotal! + quickSoloKills!);
-    int? saveAllyFromDeath = player.challenges!.saveAllyFromDeath;
-    saveAllyFromDeathTotal = (saveAllyFromDeathTotal! + saveAllyFromDeath!);
-    int? scuttleCrabKills = player.challenges!.scuttleCrabKills;
-    scuttleCrabKillsTotal = (scuttleCrabKillsTotal! + scuttleCrabKills!);
-    int? soloBaronKills = player.challenges!.soloBaronKills;
-    soloBaronKillsTotal = (soloBaronKillsTotal! + soloBaronKills!);
-    int? soloKills = player.challenges!.soloKills;
-    soloKillsTotal = (soloKillsTotal! + soloKills!);
-    int? turretPlatesTaken = player.challenges!.turretPlatesTaken;
-    turretPlatesTakenTotal = (turretPlatesTakenTotal! + turretPlatesTaken!);
-    double? teamDamagePercentage = player.challenges!.teamDamagePercentage;
-    teamDamagePercentageTotal =
-        (teamDamagePercentageTotal! + teamDamagePercentage!);
-    int? wardsGuarded = player.challenges!.wardsGuarded;
-    wardsGuardedTotal = (wardsGuardedTotal! + wardsGuarded!);
+      //player.challenges!.maxKillDeficit;
+      //player.win;
+      int? legendaryCount = player?.challenges?.legendaryCount;
+      if (legendaryCount != null) {
+        legendaryCountTotal = (legendaryCountTotal! + legendaryCount);
+      }
 
-    String? champName = player.championName;
-    //print(champName);
+      int? lostAnInhibitor = player?.challenges?.lostAnInhibitor;
+      if ((lostAnInhibitor != null && lostAnInhibitor >= 1) &&
+          playerWin != null &&
+          playerWin == true) {
+        int? lostAnInhibitorWins = 1;
+        lostAnInhibitorWinsTotal =
+            (lostAnInhibitorWinsTotal! + lostAnInhibitorWins);
+      }
 
-    if (champName != null) {
-      champNames?.add(champName);
-    }
-  }
+      int? multiTurretRiftHeraldCount =
+          player?.challenges?.multiTurretRiftHeraldCount;
+      if (multiTurretRiftHeraldCount != null) {
+        multiTurretRiftHeraldCountTotal =
+            (multiTurretRiftHeraldCountTotal! + multiTurretRiftHeraldCount);
+      }
+      int? perfectDragonSoulsTaken =
+          player?.challenges?.perfectDragonSoulsTaken;
+      if (perfectDragonSoulsTaken != null) {
+        perfectDragonSoulsTakenTotal =
+            (perfectDragonSoulsTakenTotal! + perfectDragonSoulsTaken);
+      }
+      int? multikillsAfterAggressiveFlash =
+          player?.challenges?.multikillsAfterAggressiveFlash;
+      if (multikillsAfterAggressiveFlash != null) {
+        multikillsAfterAggressiveFlashTotal =
+            (multikillsAfterAggressiveFlashTotal! +
+                multikillsAfterAggressiveFlash);
+      }
+      int? multikills = player?.challenges?.multikills;
+      if (multikills != null) {
+        multikillsTotal = (multikillsTotal! + multikills);
+      }
+      int? outnumberedKills = player?.challenges?.outnumberedKills;
+      if (outnumberedKills != null) {
+        outnumberedKillsTotal = (outnumberedKillsTotal! + outnumberedKills);
+      }
+      int? perfectGame = player?.challenges?.perfectGame;
+      if (perfectGame != null) {
+        perfectGameTotal = (perfectGameTotal! + perfectGame);
+      }
+      int? quickCleanse = player?.challenges?.quickCleanse;
+      if (quickCleanse != null) {
+        quickCleanseTotal = (quickCleanseTotal! + quickCleanse);
+      }
+      int? quickSoloKills = player?.challenges?.quickSoloKills;
+      if (quickSoloKills != null) {
+        quickSoloKillsTotal = (quickSoloKillsTotal! + quickSoloKills);
+      }
+      int? saveAllyFromDeath = player?.challenges?.saveAllyFromDeath;
+      if (saveAllyFromDeath != null) {
+        saveAllyFromDeathTotal = (saveAllyFromDeathTotal! + saveAllyFromDeath);
+      }
+      int? scuttleCrabKills = player?.challenges?.scuttleCrabKills;
+      if (scuttleCrabKills != null) {
+        scuttleCrabKillsTotal = (scuttleCrabKillsTotal! + scuttleCrabKills);
+      }
+      int? soloBaronKills = player?.challenges?.soloBaronKills;
+      if (soloBaronKills != null) {
+        soloBaronKillsTotal = (soloBaronKillsTotal! + soloBaronKills);
+      }
+      int? soloKills = player?.challenges?.soloKills;
+      if (soloKills != null) {
+        soloKillsTotal = (soloKillsTotal! + soloKills);
+      }
+      int? turretPlatesTaken = player?.challenges?.turretPlatesTaken;
+      if (turretPlatesTaken != null) {
+        turretPlatesTakenTotal = (turretPlatesTakenTotal! + turretPlatesTaken);
+      }
+      double? teamDamagePercentage = player?.challenges?.teamDamagePercentage;
+      if (teamDamagePercentage != null) {
+        teamDamagePercentageTotal =
+            (teamDamagePercentageTotal! + teamDamagePercentage);
+      }
+      int? wardsGuarded = player?.challenges?.wardsGuarded;
+      if (wardsGuarded != null) {
+        wardsGuardedTotal = (wardsGuardedTotal! + wardsGuarded);
+      }
 
-  Future<void> addChampionToList(Participants player) async {
-    String? champName = player.championName;
-    print(champName);
-
-    if (champName != null) {
-      champNames?.add(champName);
+      int? cs = player?.totalMinionsKilled;
+      if (cs != null) {
+        csTotal = (csTotal! + cs);
+      }
+    } catch (e) {
+      print("Something ");
     }
   }
 
@@ -390,20 +514,34 @@ class _SearchPageState extends State<SearchPage> {
         Uri.parse(url),
       );
       final match = json.decode(response.body);
-      //print("\nID: $id");
-      //print(match);
-      //print("---");
+      ApiMethods apiMethods = ApiMethods();
+
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
-      Participants player = matchStats.info!.participants![
-          findPersonUsingLoop(matchStats.info!.participants, summonerName)];
 
-      matchTotals(player);
-      MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
-      matchByChampList.add(matchByChamp);
+      Participants? player = matchStats.info?.participants?[await apiMethods
+          .findPersonUsingLoop(matchStats.info?.participants, summonerName)];
 
-      matchHistoryList.add(
-        MatchStats.fromJson(json.decode(json.encode(match))),
-      );
+      if (player != null) {
+        String? champName = player.championName;
+        String? lane = player.individualPosition;
+        //print(lane);
+
+        if (champName != null) {
+          champNames?.add(champName);
+        }
+
+        if (matchStats.info?.queueId == 400 ||
+            matchStats.info?.queueId == 420 ||
+            matchStats.info?.queueId == 440) {
+          laneNames?.add(lane!);
+        }
+
+        matchTotals(player);
+        MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
+        matchByChampList.add(matchByChamp);
+      }
+
+      matchHistoryList.add(matchStats);
     }
 
     return matchHistoryList;
@@ -414,7 +552,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void resetVariables() {
+    csTotal = 0;
+    winsTotal = 0;
+    lossesTotal = 0;
     gamesPlayedTotal = 0;
+    assistsTotal = 0;
+
     baronKillsTotal = 0;
     killsTotal = 0;
     pinkWardsTotal = 0;
@@ -495,28 +638,16 @@ class _SearchPageState extends State<SearchPage> {
     teamDamagePercentageTotal = 0;
   }
 
-  Future<Rank> getRankInfos({String? summonerID}) async {
-    var url =
-        'https://$server.api.riotgames.com/lol/league/v4/entries/by-summoner/$summonerID?api_key=$apiToken';
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    if (response.body != '[]') {
-      return Rank.fromJson(
-        json.decode(
-          response.body,
-        )[0],
-      );
-    } else {
-      return Rank(
-          hotStreak: false,
-          leagueId: '0',
-          leaguePoints: 0,
-          losses: 0,
-          wins: 0,
-          rank: 'unranked',
-          tier: 'no tier');
-    }
+  List<dynamic> getMapString(List<String>? list) {
+    var map = Map();
+    list!.forEach((e) => map.update(e, (x) => x + 1, ifAbsent: () => 1));
+
+    var sortedKeys = map.keys.toList(growable: false)
+      ..sort((k1, k2) => map[k2].compareTo(map[k1]));
+    LinkedHashMap sortedMap = LinkedHashMap.fromIterable(sortedKeys,
+        key: (k) => k, value: (k) => map[k]);
+    var sortedList = sortedMap.keys.toList();
+    return sortedList;
   }
 
   @override
@@ -535,7 +666,10 @@ class _SearchPageState extends State<SearchPage> {
               child: Center(
                 child: Container(
                   width: size.width * 0.6,
-                  child: TextFormField(
+                  child: TextField(
+                    onSubmitted: (value) async {
+                      await onTapLoad();
+                    },
                     autofocus: true,
                     style: TextStyle(color: Colors.white, fontSize: 22),
                     controller: summonerTextController,
@@ -560,255 +694,7 @@ class _SearchPageState extends State<SearchPage> {
                           size: 50,
                         ),
                         onTap: () async {
-                          final league =
-                              League(apiToken: apiToken, server: server);
-                          var summoner = await league.getSummonerInfo(
-                              summonerName: summonerTextController.text);
-                          print(summoner.puuid);
-                          if (summoner.puuid != null) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            String? accID = summoner.accID;
-                            int? level = summoner.level;
-                            int? profileIconID = summoner.profileIconID;
-                            String? puuid = summoner.puuid;
-                            String? summmonerID = summoner.summonerID;
-                            String? summonerName = summoner.summonerName;
-                            Rank? ranksoloQ =
-                                await getRankInfos(summonerID: summmonerID);
-                            Rank? rankFlex =
-                                await getRankInfos2(summonerID: summmonerID);
-
-                            List<ChampionMastery>? masteryList = await league
-                                .getChampionMasteries(summonerID: summmonerID);
-
-                            List<MatchStats>? matchHistory =
-                                await getGameHistory(
-                              summonerName: summonerName,
-                              puuid: summoner.puuid,
-                            );
-
-                            MatchHistoryTotals matchHistoryTotals =
-                                MatchHistoryTotals(
-                              baronKillsTotal!,
-                              killsTotal!,
-                              pinkWardsTotal!,
-                              endGameLevelTotal!,
-                              dmgToStructuresTotal!,
-                              deathsTotal!,
-                              dragonKillsTotal!,
-                              firstBloodTotal!,
-                              killingSpreeTotal!,
-                              objectiveStealTotal!,
-                              pentaKillsTotal!,
-                              damageTotal!,
-                              damageTakenTotal!,
-                              turretKillsTotal!,
-                              visionScoreTotal!,
-                              wardsGuardedTotal!,
-                              turretPlatesTakenTotal!,
-                              soloKillsTotal!,
-                              soloBaronKillsTotal!,
-                              scuttleCrabKillsTotal!,
-                              saveAllyFromDeathTotal!,
-                              quickSoloKillsTotal!,
-                              epicMonsterKillsNearEnemyJunglerTotal!,
-                              enemyJungleMonsterKillsTotal!,
-                              earlyLaningPhaseGoldExpAdvantageTotal!,
-                              effectiveHealAndShieldingTotal!,
-                              earliestBaronRecord!,
-                              epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-                              fasterSupportQuestCompletionTotal!,
-                              firstTurretKilledTimeRecord!,
-                              gameLengthTotal!,
-                              goldPerMinuteTotal!,
-                              hadOpenNexusWinsTotal!,
-                              immobilizeAndKillWithAllyTotal!,
-                              jungleCsBefore10MinutesTotal!,
-                              junglerKillsEarlyJungleTotal!,
-                              kdaTotal!,
-                              killAfterHiddenWithAllyTotal!,
-                              killParticipationTotal!,
-                              killsNearEnemyTurretTotal!,
-                              killsOnLanersEarlyJungleAsJunglerTotal!,
-                              killsOnOtherLanesEarlyJungleAsLanerTotal!,
-                              killsUnderOwnTurretTotal!,
-                              landSkillShotsEarlyGameTotal!,
-                              laneMinionsFirst10MinutesTotal!,
-                              maxCsAdvantageOnLaneOpponentTotal!,
-                              legendaryCountTotal!,
-                              lostAnInhibitorWinsTotal!,
-                              multiTurretRiftHeraldCountTotal!,
-                              perfectDragonSoulsTakenTotal!,
-                              multikillsAfterAggressiveFlashTotal!,
-                              multikillsTotal!,
-                              outnumberedKillsTotal!,
-                              perfectGameTotal!,
-                              quickCleanseTotal!,
-                              dodgeSkillShotsSmallWindowTotal!,
-                              damageTakenOnTeamPercentageTotal!,
-                              damagePerMinuteTotal!,
-                              acesBefore15MinutesTotal!,
-                              tripleKillsTotal!,
-                              inhibitorTakedownsTotal!,
-                              totalHealTotal!,
-                              timeCCingOthersTotal!,
-                              neutralMinionsKilledTotal!,
-                              quadraKillsTotal!,
-                              timePlayedTotal!,
-                              gameEndedInSurrenderTotal!,
-                              goldEarnedTotal!,
-                              firstTowerTotal!,
-                              damageSelfMitigatedTotal!,
-                              doubleKillsTotal!,
-                              detectorWardsPlacedTotal!,
-                              wardsPlacedTotal!,
-                              wardsKilledTotal!,
-                              alliedJungleMonsterKillsTotal!,
-                              buffStolenTotal!,
-                              teamDamagePercentageTotal!,
-                              gamesPlayedTotal!,
-                            );
-
-                            //Most Played Map
-
-                            var map = Map();
-                            champNames!.forEach((e) =>
-                                map.update(e, (x) => x + 1, ifAbsent: () => 1));
-                            print(map);
-
-                            var sortedKeys = map.keys.toList(growable: false)
-                              ..sort((k1, k2) => map[k2].compareTo(map[k1]));
-                            LinkedHashMap sortedMap =
-                                LinkedHashMap.fromIterable(sortedKeys,
-                                    key: (k) => k, value: (k) => map[k]);
-                            print(sortedMap);
-
-                            var sortedList = sortedMap.keys.toList();
-                            print(sortedList[0]);
-                            sortedList[1];
-                            sortedList[2];
-                            resetVariables();
-                            for (var player in matchByChampList) {
-                              if (player.champName == sortedList[0]) {
-                                //champTotals(player.playerInfo);
-                                matchTotals(player.playerInfo);
-                              }
-                            }
-
-                            MatchHistoryTotals matchHistoryTotalsChamp1 =
-                                MatchHistoryTotals(
-                              baronKillsTotal!,
-                              killsTotal!,
-                              pinkWardsTotal!,
-                              endGameLevelTotal!,
-                              dmgToStructuresTotal!,
-                              deathsTotal!,
-                              dragonKillsTotal!,
-                              firstBloodTotal!,
-                              killingSpreeTotal!,
-                              objectiveStealTotal!,
-                              pentaKillsTotal!,
-                              damageTotal!,
-                              damageTakenTotal!,
-                              turretKillsTotal!,
-                              visionScoreTotal!,
-                              wardsGuardedTotal!,
-                              turretPlatesTakenTotal!,
-                              soloKillsTotal!,
-                              soloBaronKillsTotal!,
-                              scuttleCrabKillsTotal!,
-                              saveAllyFromDeathTotal!,
-                              quickSoloKillsTotal!,
-                              epicMonsterKillsNearEnemyJunglerTotal!,
-                              enemyJungleMonsterKillsTotal!,
-                              earlyLaningPhaseGoldExpAdvantageTotal!,
-                              effectiveHealAndShieldingTotal!,
-                              earliestBaronRecord!,
-                              epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-                              fasterSupportQuestCompletionTotal!,
-                              firstTurretKilledTimeRecord!,
-                              gameLengthTotal!,
-                              goldPerMinuteTotal!,
-                              hadOpenNexusWinsTotal!,
-                              immobilizeAndKillWithAllyTotal!,
-                              jungleCsBefore10MinutesTotal!,
-                              junglerKillsEarlyJungleTotal!,
-                              kdaTotal!,
-                              killAfterHiddenWithAllyTotal!,
-                              killParticipationTotal!,
-                              killsNearEnemyTurretTotal!,
-                              killsOnLanersEarlyJungleAsJunglerTotal!,
-                              killsOnOtherLanesEarlyJungleAsLanerTotal!,
-                              killsUnderOwnTurretTotal!,
-                              landSkillShotsEarlyGameTotal!,
-                              laneMinionsFirst10MinutesTotal!,
-                              maxCsAdvantageOnLaneOpponentTotal!,
-                              legendaryCountTotal!,
-                              lostAnInhibitorWinsTotal!,
-                              multiTurretRiftHeraldCountTotal!,
-                              perfectDragonSoulsTakenTotal!,
-                              multikillsAfterAggressiveFlashTotal!,
-                              multikillsTotal!,
-                              outnumberedKillsTotal!,
-                              perfectGameTotal!,
-                              quickCleanseTotal!,
-                              dodgeSkillShotsSmallWindowTotal!,
-                              damageTakenOnTeamPercentageTotal!,
-                              damagePerMinuteTotal!,
-                              acesBefore15MinutesTotal!,
-                              tripleKillsTotal!,
-                              inhibitorTakedownsTotal!,
-                              totalHealTotal!,
-                              timeCCingOthersTotal!,
-                              neutralMinionsKilledTotal!,
-                              quadraKillsTotal!,
-                              timePlayedTotal!,
-                              gameEndedInSurrenderTotal!,
-                              goldEarnedTotal!,
-                              firstTowerTotal!,
-                              damageSelfMitigatedTotal!,
-                              doubleKillsTotal!,
-                              detectorWardsPlacedTotal!,
-                              wardsPlacedTotal!,
-                              wardsKilledTotal!,
-                              alliedJungleMonsterKillsTotal!,
-                              buffStolenTotal!,
-                              teamDamagePercentageTotal!,
-                              gamesPlayedTotal!,
-                            );
-
-                            //end
-                            //print(matchByChampList[0].champName);
-                            //print(matchByChampList[0].playerInfo);
-                            setState(() {
-                              isLoading = false;
-                            });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TestPage(
-                                        accID: accID,
-                                        level: level,
-                                        profileIconID: profileIconID,
-                                        puuid: puuid,
-                                        summonerID: summmonerID,
-                                        summonerName: summonerName,
-                                        server: server,
-                                        soloQRank: ranksoloQ,
-                                        flexRank: rankFlex,
-                                        masteryList: masteryList,
-                                        matchHistoryList: matchHistory,
-                                        matchHistoryTotals: matchHistoryTotals,
-                                        matchHistoryTotalschamp1:
-                                            matchHistoryTotalsChamp1,
-                                      )),
-                            );
-                          } else {
-                            //alert no summoner with this name
-                            //print("Error");
-                          }
+                          await onTapLoad();
                         },
                       ),
                     ),
@@ -820,6 +706,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   //Variabler all games
+  int? csTotal = 0;
+  int? winsTotal = 0;
+  int? lossesTotal = 0;
   int? gamesPlayedTotal = 0;
   int? baronKillsTotal = 0;
   int? killsTotal = 0;
@@ -899,4 +788,526 @@ class _SearchPageState extends State<SearchPage> {
   double? alliedJungleMonsterKillsTotal = 0;
   int? buffStolenTotal = 0;
   double? teamDamagePercentageTotal = 0;
+
+  Future<void> onTapLoad() async {
+    final league = League(apiToken: apiToken, server: server);
+    var summoner =
+        await league.getSummonerInfo(summonerName: summonerTextController.text);
+
+    if (summoner.puuid != null) {
+      print(summoner.puuid);
+      setState(() {
+        isLoading = true;
+      });
+      ApiMethods apiMethods = ApiMethods();
+      String? accID = summoner.accID;
+      int? level = summoner.level;
+      int? profileIconID = summoner.profileIconID;
+      String? puuid = summoner.puuid;
+      String? summmonerID = summoner.summonerID;
+      String? summonerName = summoner.summonerName;
+      Rank? ranksoloQ = await apiMethods.getRankInfos(summonerID: summmonerID);
+      Rank? rankFlex = await apiMethods.getRankInfos2(summonerID: summmonerID);
+
+      List<ChampionMastery>? masteryList =
+          await league.getChampionMasteries(summonerID: summmonerID);
+
+      List<MatchStats>? matchHistory = await getGameHistory(
+        summonerName: summonerName,
+        puuid: summoner.puuid,
+      );
+
+      MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
+          baronKillsTotal!,
+          killsTotal!,
+          pinkWardsTotal!,
+          endGameLevelTotal!,
+          dmgToStructuresTotal!,
+          deathsTotal!,
+          dragonKillsTotal!,
+          firstBloodTotal!,
+          killingSpreeTotal!,
+          objectiveStealTotal!,
+          pentaKillsTotal!,
+          damageTotal!,
+          damageTakenTotal!,
+          turretKillsTotal!,
+          visionScoreTotal!,
+          wardsGuardedTotal!,
+          turretPlatesTakenTotal!,
+          soloKillsTotal!,
+          soloBaronKillsTotal!,
+          scuttleCrabKillsTotal!,
+          saveAllyFromDeathTotal!,
+          quickSoloKillsTotal!,
+          epicMonsterKillsNearEnemyJunglerTotal!,
+          enemyJungleMonsterKillsTotal!,
+          earlyLaningPhaseGoldExpAdvantageTotal!,
+          effectiveHealAndShieldingTotal!,
+          earliestBaronRecord!,
+          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+          fasterSupportQuestCompletionTotal!,
+          firstTurretKilledTimeRecord!,
+          gameLengthTotal!,
+          goldPerMinuteTotal!,
+          hadOpenNexusWinsTotal!,
+          immobilizeAndKillWithAllyTotal!,
+          jungleCsBefore10MinutesTotal!,
+          junglerKillsEarlyJungleTotal!,
+          kdaTotal!,
+          killAfterHiddenWithAllyTotal!,
+          killParticipationTotal!,
+          killsNearEnemyTurretTotal!,
+          killsOnLanersEarlyJungleAsJunglerTotal!,
+          killsOnOtherLanesEarlyJungleAsLanerTotal!,
+          killsUnderOwnTurretTotal!,
+          landSkillShotsEarlyGameTotal!,
+          laneMinionsFirst10MinutesTotal!,
+          maxCsAdvantageOnLaneOpponentTotal!,
+          legendaryCountTotal!,
+          lostAnInhibitorWinsTotal!,
+          multiTurretRiftHeraldCountTotal!,
+          perfectDragonSoulsTakenTotal!,
+          multikillsAfterAggressiveFlashTotal!,
+          multikillsTotal!,
+          outnumberedKillsTotal!,
+          perfectGameTotal!,
+          quickCleanseTotal!,
+          dodgeSkillShotsSmallWindowTotal!,
+          damageTakenOnTeamPercentageTotal!,
+          damagePerMinuteTotal!,
+          acesBefore15MinutesTotal!,
+          tripleKillsTotal!,
+          inhibitorTakedownsTotal!,
+          totalHealTotal!,
+          timeCCingOthersTotal!,
+          neutralMinionsKilledTotal!,
+          quadraKillsTotal!,
+          timePlayedTotal!,
+          gameEndedInSurrenderTotal!,
+          goldEarnedTotal!,
+          firstTowerTotal!,
+          damageSelfMitigatedTotal!,
+          doubleKillsTotal!,
+          detectorWardsPlacedTotal!,
+          wardsPlacedTotal!,
+          wardsKilledTotal!,
+          alliedJungleMonsterKillsTotal!,
+          buffStolenTotal!,
+          teamDamagePercentageTotal!,
+          gamesPlayedTotal!,
+          assistsTotal!,
+          lossesTotal,
+          winsTotal,
+          csTotal);
+
+      var lanes = getMapString(laneNames);
+
+      String lanePref;
+      if (lanes.isEmpty) {
+        lanePref = "UTILITY";
+      } else {
+        lanePref = lanes[0];
+      }
+
+      //Most Played Map
+      var champs = getMapString(champNames);
+
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (player.champName == champs[0]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+
+      MatchHistoryTotals matchHistoryTotalsChamp1 = MatchHistoryTotals(
+          baronKillsTotal!,
+          killsTotal!,
+          pinkWardsTotal!,
+          endGameLevelTotal!,
+          dmgToStructuresTotal!,
+          deathsTotal!,
+          dragonKillsTotal!,
+          firstBloodTotal!,
+          killingSpreeTotal!,
+          objectiveStealTotal!,
+          pentaKillsTotal!,
+          damageTotal!,
+          damageTakenTotal!,
+          turretKillsTotal!,
+          visionScoreTotal!,
+          wardsGuardedTotal!,
+          turretPlatesTakenTotal!,
+          soloKillsTotal!,
+          soloBaronKillsTotal!,
+          scuttleCrabKillsTotal!,
+          saveAllyFromDeathTotal!,
+          quickSoloKillsTotal!,
+          epicMonsterKillsNearEnemyJunglerTotal!,
+          enemyJungleMonsterKillsTotal!,
+          earlyLaningPhaseGoldExpAdvantageTotal!,
+          effectiveHealAndShieldingTotal!,
+          earliestBaronRecord!,
+          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+          fasterSupportQuestCompletionTotal!,
+          firstTurretKilledTimeRecord!,
+          gameLengthTotal!,
+          goldPerMinuteTotal!,
+          hadOpenNexusWinsTotal!,
+          immobilizeAndKillWithAllyTotal!,
+          jungleCsBefore10MinutesTotal!,
+          junglerKillsEarlyJungleTotal!,
+          kdaTotal!,
+          killAfterHiddenWithAllyTotal!,
+          killParticipationTotal!,
+          killsNearEnemyTurretTotal!,
+          killsOnLanersEarlyJungleAsJunglerTotal!,
+          killsOnOtherLanesEarlyJungleAsLanerTotal!,
+          killsUnderOwnTurretTotal!,
+          landSkillShotsEarlyGameTotal!,
+          laneMinionsFirst10MinutesTotal!,
+          maxCsAdvantageOnLaneOpponentTotal!,
+          legendaryCountTotal!,
+          lostAnInhibitorWinsTotal!,
+          multiTurretRiftHeraldCountTotal!,
+          perfectDragonSoulsTakenTotal!,
+          multikillsAfterAggressiveFlashTotal!,
+          multikillsTotal!,
+          outnumberedKillsTotal!,
+          perfectGameTotal!,
+          quickCleanseTotal!,
+          dodgeSkillShotsSmallWindowTotal!,
+          damageTakenOnTeamPercentageTotal!,
+          damagePerMinuteTotal!,
+          acesBefore15MinutesTotal!,
+          tripleKillsTotal!,
+          inhibitorTakedownsTotal!,
+          totalHealTotal!,
+          timeCCingOthersTotal!,
+          neutralMinionsKilledTotal!,
+          quadraKillsTotal!,
+          timePlayedTotal!,
+          gameEndedInSurrenderTotal!,
+          goldEarnedTotal!,
+          firstTowerTotal!,
+          damageSelfMitigatedTotal!,
+          doubleKillsTotal!,
+          detectorWardsPlacedTotal!,
+          wardsPlacedTotal!,
+          wardsKilledTotal!,
+          alliedJungleMonsterKillsTotal!,
+          buffStolenTotal!,
+          teamDamagePercentageTotal!,
+          gamesPlayedTotal!,
+          assistsTotal!,
+          lossesTotal,
+          winsTotal,
+          csTotal);
+
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (player.champName == champs[1]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+
+      MatchHistoryTotals matchHistoryTotalsChamp2 = MatchHistoryTotals(
+          baronKillsTotal!,
+          killsTotal!,
+          pinkWardsTotal!,
+          endGameLevelTotal!,
+          dmgToStructuresTotal!,
+          deathsTotal!,
+          dragonKillsTotal!,
+          firstBloodTotal!,
+          killingSpreeTotal!,
+          objectiveStealTotal!,
+          pentaKillsTotal!,
+          damageTotal!,
+          damageTakenTotal!,
+          turretKillsTotal!,
+          visionScoreTotal!,
+          wardsGuardedTotal!,
+          turretPlatesTakenTotal!,
+          soloKillsTotal!,
+          soloBaronKillsTotal!,
+          scuttleCrabKillsTotal!,
+          saveAllyFromDeathTotal!,
+          quickSoloKillsTotal!,
+          epicMonsterKillsNearEnemyJunglerTotal!,
+          enemyJungleMonsterKillsTotal!,
+          earlyLaningPhaseGoldExpAdvantageTotal!,
+          effectiveHealAndShieldingTotal!,
+          earliestBaronRecord!,
+          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+          fasterSupportQuestCompletionTotal!,
+          firstTurretKilledTimeRecord!,
+          gameLengthTotal!,
+          goldPerMinuteTotal!,
+          hadOpenNexusWinsTotal!,
+          immobilizeAndKillWithAllyTotal!,
+          jungleCsBefore10MinutesTotal!,
+          junglerKillsEarlyJungleTotal!,
+          kdaTotal!,
+          killAfterHiddenWithAllyTotal!,
+          killParticipationTotal!,
+          killsNearEnemyTurretTotal!,
+          killsOnLanersEarlyJungleAsJunglerTotal!,
+          killsOnOtherLanesEarlyJungleAsLanerTotal!,
+          killsUnderOwnTurretTotal!,
+          landSkillShotsEarlyGameTotal!,
+          laneMinionsFirst10MinutesTotal!,
+          maxCsAdvantageOnLaneOpponentTotal!,
+          legendaryCountTotal!,
+          lostAnInhibitorWinsTotal!,
+          multiTurretRiftHeraldCountTotal!,
+          perfectDragonSoulsTakenTotal!,
+          multikillsAfterAggressiveFlashTotal!,
+          multikillsTotal!,
+          outnumberedKillsTotal!,
+          perfectGameTotal!,
+          quickCleanseTotal!,
+          dodgeSkillShotsSmallWindowTotal!,
+          damageTakenOnTeamPercentageTotal!,
+          damagePerMinuteTotal!,
+          acesBefore15MinutesTotal!,
+          tripleKillsTotal!,
+          inhibitorTakedownsTotal!,
+          totalHealTotal!,
+          timeCCingOthersTotal!,
+          neutralMinionsKilledTotal!,
+          quadraKillsTotal!,
+          timePlayedTotal!,
+          gameEndedInSurrenderTotal!,
+          goldEarnedTotal!,
+          firstTowerTotal!,
+          damageSelfMitigatedTotal!,
+          doubleKillsTotal!,
+          detectorWardsPlacedTotal!,
+          wardsPlacedTotal!,
+          wardsKilledTotal!,
+          alliedJungleMonsterKillsTotal!,
+          buffStolenTotal!,
+          teamDamagePercentageTotal!,
+          gamesPlayedTotal!,
+          assistsTotal!,
+          lossesTotal,
+          winsTotal,
+          csTotal);
+
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (player.champName == champs[2]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+
+      MatchHistoryTotals matchHistoryTotalsChamp3 = MatchHistoryTotals(
+          baronKillsTotal!,
+          killsTotal!,
+          pinkWardsTotal!,
+          endGameLevelTotal!,
+          dmgToStructuresTotal!,
+          deathsTotal!,
+          dragonKillsTotal!,
+          firstBloodTotal!,
+          killingSpreeTotal!,
+          objectiveStealTotal!,
+          pentaKillsTotal!,
+          damageTotal!,
+          damageTakenTotal!,
+          turretKillsTotal!,
+          visionScoreTotal!,
+          wardsGuardedTotal!,
+          turretPlatesTakenTotal!,
+          soloKillsTotal!,
+          soloBaronKillsTotal!,
+          scuttleCrabKillsTotal!,
+          saveAllyFromDeathTotal!,
+          quickSoloKillsTotal!,
+          epicMonsterKillsNearEnemyJunglerTotal!,
+          enemyJungleMonsterKillsTotal!,
+          earlyLaningPhaseGoldExpAdvantageTotal!,
+          effectiveHealAndShieldingTotal!,
+          earliestBaronRecord!,
+          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+          fasterSupportQuestCompletionTotal!,
+          firstTurretKilledTimeRecord!,
+          gameLengthTotal!,
+          goldPerMinuteTotal!,
+          hadOpenNexusWinsTotal!,
+          immobilizeAndKillWithAllyTotal!,
+          jungleCsBefore10MinutesTotal!,
+          junglerKillsEarlyJungleTotal!,
+          kdaTotal!,
+          killAfterHiddenWithAllyTotal!,
+          killParticipationTotal!,
+          killsNearEnemyTurretTotal!,
+          killsOnLanersEarlyJungleAsJunglerTotal!,
+          killsOnOtherLanesEarlyJungleAsLanerTotal!,
+          killsUnderOwnTurretTotal!,
+          landSkillShotsEarlyGameTotal!,
+          laneMinionsFirst10MinutesTotal!,
+          maxCsAdvantageOnLaneOpponentTotal!,
+          legendaryCountTotal!,
+          lostAnInhibitorWinsTotal!,
+          multiTurretRiftHeraldCountTotal!,
+          perfectDragonSoulsTakenTotal!,
+          multikillsAfterAggressiveFlashTotal!,
+          multikillsTotal!,
+          outnumberedKillsTotal!,
+          perfectGameTotal!,
+          quickCleanseTotal!,
+          dodgeSkillShotsSmallWindowTotal!,
+          damageTakenOnTeamPercentageTotal!,
+          damagePerMinuteTotal!,
+          acesBefore15MinutesTotal!,
+          tripleKillsTotal!,
+          inhibitorTakedownsTotal!,
+          totalHealTotal!,
+          timeCCingOthersTotal!,
+          neutralMinionsKilledTotal!,
+          quadraKillsTotal!,
+          timePlayedTotal!,
+          gameEndedInSurrenderTotal!,
+          goldEarnedTotal!,
+          firstTowerTotal!,
+          damageSelfMitigatedTotal!,
+          doubleKillsTotal!,
+          detectorWardsPlacedTotal!,
+          wardsPlacedTotal!,
+          wardsKilledTotal!,
+          alliedJungleMonsterKillsTotal!,
+          buffStolenTotal!,
+          teamDamagePercentageTotal!,
+          gamesPlayedTotal!,
+          assistsTotal!,
+          lossesTotal,
+          winsTotal,
+          csTotal);
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (player.champName == champs[3]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+
+      MatchHistoryTotals matchHistoryTotalsChamp4 = MatchHistoryTotals(
+          baronKillsTotal!,
+          killsTotal!,
+          pinkWardsTotal!,
+          endGameLevelTotal!,
+          dmgToStructuresTotal!,
+          deathsTotal!,
+          dragonKillsTotal!,
+          firstBloodTotal!,
+          killingSpreeTotal!,
+          objectiveStealTotal!,
+          pentaKillsTotal!,
+          damageTotal!,
+          damageTakenTotal!,
+          turretKillsTotal!,
+          visionScoreTotal!,
+          wardsGuardedTotal!,
+          turretPlatesTakenTotal!,
+          soloKillsTotal!,
+          soloBaronKillsTotal!,
+          scuttleCrabKillsTotal!,
+          saveAllyFromDeathTotal!,
+          quickSoloKillsTotal!,
+          epicMonsterKillsNearEnemyJunglerTotal!,
+          enemyJungleMonsterKillsTotal!,
+          earlyLaningPhaseGoldExpAdvantageTotal!,
+          effectiveHealAndShieldingTotal!,
+          earliestBaronRecord!,
+          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+          fasterSupportQuestCompletionTotal!,
+          firstTurretKilledTimeRecord!,
+          gameLengthTotal!,
+          goldPerMinuteTotal!,
+          hadOpenNexusWinsTotal!,
+          immobilizeAndKillWithAllyTotal!,
+          jungleCsBefore10MinutesTotal!,
+          junglerKillsEarlyJungleTotal!,
+          kdaTotal!,
+          killAfterHiddenWithAllyTotal!,
+          killParticipationTotal!,
+          killsNearEnemyTurretTotal!,
+          killsOnLanersEarlyJungleAsJunglerTotal!,
+          killsOnOtherLanesEarlyJungleAsLanerTotal!,
+          killsUnderOwnTurretTotal!,
+          landSkillShotsEarlyGameTotal!,
+          laneMinionsFirst10MinutesTotal!,
+          maxCsAdvantageOnLaneOpponentTotal!,
+          legendaryCountTotal!,
+          lostAnInhibitorWinsTotal!,
+          multiTurretRiftHeraldCountTotal!,
+          perfectDragonSoulsTakenTotal!,
+          multikillsAfterAggressiveFlashTotal!,
+          multikillsTotal!,
+          outnumberedKillsTotal!,
+          perfectGameTotal!,
+          quickCleanseTotal!,
+          dodgeSkillShotsSmallWindowTotal!,
+          damageTakenOnTeamPercentageTotal!,
+          damagePerMinuteTotal!,
+          acesBefore15MinutesTotal!,
+          tripleKillsTotal!,
+          inhibitorTakedownsTotal!,
+          totalHealTotal!,
+          timeCCingOthersTotal!,
+          neutralMinionsKilledTotal!,
+          quadraKillsTotal!,
+          timePlayedTotal!,
+          gameEndedInSurrenderTotal!,
+          goldEarnedTotal!,
+          firstTowerTotal!,
+          damageSelfMitigatedTotal!,
+          doubleKillsTotal!,
+          detectorWardsPlacedTotal!,
+          wardsPlacedTotal!,
+          wardsKilledTotal!,
+          alliedJungleMonsterKillsTotal!,
+          buffStolenTotal!,
+          teamDamagePercentageTotal!,
+          gamesPlayedTotal!,
+          assistsTotal!,
+          lossesTotal,
+          winsTotal,
+          csTotal);
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TestPage(
+                accID: accID,
+                level: level,
+                profileIconID: profileIconID,
+                puuid: puuid,
+                summonerID: summmonerID,
+                summonerName: summonerName,
+                server: server,
+                soloQRank: ranksoloQ,
+                flexRank: rankFlex,
+                masteryList: masteryList,
+                matchHistoryList: matchHistory,
+                matchHistoryTotals: matchHistoryTotals,
+                matchHistoryTotalschamp1: matchHistoryTotalsChamp1,
+                champsPlayedIds: champs,
+                matchHistoryTotalschamp2: matchHistoryTotalsChamp2,
+                matchHistoryTotalschamp3: matchHistoryTotalsChamp3,
+                matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
+                lane: lanePref)),
+      );
+    } else {
+      //alert no summoner with this name
+      //print("Error");
+    }
+  }
 }

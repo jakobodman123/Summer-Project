@@ -6,12 +6,16 @@ List<Slide> slides = [
   Slide(
     centerWidget: Column(
       children: [
-        Container(
-          width: 1200,
-          height: 700,
-          child: Image(
-            fit: BoxFit.fitWidth,
-            image: AssetImage("assets/img/splash/Fizz_0.jpg"),
+        Card(
+          elevation: 10,
+          shadowColor: Colors.blue,
+          child: Container(
+            width: 1200,
+            height: 700,
+            child: Image(
+              fit: BoxFit.fitWidth,
+              image: AssetImage("assets/img/splash/Fizz_0.jpg"),
+            ),
           ),
         ),
         Padding(
@@ -37,23 +41,25 @@ List<Slide> slides = [
         ),
       ],
     ),
-    widthImage: 1215,
-    heightImage: 717,
     backgroundImage: "assets/img/splash/Fizz_0.jpg",
     title: "Did You Know?",
     description:
         "Blitzcrank can use his Power First(E) to knock fizz out of his Playful/Trickster(E)...",
-    backgroundColor: colorDarkGrey,
+    backgroundColor: Colors.black,
   ),
   Slide(
     centerWidget: Column(
       children: [
-        Container(
-          width: 1200,
-          height: 700,
-          child: Image(
-            fit: BoxFit.fitWidth,
-            image: AssetImage("assets/img/splash/MissFortune_0.jpg"),
+        Card(
+          elevation: 10,
+          shadowColor: Colors.blue,
+          child: Container(
+            width: 1200,
+            height: 700,
+            child: Image(
+              fit: BoxFit.fitWidth,
+              image: AssetImage("assets/img/splash/MissFortune_0.jpg"),
+            ),
           ),
         ),
         Padding(
@@ -79,8 +85,6 @@ List<Slide> slides = [
         ),
       ],
     ),
-    widthImage: 1215,
-    heightImage: 717,
     backgroundImage: "assets/img/splash/MissFortune_0.jpg",
     title: "Did You Know?",
     description: "Focus on the text you perv!",
@@ -89,12 +93,16 @@ List<Slide> slides = [
   Slide(
     centerWidget: Column(
       children: [
-        Container(
-          width: 1200,
-          height: 700,
-          child: Image(
-            fit: BoxFit.fitWidth,
-            image: AssetImage("assets/img/splash/Yuumi_0.jpg"),
+        Card(
+          elevation: 10,
+          shadowColor: Colors.blue,
+          child: Container(
+            width: 1200,
+            height: 700,
+            child: Image(
+              fit: BoxFit.fitWidth,
+              image: AssetImage("assets/img/splash/Yuumi_0.jpg"),
+            ),
           ),
         ),
         Padding(
@@ -120,8 +128,6 @@ List<Slide> slides = [
         ),
       ],
     ),
-    widthImage: 1215,
-    heightImage: 717,
     backgroundImage: "assets/img/splash/Yuumi_0.jpg",
     title: "Did You Know?",
     description:
