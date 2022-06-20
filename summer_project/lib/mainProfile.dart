@@ -1,11 +1,9 @@
 import 'package:dart_lol/LeagueStuff/rank.dart';
-import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
 import 'package:summer_project/accoladesPage.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'package:summer_project/rankedCard.dart';
-import 'package:summer_project/searchPage.dart';
 
 //https://pbs.twimg.com/media/B8jEndNIYAEavcH.jpg
 
@@ -72,107 +70,87 @@ class MainProfileState extends State<MainProfile> {
     // TODO: implement build
 
     return Card(
-      shape: BeveledRectangleBorder(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(150),
-            bottomRight: Radius.circular(150)),
-      ),
-      color: colorLightGrey,
-      elevation: 10,
-      child: Container(
-        //width: 500,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: 60,
-              ), //4884
-              child: Stack(
-                alignment: AlignmentDirectional.bottomEnd,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(80), // Image border
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      child: Image.asset(
-                        'assets/img/profileicon/${widget.iconID}.png',
-                        fit: BoxFit.cover,
+        shape: const BeveledRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(150),
+              bottomRight: Radius.circular(150)),
+        ),
+        color: colorLightGrey,
+        elevation: 10,
+        child: SizedBox(
+          height: 1250,
+          width: 500,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 60,
+                ), //4884
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(80), // Image border
+                      child: SizedBox(
+                        height: 300,
+                        width: 300,
+                        child: Image.asset(
+                          'assets/img/profileicon/${widget.iconID}.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Image.asset(
-                      'assets/rankedIcons/Position_Diamond-${widget.lane}.png'),
-                ],
-              ),
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Image.asset(
+                          'assets/rankedIcons/Position_Diamond-${widget.lane}.png'),
+                    ),
+                  ],
+                ),
 
-              //Image.asset('assets/img/profileicon/${iconID}.png'),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 5,
+                //Image.asset('assets/img/profileicon/${iconID}.png'),
               ),
-              child: Text(
+              Text(
                 widget.summonerName!,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 5,
-              ),
-              child: Text(
+              Text(
                 'Summoner lvl: ' + widget.level!,
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+                style: const TextStyle(fontSize: 22, color: Colors.grey),
               ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                child: RankedCard("Ranked Solo", tier!, tier! + " " + rank!,
-                    leaguePoints.toString(), wins!, losses!)),
-            Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                child: RankedCard(
-                  "Ranked Flex",
-                  tierFlex!,
-                  tierFlex! + " " + rankFlex!,
-                  leaguePointsFlex.toString(),
-                  winsFlex!,
-                  lossesFlex!,
-                )),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 5,
+              RankedCard("Ranked Solo", tier!, tier! + " " + rank!,
+                  leaguePoints.toString(), wins!, losses!),
+              RankedCard(
+                "Ranked Flex",
+                tierFlex!,
+                tierFlex! + " " + rankFlex!,
+                leaguePointsFlex.toString(),
+                winsFlex!,
+                lossesFlex!,
               ),
-              child: Text(
-                'Account Accolades',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  //top: 20,
-
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Account Accolades',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
-              child: AccoladesPage(
-                matchHistoryTotals: widget.matchHistoryTotals,
-                games: widget.matchHistoryTotals?.gamesPlayed,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                  AccoladesPage(
+                    matchHistoryTotals: widget.matchHistoryTotals,
+                    games: widget.matchHistoryTotals?.gamesPlayed,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ));
   }
 }

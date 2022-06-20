@@ -1,41 +1,34 @@
 import 'dart:collection';
-import 'dart:io';
+import 'dart:ui';
+
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:summer_project/altChampsWidget.dart';
 import 'package:summer_project/apiMethods.dart';
-
 import 'package:summer_project/bestChampionCard.dart';
-import 'package:summer_project/bestChampionWidget.dart';
 import 'package:summer_project/item.dart';
-import 'package:summer_project/kdWinrateWidget.dart';
-import 'package:summer_project/listItem.dart';
 import 'package:summer_project/mainProfile.dart';
-import 'package:summer_project/masteryCard.dart';
 import 'package:summer_project/matchByChamp.dart';
 import 'package:summer_project/matchHistory.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'package:summer_project/matchStats.dart';
-import 'package:summer_project/rankedCard.dart';
 import 'package:summer_project/searchPage.dart';
 import 'package:summer_project/slides.dart';
 
-Color colorLightGrey = Color(0xFF292C33).withOpacity(0.4);
-Color colorDarkGrey = Color(0xFF191919);
+Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
+Color colorDarkGrey = const Color(0xFF191919);
 
 Color primaryColor = const Color(0xFF292C33).withOpacity(0.4);
 
-Color colorGrey = Color(0xFF6B6A69).withOpacity(0.4);
+Color colorGrey = const Color(0xFF6B6A69).withOpacity(0.4);
 
 void main() => runApp(const SummerProject());
 
@@ -45,6 +38,14 @@ class SummerProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.unknown
+        },
+      ),
       theme: ThemeData(
         primaryColor: primaryColor,
       ),
@@ -120,6 +121,14 @@ class _TestPageState extends State<TestPage> {
   @override
   void initState() {
     super.initState();
+    print("perkID");
+    print(widget.matchHistoryList![0].info!.participants?[0].perks?.styles?[1]
+        .selections?[1].perk
+        .toString());
+
+    print(widget.matchHistoryList![0].info!.participants?[0].perks?.styles?[0]
+        .selections?[0].perk
+        .toString());
 
     print(widget.matchHistoryList![0].info!.gameMode);
     print(widget.matchHistoryList![0].info!.queueId);
@@ -140,7 +149,7 @@ class _TestPageState extends State<TestPage> {
   Widget _buildFloatingSearchBtn() {
     return Expanded(
       child: InkWell(
-        child: GlowIcon(
+        child: const GlowIcon(
           Icons.search,
           color: Colors.blue,
           glowColor: Colors.blue,
@@ -160,7 +169,7 @@ class _TestPageState extends State<TestPage> {
         child: TextField(
           autofocus: true,
           controller: summonerTextController,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
@@ -232,7 +241,6 @@ class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    // TODO: implement build
     return isLoading
         ? IntroSlider(
             slides: slides,
@@ -245,7 +253,7 @@ class _TestPageState extends State<TestPage> {
               actions: <Widget>[
                 Container(
                   width: 400,
-                  padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
                   child: Row(
                     children: <Widget>[
                       showTextField ? _buildTextField() : Container(),
@@ -268,116 +276,128 @@ class _TestPageState extends State<TestPage> {
             ),
             body: Container(
               color: colorDarkGrey,
-              height: size.height,
-              width: size.width,
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 40,
-                  ),
-                  child: SizedBox(
-                    height: size.height,
-                    width: size.width * 0.2,
-                    child: MainProfile(
-                        widget.profileIconID.toString(),
-                        widget.level.toString(),
-                        widget.summonerName,
-                        widget.summonerID,
-                        widget.soloQRank,
-                        widget.flexRank,
-                        widget.matchHistoryTotals,
-                        widget.lane),
-                  ),
-                ),
-                //Vit box
-                Container(
-                  height: size.height,
-                  width: size.width * 0.8,
-                  //color: colorDarkGrey,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 40, top: 80, left: 40),
-                        child: BestChampionCard(
-                          summonerName: widget.summonerName,
-                          champMastery: widget.masteryList![0].championPoints,
-                          //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
-                          champName: widget.champsPlayedIds![0],
-                          matchHistoryTotals: widget.matchHistoryTotalschamp1,
-                          gamesPlayed:
-                              widget.matchHistoryTotalschamp1?.gamesPlayed,
+              //height: size.height,
+              //width: size.width,
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 40,
+                          ),
+                          child: SizedBox(
+                            //height: MediaQuery.of(context).size.height,
+                            width: 500,
+                            height: 1250,
+                            child: MainProfile(
+                                widget.profileIconID.toString(),
+                                widget.level.toString(),
+                                widget.summonerName,
+                                widget.summonerID,
+                                widget.soloQRank,
+                                widget.flexRank,
+                                widget.matchHistoryTotals,
+                                widget.lane),
+                          ),
                         ),
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 80,
-                              left: 80,
-                            ),
-                            child: Text(
-                              "Alternative Champs",
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                        //Vit box
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 40, left: 40),
+                          child: BestChampionCard(
+                            summonerName: widget.summonerName,
+                            champMastery: widget.masteryList![0].championPoints,
+                            //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
+                            champName: widget.champsPlayedIds![0],
+                            matchHistoryTotals: widget.matchHistoryTotalschamp1,
+                            gamesPlayed:
+                                widget.matchHistoryTotalschamp1?.gamesPlayed,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  top: 0,
+                                ),
+                                child: Text(
+                                  "Alternative Champs",
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                child: AltChampsWidget(
+                                    widget.champsPlayedIds![1],
+                                    widget
+                                        .matchHistoryTotalschamp2?.gamesPlayed,
+                                    widget.matchHistoryTotalschamp2?.winsTotal,
+                                    widget.matchHistoryTotalschamp2),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                child: AltChampsWidget(
+                                    widget.champsPlayedIds![2],
+                                    widget
+                                        .matchHistoryTotalschamp3?.gamesPlayed,
+                                    widget.matchHistoryTotalschamp3?.winsTotal,
+                                    widget.matchHistoryTotalschamp3),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                child: AltChampsWidget(
+                                    widget.champsPlayedIds![3],
+                                    widget
+                                        .matchHistoryTotalschamp4?.gamesPlayed,
+                                    widget.matchHistoryTotalschamp4?.winsTotal,
+                                    widget.matchHistoryTotalschamp4),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 40,
+                          ),
+                          child: Column(children: [
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 20,
+                              ),
+                              child: Text(
+                                "Match History",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 50),
-                            child: AltChampsWidget(
-                                widget.champsPlayedIds![1],
-                                widget.matchHistoryTotalschamp2?.gamesPlayed,
-                                widget.matchHistoryTotalschamp2?.winsTotal,
-                                widget.matchHistoryTotalschamp2),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 50),
-                            child: AltChampsWidget(
-                                widget.champsPlayedIds![2],
-                                widget.matchHistoryTotalschamp3?.gamesPlayed,
-                                widget.matchHistoryTotalschamp3?.winsTotal,
-                                widget.matchHistoryTotalschamp3),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 50),
-                            child: AltChampsWidget(
-                                widget.champsPlayedIds![3],
-                                widget.matchHistoryTotalschamp4?.gamesPlayed,
-                                widget.matchHistoryTotalschamp4?.winsTotal,
-                                widget.matchHistoryTotalschamp4),
-                          ),
-                        ],
-                      ),
-                      Column(children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 80,
-                            left: 80,
-                            bottom: 20,
-                          ),
-                          child: Text(
-                            "Match History",
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                            MatchHistoryWidget(
+                              matchHistoryList: widget.matchHistoryList,
+                              summonerName: widget.summonerName,
                             ),
-                          ),
+                          ]),
                         ),
-                        MatchHistoryWidget(
-                          matchHistoryList: widget.matchHistoryList,
-                          summonerName: widget.summonerName,
-                        ),
-                      ]),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ]),
-            ),
-          );
+                ]),
+              ),
+            ));
   }
 
   int? csTotal = 0;

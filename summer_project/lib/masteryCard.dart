@@ -5,7 +5,7 @@ import 'package:summer_project/main.dart';
 class MasteryCard extends StatelessWidget {
   final int mastery;
 
-  MasteryCard(this.mastery);
+  const MasteryCard(this.mastery, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,31 +20,29 @@ class MasteryCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
+            SizedBox(
               width: 100.0,
               height: 100.0,
               child: FittedBox(
                   fit: BoxFit.fill,
-                  child: Image.asset("assets/rankedIcons/masteryIcon.png")),
+                  child: Image.asset(
+                    "assets/rankedIcons/masteryIcon.png",
+                  )),
             ),
-            Row(
-              children: [
-                const Text(
-                  ' Mastery Points: ',
-                  style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                GlowText(
-                  mastery.toString(),
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-              ],
+            const Text(
+              ' Mastery Points: ',
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            GlowText(
+              mastery.toString(),
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
           ],
         ),

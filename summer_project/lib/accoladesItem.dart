@@ -7,7 +7,7 @@ class AccoladesItem extends StatelessWidget {
   final double score;
   final bool positive;
 
-  AccoladesItem({
+  const AccoladesItem({
     Key? key,
     required this.value,
     required this.title,
@@ -21,7 +21,7 @@ class AccoladesItem extends StatelessWidget {
     return Tooltip(
       richMessage: TextSpan(
         text: description + score.toStringAsFixed(1) + "/g",
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
       child: Card(
         shadowColor: Colors.blue,
@@ -30,17 +30,14 @@ class AccoladesItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
         ),
         color: positive
-            ? Color(0xFF6082B6).withOpacity(0.3)
-            : Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
+            ? const Color(0xFF6082B6).withOpacity(0.3)
+            : const Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

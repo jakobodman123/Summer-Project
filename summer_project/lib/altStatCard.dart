@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:summer_project/accoladesItem.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
@@ -8,7 +7,7 @@ class AltStatCard extends StatelessWidget {
   final MatchHistoryTotals? matchHistoryTotals;
   final int? games;
 
-  AltStatCard({Key? key, this.matchHistoryTotals, this.games})
+  const AltStatCard({Key? key, this.matchHistoryTotals, this.games})
       : super(key: key);
 
   @override
@@ -17,7 +16,7 @@ class AltStatCard extends StatelessWidget {
         shadowColor: Colors.blue,
         elevation: 20,
         color: colorGrey,
-        child: Container(
+        child: SizedBox(
           height: 100,
           width: 280,
           child: Column(
@@ -28,7 +27,7 @@ class AltStatCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Gold: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -40,7 +39,7 @@ class AltStatCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "G",
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -49,7 +48,7 @@ class AltStatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'CS: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -61,7 +60,7 @@ class AltStatCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "G",
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -75,7 +74,7 @@ class AltStatCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Dmg Dealt: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -86,7 +85,7 @@ class AltStatCard extends StatelessWidget {
                         (matchHistoryTotals!.damageTotal! / games!)
                             .toStringAsFixed(1),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -98,14 +97,16 @@ class AltStatCard extends StatelessWidget {
                       Text(
                         'Total Kills: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: (MediaQuery.of(context).size.height +
+                                    MediaQuery.of(context).size.width) *
+                                0.0045,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.killsTotal!).toString(),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),

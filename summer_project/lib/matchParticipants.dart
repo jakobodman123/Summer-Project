@@ -108,7 +108,7 @@ class MatchParticipantsState extends State<MatchParticipants> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             height: 15,
             width: 20,
             child: FittedBox(
@@ -116,12 +116,12 @@ class MatchParticipantsState extends State<MatchParticipants> {
               child: Image.asset("assets/img/champion/${widget.champion}.png"),
             ),
           ),
-          Container(
+          SizedBox(
             height: 15,
             width: 75,
             child: Text(
               (widget.playerName != null) ? widget.playerName! : "NameError",
-              style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
               overflow: TextOverflow.ellipsis,
             ),
           ),

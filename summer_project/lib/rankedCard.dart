@@ -9,12 +9,13 @@ class RankedCard extends StatelessWidget {
   final int wins;
   final int losses;
 
-  RankedCard(this.rankedType, this.rankedBorder, this.rank, this.lp, this.wins,
-      this.losses);
+  const RankedCard(this.rankedType, this.rankedBorder, this.rank, this.lp,
+      this.wins, this.losses,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       shadowColor: Colors.blue,
       elevation: 20,
@@ -48,14 +49,16 @@ class RankedCard extends StatelessWidget {
                 children: [
                   Row(children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Container(
+                      padding: EdgeInsets.only(
+                        right: 10,
+                      ),
+                      child: SizedBox(
                         width: 50.0,
                         height: 50.0,
                         child: FittedBox(
                           fit: BoxFit.fill,
                           child: Image.asset(
-                              "assets/rankedIcons/Emblem_${rankedBorder}.png"),
+                              "assets/rankedIcons/Emblem_$rankedBorder.png"),
                         ),
                       ),
                     ),
@@ -73,7 +76,7 @@ class RankedCard extends StatelessWidget {
                         Text(
                           lp + "LP",
                           style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 17,
                               color: Colors.white.withOpacity(0.6)),
                         ),
                       ],
@@ -85,8 +88,7 @@ class RankedCard extends StatelessWidget {
                       Text(
                         wins.toString() + "W " + losses.toString() + "L",
                         style: TextStyle(
-                            fontSize: 17.0,
-                            color: Colors.white.withOpacity(0.6)),
+                            fontSize: 17, color: Colors.white.withOpacity(0.6)),
                       ),
                       Text(
                         "Winrate: " +
@@ -94,8 +96,7 @@ class RankedCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "%",
                         style: TextStyle(
-                            fontSize: 17.0,
-                            color: Colors.white.withOpacity(0.6)),
+                            fontSize: 17, color: Colors.white.withOpacity(0.6)),
                       ),
                     ],
                   )

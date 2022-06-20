@@ -6,7 +6,7 @@ import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
 class AccoladesPage extends StatelessWidget {
-  List<AccoladesItem> accoladeList = [];
+  final List<AccoladesItem> accoladeList = [];
 
   final MatchHistoryTotals? matchHistoryTotals;
   final int? games;
@@ -41,7 +41,6 @@ class AccoladesPage extends StatelessWidget {
     if (champName != null && games! >= 15) {
       accoladeList.add(accolades.champMain(games!.toDouble(), champName));
     }
-
     if ((matchHistoryTotals!.killsTotal! / games!) >= 10) {
       accoladeList.add(
           accolades.bloodThirsty(matchHistoryTotals!.killsTotal! / games!));
@@ -128,11 +127,6 @@ class AccoladesPage extends StatelessWidget {
           accolades.jungleThief(matchHistoryTotals!.buffStolenTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.buffStolenTotal! / games!) >= 1.0) {
-      accoladeList.add(
-          accolades.jungleThief(matchHistoryTotals!.buffStolenTotal! / games!));
-    }
-
     if ((matchHistoryTotals!.damagePerMinuteTotal! / games!) >= 900.0) {
       accoladeList.add(accolades
           .dpsThreat(matchHistoryTotals!.damagePerMinuteTotal! / games!));
@@ -150,7 +144,7 @@ class AccoladesPage extends StatelessWidget {
     }
 
     if ((matchHistoryTotals!.enemyJungleMonsterKillsTotal! / games!) >= 3.0) {
-      accoladeList.add(accolades.jungleThief(
+      accoladeList.add(accolades.jungleInvader(
           matchHistoryTotals!.enemyJungleMonsterKillsTotal! / games!));
     }
 
@@ -167,11 +161,6 @@ class AccoladesPage extends StatelessWidget {
     if ((matchHistoryTotals!.goldPerMinuteTotal! / games!) >= 800) {
       accoladeList.add(accolades
           .moneyMaker(matchHistoryTotals!.goldPerMinuteTotal! / games!));
-    }
-
-    if ((matchHistoryTotals!.hadOpenNexusWinsTotal! / games!) > 0) {
-      accoladeList.add(accolades
-          .comebackKid(matchHistoryTotals!.hadOpenNexusWinsTotal!.toDouble()));
     }
 
     if ((matchHistoryTotals!.hadOpenNexusWinsTotal! / games!) > 0) {
@@ -261,7 +250,7 @@ class AccoladesPage extends StatelessWidget {
           .baronSolo(matchHistoryTotals!.soloBaronKillsTotal!.toDouble()));
     }
 
-    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 1) {
+    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 0.5) {
       accoladeList.add(accolades
           .guardianAngel(matchHistoryTotals!.saveAllyFromDeathTotal! / games!));
     }
@@ -270,6 +259,7 @@ class AccoladesPage extends StatelessWidget {
       accoladeList.add(accolades
           .scuttleWarrior(matchHistoryTotals!.scuttleCrabKillsTotal! / games!));
     }
+
     //error
     matchHistoryTotals!.earlyLaningPhaseGoldExpAdvantageTotal;
     //error
@@ -287,96 +277,111 @@ class AccoladesPage extends StatelessWidget {
     matchHistoryTotals!.perfectDragonSoulsTakenTotal;
 
     accoladeList.sort((a, b) => a.value.compareTo(b.value));
-
     return Card(
         shadowColor: Colors.blue,
         elevation: 20,
         color: colorGrey,
-        child: Container(
+        child: SizedBox(
           height: 220,
           width: 460,
-          child: Column(
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 15,
+              children: accoladeList,
+            ),
+          ),
+          /*
+          Column(
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 1)
-                          ? SizedBox()
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: (accoladeList.isEmpty)
+                          ? const SizedBox()
                           : accoladeList[0],
                     ),
-                    (accoladeList.length < 2) ? SizedBox() : accoladeList[1],
+                    (accoladeList.length < 2)
+                        ? const SizedBox()
+                        : accoladeList[1],
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                       child: (accoladeList.length < 3)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[2],
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: (accoladeList.length < 4)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[3],
                     ),
-                    (accoladeList.length < 5) ? SizedBox() : accoladeList[4],
+                    (accoladeList.length < 5)
+                        ? const SizedBox()
+                        : accoladeList[4],
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                       child: (accoladeList.length < 6)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[5],
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: (accoladeList.length < 7)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[6],
                     ),
-                    (accoladeList.length < 8) ? SizedBox() : accoladeList[7],
+                    (accoladeList.length < 8)
+                        ? const SizedBox()
+                        : accoladeList[7],
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                       child: (accoladeList.length < 9)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[8],
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: (accoladeList.length < 10)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[9],
                     ),
-                    (accoladeList.length < 11) ? SizedBox() : accoladeList[10],
+                    (accoladeList.length < 11)
+                        ? const SizedBox()
+                        : accoladeList[10],
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                       child: (accoladeList.length < 12)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : accoladeList[11],
                     ),
                   ],
@@ -384,6 +389,7 @@ class AccoladesPage extends StatelessWidget {
               ),
             ],
           ),
+          */
         ));
   }
 }

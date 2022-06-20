@@ -1,4 +1,3 @@
-import 'package:dart_lol/LeagueStuff/game.dart';
 import 'package:summer_project/accoladesItem.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
@@ -182,6 +181,16 @@ class Accolades {
     return AccoladesItem(
         value: 2,
         title: "Jungle Thief",
+        description:
+            "This player likes to spend his time taking your jungles precious resources! Average buffs stolen last 30 games is ",
+        score: score,
+        positive: true);
+  }
+
+  AccoladesItem jungleInvader(double score) {
+    return AccoladesItem(
+        value: 3,
+        title: "Jungle Invader",
         description:
             "This player likes to spend his time taking your jungles precious resources! Average camps stolen last 30 games is ",
         score: score,
@@ -456,7 +465,7 @@ class Accolades {
         value: 1,
         title: "Great With " + champName!,
         description:
-            "This player is great with ${champName} ! Winrate last games is ",
+            "This player is great with $champName ! Winrate last games is ",
         score: score,
         positive: true);
   }
@@ -466,7 +475,7 @@ class Accolades {
         value: 3,
         title: "Bad With " + champName!,
         description:
-            "This player is bad with ${champName} ! Winrate last games is ",
+            "This player is bad with $champName ! Winrate last games is ",
         score: score,
         positive: false);
   }
@@ -476,7 +485,7 @@ class Accolades {
         value: 2,
         title: champName! + "Lover",
         description:
-            "This player currently likes to play ${champName} ! ${champName} Games Played Last 30 games ",
+            "This player currently likes to play $champName ! $champName Games Played Last 30 games ",
         score: score,
         positive: true);
   }
@@ -486,7 +495,7 @@ class Accolades {
         value: 2,
         title: champName! + "Main",
         description:
-            "This player is currently maining ${champName} ! ${champName} Games Played Last 30 games ",
+            "This player is currently maining $champName ! $champName Games Played Last 30 games ",
         score: score,
         positive: true);
   }

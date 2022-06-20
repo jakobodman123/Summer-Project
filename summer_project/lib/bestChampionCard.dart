@@ -1,4 +1,3 @@
-import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:summer_project/accoladesPage.dart';
@@ -36,92 +35,59 @@ class BestChampionCard extends StatelessWidget {
       ),
       color: colorLightGrey,
       elevation: 10,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: 30,
-          ),
-          child: Text(
-            summonerName! + "'s most played is " + champName!,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-          ),
-          child: Text(
-            now,
-            style: const TextStyle(fontSize: 20, color: Colors.grey),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-            left: 10,
-            right: 10,
-          ),
-          child: BestChampionPicture(champName!),
-        ),
-        Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-            ),
-            child: KdWinrateWidget(
+      child: SizedBox(
+        width: 500,
+        height: 1150,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                summonerName! + "'s most played is " + champName!,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                now,
+                style: const TextStyle(fontSize: 20, color: Colors.grey),
+              ),
+              BestChampionPicture(champName!),
+              KdWinrateWidget(
                 matchHistoryTotals!.gamesPlayed,
                 matchHistoryTotals!.killsTotal,
                 matchHistoryTotals!.deathsTotal,
                 matchHistoryTotals!.assistsTotal,
                 matchHistoryTotals!.winsTotal,
-                matchHistoryTotals!.lossesTotal)),
-        Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-            ),
-            child: MasteryCard(champMastery!)),
-        Padding(
-          padding: EdgeInsets.only(
-            top: 5,
-          ),
-          child: Text(
-            'Champion Accolades',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-          ),
-          child: AccoladesPage(
-              matchHistoryTotals: matchHistoryTotals,
-              games: gamesPlayed,
-              champName: champName),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            top: 5,
-          ),
-          child: Text(
-            'Champion Stats',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-          ),
-          child: StatCard(
-            matchHistoryTotals: matchHistoryTotals,
-            games: gamesPlayed,
-          ),
-        ),
-      ]),
+                matchHistoryTotals!.lossesTotal,
+              ),
+              MasteryCard(champMastery!),
+              const Text(
+                'Champion Accolades',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              AccoladesPage(
+                  matchHistoryTotals: matchHistoryTotals,
+                  games: gamesPlayed,
+                  champName: champName),
+              const Text(
+                'Champion Stats',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              StatCard(
+                matchHistoryTotals: matchHistoryTotals,
+                games: gamesPlayed,
+              ),
+            ]),
+      ),
     );
   }
 }

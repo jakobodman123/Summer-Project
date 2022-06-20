@@ -6,7 +6,7 @@ import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
 class AltAccoladesItem extends StatelessWidget {
-  List<AccoladesItem> accoladeList = [];
+  final List<AccoladesItem> accoladeList = [];
 
   final MatchHistoryTotals? matchHistoryTotals;
   final int? games;
@@ -127,11 +127,6 @@ class AltAccoladesItem extends StatelessWidget {
           accolades.jungleThief(matchHistoryTotals!.buffStolenTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.buffStolenTotal! / games!) >= 1.0) {
-      accoladeList.add(
-          accolades.jungleThief(matchHistoryTotals!.buffStolenTotal! / games!));
-    }
-
     if ((matchHistoryTotals!.damagePerMinuteTotal! / games!) >= 900.0) {
       accoladeList.add(accolades
           .dpsThreat(matchHistoryTotals!.damagePerMinuteTotal! / games!));
@@ -149,7 +144,7 @@ class AltAccoladesItem extends StatelessWidget {
     }
 
     if ((matchHistoryTotals!.enemyJungleMonsterKillsTotal! / games!) >= 3.0) {
-      accoladeList.add(accolades.jungleThief(
+      accoladeList.add(accolades.jungleInvader(
           matchHistoryTotals!.enemyJungleMonsterKillsTotal! / games!));
     }
 
@@ -166,11 +161,6 @@ class AltAccoladesItem extends StatelessWidget {
     if ((matchHistoryTotals!.goldPerMinuteTotal! / games!) >= 800) {
       accoladeList.add(accolades
           .moneyMaker(matchHistoryTotals!.goldPerMinuteTotal! / games!));
-    }
-
-    if ((matchHistoryTotals!.hadOpenNexusWinsTotal! / games!) > 0) {
-      accoladeList.add(accolades
-          .comebackKid(matchHistoryTotals!.hadOpenNexusWinsTotal!.toDouble()));
     }
 
     if ((matchHistoryTotals!.hadOpenNexusWinsTotal! / games!) > 0) {
@@ -292,43 +282,15 @@ class AltAccoladesItem extends StatelessWidget {
         shadowColor: Colors.blue,
         elevation: 20,
         color: colorGrey,
-        child: Container(
+        child: SizedBox(
           height: 100,
           width: 300,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 1)
-                          ? SizedBox()
-                          : accoladeList[0],
-                    ),
-                    (accoladeList.length < 2) ? SizedBox() : accoladeList[1],
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: (accoladeList.length < 3)
-                          ? SizedBox()
-                          : accoladeList[2],
-                    ),
-                    (accoladeList.length < 4) ? SizedBox() : accoladeList[3],
-                  ],
-                ),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 15,
+              children: accoladeList,
+            ),
           ),
         ));
   }

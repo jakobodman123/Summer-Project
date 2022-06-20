@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:summer_project/main.dart';
 
 class KdaWidget extends StatelessWidget {
   final int? kills;
@@ -24,7 +23,9 @@ class KdaWidget extends StatelessWidget {
     return Row(
       children: [
         GlowText(
-          (kills! / gamesPlayed!).toStringAsFixed(1),
+          gamesPlayed == 1
+              ? kills!.toString()
+              : (kills! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
             fontSize: size,
             fontWeight: FontWeight.bold,
@@ -39,7 +40,9 @@ class KdaWidget extends StatelessWidget {
           ),
         ),
         GlowText(
-          (deaths! / gamesPlayed!).toStringAsFixed(1),
+          gamesPlayed == 1
+              ? deaths!.toString()
+              : (deaths! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
             fontSize: size,
             fontWeight: FontWeight.bold,
@@ -54,7 +57,9 @@ class KdaWidget extends StatelessWidget {
           ),
         ),
         GlowText(
-          (assists! / gamesPlayed!).toStringAsFixed(1),
+          gamesPlayed == 1
+              ? assists!.toString()
+              : (assists! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
             fontSize: size,
             fontWeight: FontWeight.bold,

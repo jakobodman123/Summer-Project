@@ -43,7 +43,7 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       elevation: 10,
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 750,
             height: 1000,
             child: ListView.builder(
@@ -64,7 +64,7 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
               },
             ),
           ),
-          Container(
+          SizedBox(
             width: 750,
             child: InkWell(
               onTap: () {
@@ -83,7 +83,10 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   itemCount == 30
                       ? "Unable to Load more matches"
                       : "Load 5 more matches",
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

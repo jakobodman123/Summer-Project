@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:summer_project/accoladesItem.dart';
+
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
@@ -8,7 +8,8 @@ class StatCard extends StatelessWidget {
   final MatchHistoryTotals? matchHistoryTotals;
   final int? games;
 
-  StatCard({Key? key, this.matchHistoryTotals, this.games}) : super(key: key);
+  const StatCard({Key? key, this.matchHistoryTotals, this.games})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class StatCard extends StatelessWidget {
         shadowColor: Colors.blue,
         elevation: 20,
         color: colorGrey,
-        child: Container(
+        child: SizedBox(
           height: 150,
           width: 460,
           child: Column(
@@ -27,7 +28,7 @@ class StatCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Gold: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -39,7 +40,7 @@ class StatCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "G",
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -48,7 +49,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'GPM: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -60,7 +61,7 @@ class StatCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "G",
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -69,7 +70,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'CS: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -81,7 +82,7 @@ class StatCard extends StatelessWidget {
                                 .toStringAsFixed(1) +
                             "G",
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -95,7 +96,7 @@ class StatCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Double Kills: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -105,7 +106,7 @@ class StatCard extends StatelessWidget {
                       GlowText(
                         (matchHistoryTotals!.doubleKillsTotal!).toString(),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -114,7 +115,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Tripple Kills: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -124,7 +125,7 @@ class StatCard extends StatelessWidget {
                       GlowText(
                         (matchHistoryTotals!.tripleKillsTotal!).toString(),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -133,7 +134,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Quadra Kills: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -143,7 +144,7 @@ class StatCard extends StatelessWidget {
                       GlowText(
                         (matchHistoryTotals!.quadraKillsTotal!).toString(),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -157,7 +158,7 @@ class StatCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Dmg Dealt: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -168,7 +169,7 @@ class StatCard extends StatelessWidget {
                         (matchHistoryTotals!.damageTotal! / games!)
                             .toStringAsFixed(1),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -177,7 +178,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Dmg Taken: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -188,7 +189,7 @@ class StatCard extends StatelessWidget {
                         (matchHistoryTotals!.damageTakenTotal! / games!)
                             .toStringAsFixed(1),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -197,7 +198,7 @@ class StatCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Total Kills: ',
                         style: TextStyle(
                             fontSize: 16,
@@ -207,7 +208,7 @@ class StatCard extends StatelessWidget {
                       GlowText(
                         (matchHistoryTotals!.killsTotal!).toStringAsFixed(1),
                         glowColor: Colors.blue,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),

@@ -13,13 +13,13 @@ class KdWinrateWidget extends StatelessWidget {
   final int? wins;
   final int? losses;
 
-  KdWinrateWidget(this.gamesPlayed, this.kills, this.deaths, this.assists,
+  const KdWinrateWidget(this.gamesPlayed, this.kills, this.deaths, this.assists,
       this.wins, this.losses);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 500,
+      //width: MediaQuery.of(context).size.width,
       child: Card(
         color: colorGrey,
         shadowColor: Colors.blue,
@@ -32,13 +32,14 @@ class KdWinrateWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 40,
+                left: 5,
               ),
               child: KdaWidget(
-                  kills: kills,
-                  deaths: deaths,
-                  assists: assists,
-                  gamesPlayed: gamesPlayed),
+                kills: kills,
+                deaths: deaths,
+                assists: assists,
+                gamesPlayed: gamesPlayed,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -52,7 +53,7 @@ class KdWinrateWidget extends StatelessWidget {
                     percent: wins! / gamesPlayed!,
                     center: GlowText(
                       ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
@@ -73,7 +74,7 @@ class KdWinrateWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                right: 40,
+                right: 5,
                 top: 5,
               ),
               child: Column(
@@ -84,7 +85,7 @@ class KdWinrateWidget extends StatelessWidget {
                     percent: 1,
                     center: GlowText(
                       gamesPlayed.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
@@ -99,7 +100,7 @@ class KdWinrateWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

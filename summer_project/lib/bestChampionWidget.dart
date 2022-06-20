@@ -14,7 +14,7 @@ class BestChampionPicture extends StatelessWidget {
       color: colorGrey.withOpacity(0),
       shadowColor: Colors.blue,
       elevation: 20,
-      child: Container(
+      child: SizedBox(
         height: 300,
         width: 500,
         child: Image(

@@ -26,7 +26,7 @@ class ItemBox extends StatelessWidget {
         fit: BoxFit.fill,
         child: noIdItem
             //lägg till asset med id 0
-            ? Image.asset("assets/img/item/${itemID}.png")
+            ? Image.asset("assets/img/item/$itemID.png")
             : Container(
                 color: Colors.grey,
               ),

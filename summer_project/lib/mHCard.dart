@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:summer_project/apiMethods.dart';
 import 'package:summer_project/itemBox.dart';
+import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchParticipants.dart';
 import 'package:summer_project/matchParticipantsExtended.dart';
@@ -85,16 +85,16 @@ class MHCardState extends State<MHCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
       child: ExpansionTileCard(
         elevation: 5,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         baseColor: widget.player!.win!
-            ? Color(0xFF6082B6).withOpacity(0.3)
-            : Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
+            ? const Color(0xFF6082B6).withOpacity(0.3)
+            : const Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
         expandedColor: widget.player!.win!
-            ? Color(0xFF6082B6).withOpacity(0.3)
-            : Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
+            ? const Color(0xFF6082B6).withOpacity(0.3)
+            : const Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
         key: cardA,
         leading: IntrinsicHeight(
           child: Row(
@@ -106,7 +106,7 @@ class MHCardState extends State<MHCard> {
                     height: 100.0,
                     width: 100.0,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(15),
                             topLeft: Radius.circular(15)),
                         image: DecorationImage(
@@ -118,7 +118,7 @@ class MHCardState extends State<MHCard> {
                   ),
                   Text(
                     widget.player!.champLevel.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
@@ -126,13 +126,13 @@ class MHCardState extends State<MHCard> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
+                padding: const EdgeInsets.fromLTRB(5, 10, 5, 0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 45,
                           width: 45,
                           child: FittedBox(
@@ -141,7 +141,7 @@ class MHCardState extends State<MHCard> {
                                 "assets/img/spell/${widget.player?.summoner1Id}.png"),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 45,
                           width: 45,
                           child: FittedBox(
@@ -152,27 +152,75 @@ class MHCardState extends State<MHCard> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                     ),
                     Column(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 45,
                           width: 45,
                           child: FittedBox(
                             fit: BoxFit.fill,
-                            child:
-                                Image.asset("assets/runesImg/FirstStrike.png"),
+                            child: Image.asset(
+                                "assets/runesImg/${widget.player?.perks?.styles?[0].selections?[0].perk}.png"),
                           ),
                         ),
-                        Container(
-                          height: 35,
-                          width: 35,
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    "assets/runesImg/${widget.player?.perks?.styles?[0].selections?[1].perk}.png"),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    "assets/runesImg/${widget.player?.perks?.styles?[0].selections?[2].perk}.png"),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 22,
+                          width: 22,
                           child: FittedBox(
                             fit: BoxFit.fill,
                             child: Image.asset(
-                                "assets/runesImg/7201_Precision.png"),
+                                "assets/runesImg/${widget.player?.perks?.styles?[0].selections?[3].perk}.png"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.asset(
+                                "assets/runesImg/${widget.player?.perks?.styles?[1].selections?[0].perk}.png"),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.asset(
+                                "assets/runesImg/${widget.player?.perks?.styles?[1].selections?[1].perk}.png"),
                           ),
                         ),
                       ],
@@ -226,12 +274,12 @@ class MHCardState extends State<MHCard> {
                       //color: Colors.grey,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         top: 10,
                       ),
                       child: Row(
                         children: [
-                          Container(
+                          SizedBox(
                             height: 95,
                             width: 95,
                             child: Column(
@@ -301,7 +349,7 @@ class MHCardState extends State<MHCard> {
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: 95,
                             width: 95,
                             child: Column(
@@ -383,50 +431,15 @@ class MHCardState extends State<MHCard> {
                         //color: Colors.grey,
                         ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.only(top: 10, left: 5),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              GlowText(
-                                widget.player!.kills.toString(),
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              GlowText(
-                                " / ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              GlowText(
-                                widget.player!.deaths.toString(),
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              GlowText(
-                                " / ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              GlowText(
-                                widget.player!.assists.toString(),
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ],
+                          KdaWidget(
+                            kills: widget.player!.kills,
+                            deaths: widget.player!.deaths,
+                            assists: widget.player!.assists,
+                            gamesPlayed: 1,
+                            size: 26,
                           ),
                           Text(
                             widget.matchHistoryList?[widget.matchID].info
@@ -441,8 +454,8 @@ class MHCardState extends State<MHCard> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: widget.player!.win!
-                                  ? Color(0xFF6082B6).withOpacity(0.8)
-                                  : Color.fromRGBO(255, 82, 82, 1)
+                                  ? const Color(0xFF6082B6).withOpacity(0.8)
+                                  : const Color.fromRGBO(255, 82, 82, 1)
                                       .withOpacity(0.8),
                             ),
                           ),
@@ -456,10 +469,12 @@ class MHCardState extends State<MHCard> {
                         ],
                       ),
                     ),
+                    /*
                     Icon(
                       Icons.expand_circle_down,
                       size: 40,
                     )
+                    */
                   ],
                 ),
               ),
@@ -467,7 +482,7 @@ class MHCardState extends State<MHCard> {
           ),
         ),
         children: <Widget>[
-          Divider(
+          const Divider(
             thickness: 1.0,
             height: 1.0,
           ),
@@ -475,7 +490,7 @@ class MHCardState extends State<MHCard> {
             color: colorGrey,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   Text(
                     "Blue Team",
                     style: TextStyle(color: Colors.blue),

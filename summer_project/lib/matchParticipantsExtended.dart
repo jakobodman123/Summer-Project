@@ -6,7 +6,7 @@ import 'package:summer_project/matchStats.dart';
 class MatchParticipantsExtended extends StatelessWidget {
   final Participants? player;
 
-  MatchParticipantsExtended({
+  const MatchParticipantsExtended({
     Key? key,
     this.player,
   }) : super(key: key);
@@ -14,14 +14,15 @@ class MatchParticipantsExtended extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Row(
+    return Card(
+        child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           height: 45.0,
           width: 45.0,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   topLeft: Radius.circular(15)),
               image: DecorationImage(
@@ -29,13 +30,10 @@ class MatchParticipantsExtended extends StatelessWidget {
                   image: AssetImage(
                       "assets/img/champion/${player?.championName}.png"))),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
-        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: 20,
               width: 20,
               child: FittedBox(
@@ -44,7 +42,7 @@ class MatchParticipantsExtended extends StatelessWidget {
                     Image.asset("assets/img/spell/${player?.summoner1Id}.png"),
               ),
             ),
-            Container(
+            SizedBox(
               height: 20,
               width: 20,
               child: FittedBox(
@@ -55,21 +53,19 @@ class MatchParticipantsExtended extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
-        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: 20,
               width: 20,
               child: FittedBox(
                 fit: BoxFit.fill,
-                child: Image.asset("assets/runesImg/FirstStrike.png"),
+                child: Image.asset(
+                    "assets/runesImg/${player?.perks?.styles?[0].selections?[0].perk}.png"),
               ),
             ),
-            Container(
+            SizedBox(
               height: 20,
               width: 20,
               child: FittedBox(
@@ -85,14 +81,14 @@ class MatchParticipantsExtended extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: 15,
                   width: 50,
                   child: Text(
                     (player?.summonerName != null)
                         ? player!.summonerName!
                         : "NameError",
-                    style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -101,7 +97,7 @@ class MatchParticipantsExtended extends StatelessWidget {
                   deaths: player?.deaths,
                   assists: player?.assists,
                   gamesPlayed: 1,
-                  size: 16,
+                  size: 14,
                 )
               ],
             ),
@@ -143,11 +139,26 @@ class MatchParticipantsExtended extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Dmg: " + player!.totalDamageDealtToChampions.toString()),
-            Text("Cs: " + player!.totalMinionsKilled.toString()),
+            Text(
+              "Dmg: " + player!.totalDamageDealtToChampions.toString(),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            Text(
+              "Cs: " + player!.totalMinionsKilled.toString(),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
           ],
         ),
+        SizedBox(
+          height: 40,
+          width: 40,
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Image.asset(
+                "assets/rankedIcons/Position_Diamond-${player?.lane}.png"),
+          ),
+        ),
       ],
-    );
+    ));
   }
 }
