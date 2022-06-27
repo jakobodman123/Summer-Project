@@ -1,17 +1,19 @@
 import 'dart:collection';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/game.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
+import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:summer_project/apiMethods.dart';
-import 'package:summer_project/carroussel.dart';
+import 'package:summer_project/challenges.dart';
 import 'package:summer_project/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:summer_project/matchByChamp.dart';
@@ -20,8 +22,7 @@ import 'dart:convert';
 
 import 'package:summer_project/matchStats.dart';
 import 'package:summer_project/slides.dart';
-
-String apiToken = "joel";
+import 'package:summer_project/testClass.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -48,32 +49,27 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<List<MatchStats>?> getGameHistory(
-      {String? summonerName,
-      String? puuid,
-      int start = 0,
-      int count = 10}) async {
+      {String? summonerName, int start = 0, int count = 10}) async {
     String europe = "europe";
-    var url =
-        'https://$europe.api.riotgames.com/lol/match/v5/matches/by-puuid/$puuid/ids?start=$start&count=$count&api_key=$apiToken';
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    final matchIdList = json.decode(response.body);
-    print(matchIdList);
-    List<MatchStats>? matchHistoryList = [];
-    for (String id in matchIdList) {
-      var url =
-          'https://$europe.api.riotgames.com/lol/match/v5/matches/$id?api_key=$apiToken';
-      var response = await http.get(
-        Uri.parse(url),
-      );
-      final match = json.decode(response.body);
+
+    //test
+    List<MatchStats>? matchHistoryList2 = [];
+    await ItemApi.getGames(summonerName!).then((response) {
+      //print(response.body);
+      Iterable list = json.decode(response.body);
+
+      matchHistoryList2 =
+          list.map((model) => MatchStats.fromJson(model)).toList();
+      //print(matchHistoryList2);
+    });
+    for (MatchStats match in matchHistoryList2!) {
       ApiMethods apiMethods = ApiMethods();
 
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
 
-      Participants? player = matchStats.info?.participants?[await apiMethods
-          .findPersonUsingLoop(matchStats.info?.participants, summonerName)];
+      Participants? player = matchStats.info?.participants?[
+          await apiMethods.findPersonUsingLoop(
+              matchStats.info?.participants, summonerName.toLowerCase())];
 
       if (player != null) {
         String? champName = player.championName;
@@ -94,11 +90,8 @@ class _SearchPageState extends State<SearchPage> {
         MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
         matchByChampList.add(matchByChamp);
       }
-
-      matchHistoryList.add(matchStats);
     }
-
-    return matchHistoryList;
+    return matchHistoryList2;
   }
 
   void onDonePress() {
@@ -119,7 +112,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: isLoading
           ? IntroSlider(
@@ -127,23 +119,51 @@ class _SearchPageState extends State<SearchPage> {
               onDonePress: onDonePress,
             )
           : Container(
-              color: colorDarkGrey,
+              //color: colorDarkGrey,
               //height: size.height,
               //width: size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      color: Colors.red,
-                      width: 4000,
-                      height: 100,
-                      child: Text(
-                        "joeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoeljoel",
-                        style: TextStyle(fontSize: 28),
-                      ),
+                    const SizedBox(
+                      height: 200,
                     ),
-                    SizedBox(
+                    const GlowText(
+                      "League of Legends",
+                      glowColor: Colors.blue,
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const GlowText(
+                      "Play Easy Champions",
+                      glowColor: Colors.blue,
+                      style: TextStyle(
+                          fontSize: 42,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const GlowText(
+                      "By JakobCrya",
+                      glowColor: Colors.blue,
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      color: colorDarkGrey,
                       //width: size.width * 0.6,
                       width: 1500,
                       child: TextField(
@@ -151,8 +171,10 @@ class _SearchPageState extends State<SearchPage> {
                           await onTapLoad();
                         },
                         autofocus: true,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 22),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                        ),
                         controller: summonerTextController,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(20),
@@ -181,8 +203,12 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                     ),
-                    const Text(
-                      "TUTORIAL",
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    const GlowText(
+                      "How to Use",
+                      glowColor: Colors.blue,
                       style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -196,6 +222,7 @@ class _SearchPageState extends State<SearchPage> {
                           enableInfiniteScroll: false,
                         ),
                         items: [
+                          const AssetImage("assets/helpIMG/matchHistory.png"),
                           const AssetImage("assets/helpIMG/search.png"),
                           const AssetImage("assets/helpIMG/loading.jpg"),
                           const AssetImage("assets/helpIMG/profile.png"),
@@ -204,7 +231,6 @@ class _SearchPageState extends State<SearchPage> {
                           const AssetImage("assets/helpIMG/mainChampWR.png"),
                           const AssetImage("assets/helpIMG/mainChampA.png"),
                           const AssetImage("assets/helpIMG/altchamp.png"),
-                          const AssetImage("assets/helpIMG/matchHistory.png"),
                           const AssetImage("assets/helpIMG/mhExpanded.png"),
                         ].map((i) {
                           return Builder(
@@ -232,10 +258,6 @@ class _SearchPageState extends State<SearchPage> {
             ),
     );
   }
-
-  List<AssetImage> imageList = [
-    AssetImage("assets/img/splash/Fizz_0.jpg"),
-  ];
 
   //Variabler all games
   int? csTotal = 0;
@@ -322,31 +344,89 @@ class _SearchPageState extends State<SearchPage> {
   double? teamDamagePercentageTotal = 0;
 
   Future<void> onTapLoad() async {
-    final league = League(apiToken: apiToken, server: server);
-    var summoner =
-        await league.getSummonerInfo(summonerName: summonerTextController.text);
+    Summoner? summonerObject = Summoner();
+    await ItemApi.getSummoner(summonerTextController.text).then((response) {
+      Summoner object = Summoner.fromJson(
+        json.decode(
+          response.body,
+        ),
+      );
+      summonerObject = object;
+    });
 
-    if (summoner.puuid != null) {
-      print(summoner.puuid);
+    if (summonerObject?.puuid != null) {
+      print(summonerObject?.puuid);
       setState(() {
         isLoading = true;
       });
-      ApiMethods apiMethods = ApiMethods();
-      String? accID = summoner.accID;
-      int? level = summoner.level;
-      int? profileIconID = summoner.profileIconID;
-      String? puuid = summoner.puuid;
-      String? summmonerID = summoner.summonerID;
-      String? summonerName = summoner.summonerName;
-      Rank? ranksoloQ = await apiMethods.getRankInfos(summonerID: summmonerID);
-      Rank? rankFlex = await apiMethods.getRankInfos2(summonerID: summmonerID);
+      String? accID = summonerObject?.accID;
+      int? level = summonerObject?.level;
+      int? profileIconID = summonerObject?.profileIconID;
+      String? puuid = summonerObject?.puuid;
+      String? summmonerID = summonerObject?.summonerID;
 
-      List<ChampionMastery>? masteryList =
-          await league.getChampionMasteries(summonerID: summmonerID);
+      AccountChallenges? challengesObject = AccountChallenges();
+      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
+        AccountChallenges object = AccountChallenges.fromJson(
+          json.decode(
+            response.body,
+          ),
+        );
+        challengesObject = object;
+      });
+      print(challengesObject?.categoryPoints?.cOLLECTION?.current);
+      print(challengesObject?.categoryPoints?.cOLLECTION?.level);
+      print(challengesObject?.preferences?.title);
+      print(challengesObject?.preferences?.challengeIds);
+      print(challengesObject?.preferences?.bannerAccent);
+
+      List<ChampionMastery>? champMasteryList = [];
+      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
+
+        champMasteryList =
+            list.map((model) => ChampionMastery.fromJson(model)).toList();
+        //print(matchHistoryList2);
+      });
+
+      List<Rank>? rankedList = [];
+      await ItemApi.getRanked(summmonerID!).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
+
+        rankedList = list.map((model) => Rank.fromJson(model)).toList();
+      });
+      Rank? ranksoloQ;
+      if (rankedList!.length < 1) {
+        ranksoloQ = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        ranksoloQ = rankedList![0];
+      }
+
+      Rank? rankFlex;
+      if (rankedList!.length < 2) {
+        rankFlex = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        rankFlex = rankedList![1];
+      }
 
       List<MatchStats>? matchHistory = await getGameHistory(
-        summonerName: summonerName,
-        puuid: summoner.puuid,
+        summonerName: summonerTextController.text,
       );
 
       MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
@@ -444,10 +524,11 @@ class _SearchPageState extends State<SearchPage> {
 
       //Most Played Map
       var champs = getMapString(champNames);
+      print(champs);
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[0]) {
+        if (champs.isEmpty == false && player.champName == champs[0]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -539,7 +620,7 @@ class _SearchPageState extends State<SearchPage> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[1]) {
+        if (champs.length >= 2 && player.champName == champs[1]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -631,7 +712,7 @@ class _SearchPageState extends State<SearchPage> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[2]) {
+        if (champs.length >= 3 && player.champName == champs[2]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -722,7 +803,7 @@ class _SearchPageState extends State<SearchPage> {
           csTotal);
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[3]) {
+        if (champs.length >= 4 && player.champName == champs[3]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -818,24 +899,25 @@ class _SearchPageState extends State<SearchPage> {
         context,
         MaterialPageRoute(
             builder: (context) => TestPage(
-                accID: accID,
-                level: level,
-                profileIconID: profileIconID,
-                puuid: puuid,
-                summonerID: summmonerID,
-                summonerName: summonerName,
-                server: server,
-                soloQRank: ranksoloQ,
-                flexRank: rankFlex,
-                masteryList: masteryList,
-                matchHistoryList: matchHistory,
-                matchHistoryTotals: matchHistoryTotals,
-                matchHistoryTotalschamp1: matchHistoryTotalsChamp1,
-                champsPlayedIds: champs,
-                matchHistoryTotalschamp2: matchHistoryTotalsChamp2,
-                matchHistoryTotalschamp3: matchHistoryTotalsChamp3,
-                matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
-                lane: lanePref)),
+                  accID: accID,
+                  level: level,
+                  profileIconID: profileIconID,
+                  puuid: puuid,
+                  summonerID: summmonerID,
+                  summonerName: summonerObject?.summonerName,
+                  server: server,
+                  soloQRank: ranksoloQ,
+                  flexRank: rankFlex,
+                  matchHistoryList: matchHistory,
+                  matchHistoryTotals: matchHistoryTotals,
+                  matchHistoryTotalschamp1: matchHistoryTotalsChamp1,
+                  champsPlayedIds: champs,
+                  matchHistoryTotalschamp2: matchHistoryTotalsChamp2,
+                  matchHistoryTotalschamp3: matchHistoryTotalsChamp3,
+                  matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
+                  lane: lanePref,
+                  champMasteryList: champMasteryList,
+                )),
       );
     } else {
       //alert no summoner with this name

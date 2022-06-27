@@ -7,8 +7,10 @@ import 'package:summer_project/matchStats.dart';
 class MatchHistoryWidget extends StatefulWidget {
   final List<MatchStats>? matchHistoryList;
   final String? summonerName;
+  final int? games;
 
-  const MatchHistoryWidget({Key? key, this.matchHistoryList, this.summonerName})
+  const MatchHistoryWidget(
+      {Key? key, this.matchHistoryList, this.summonerName, this.games})
       : super(key: key);
   @override
   MatchHistoryWidgetState createState() => MatchHistoryWidgetState();
@@ -24,7 +26,8 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   int findPersonUsingLoop(List<Participants>? people, String? summonerName) {
     if (people != null) {
       for (var i = 0; i < people.length; i++) {
-        if (people[i].summonerName == summonerName) {
+        if (people[i].summonerName?.toLowerCase() ==
+            summonerName?.toLowerCase()) {
           // Found the person, stop the loop
           return i;
         }
@@ -48,7 +51,9 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             height: 1000,
             child: ListView.builder(
               //itemCount: widget.matchHistoryList!.length,
-              itemCount: itemCount,
+              itemCount: widget.matchHistoryList!.length <= 10
+                  ? widget.matchHistoryList!.length
+                  : itemCount,
               itemBuilder: (context, index) {
                 int player = findPersonUsingLoop(
                     widget.matchHistoryList?[index].info?.participants,
@@ -70,17 +75,18 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
               onTap: () {
                 setState(() {
                   //extend matchHistory by 5
-                  if (itemCount != 30) {
+                  if (itemCount != widget.matchHistoryList?.length) {
                     itemCount += 5;
                   }
                 });
               },
               child: Card(
                 elevation: 5,
-                color:
-                    itemCount == 30 ? Colors.red.withOpacity(0.3) : colorGrey,
+                color: itemCount == widget.matchHistoryList?.length
+                    ? Colors.red.withOpacity(0.3)
+                    : colorGrey,
                 child: Text(
-                  itemCount == 30
+                  itemCount == widget.matchHistoryList?.length
                       ? "Unable to Load more matches"
                       : "Load 5 more matches",
                   style: const TextStyle(

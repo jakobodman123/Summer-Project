@@ -10,7 +10,6 @@ import 'package:summer_project/statCard.dart';
 
 class BestChampionCard extends StatelessWidget {
   final String? champName;
-  final int? champMastery;
   final String? summonerName;
   final MatchHistoryTotals? matchHistoryTotals;
   final int? gamesPlayed;
@@ -20,7 +19,6 @@ class BestChampionCard extends StatelessWidget {
   BestChampionCard(
       {Key? key,
       required this.champName,
-      required this.champMastery,
       this.summonerName,
       this.matchHistoryTotals,
       this.gamesPlayed})
@@ -63,7 +61,6 @@ class BestChampionCard extends StatelessWidget {
                 matchHistoryTotals!.winsTotal,
                 matchHistoryTotals!.lossesTotal,
               ),
-              MasteryCard(champMastery!),
               const Text(
                 'Champion Accolades',
                 style: TextStyle(

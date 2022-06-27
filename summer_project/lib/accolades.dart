@@ -20,7 +20,7 @@ class Accolades {
   AccoladesItem pinkWards(double score) {
     return AccoladesItem(
         value: 3,
-        title: "ControllWards<3",
+        title: "ControllWards",
         description:
             "This player is making sure his teams bushes are safe! Average amount of Pink wards bought last 30 games is ",
         score: score,

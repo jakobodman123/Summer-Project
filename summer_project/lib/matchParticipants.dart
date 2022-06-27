@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
+import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
 import 'package:summer_project/apiMethods.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:summer_project/searchPage.dart';
+import 'package:summer_project/testClass.dart';
 
 class MatchParticipants extends StatefulWidget {
   final String? champion;
@@ -32,38 +34,31 @@ class MatchParticipantsState extends State<MatchParticipants> {
   List<String>? laneNames = [];
 
   Future<List<MatchStats>?> getGameHistory(
-      {String? summonerName,
-      String? puuid,
-      int start = 0,
-      int count = 30}) async {
+      {String? summonerName, int start = 0, int count = 10}) async {
     String europe = "europe";
-    var url =
-        'https://$europe.api.riotgames.com/lol/match/v5/matches/by-puuid/$puuid/ids?start=$start&count=$count&api_key=$apiToken';
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    final matchIdList = json.decode(response.body);
-    //print(matchIdList);
-    List<MatchStats>? matchHistoryList = [];
-    for (String id in matchIdList) {
-      var url =
-          'https://$europe.api.riotgames.com/lol/match/v5/matches/$id?api_key=$apiToken';
-      var response = await http.get(
-        Uri.parse(url),
-      );
-      final match = json.decode(response.body);
-      //print("\nID: $id");
-      //print(match);
-      //print("---");
+
+    //test
+    List<MatchStats>? matchHistoryList2 = [];
+    await ItemApi.getGames(summonerName!).then((response) {
+      //print(response.body);
+      Iterable list = json.decode(response.body);
+
+      matchHistoryList2 =
+          list.map((model) => MatchStats.fromJson(model)).toList();
+      //print(matchHistoryList2);
+    });
+    for (MatchStats match in matchHistoryList2!) {
       ApiMethods apiMethods = ApiMethods();
+
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
+
       Participants? player = matchStats.info?.participants?[await apiMethods
-          .findPersonUsingLoop(matchStats.info!.participants, summonerName)];
+          .findPersonUsingLoop(matchStats.info?.participants, summonerName)];
 
       if (player != null) {
         String? champName = player.championName;
         String? lane = player.individualPosition;
-        //print(champName);
+        //print(lane);
 
         if (champName != null) {
           champNames?.add(champName);
@@ -79,11 +74,8 @@ class MatchParticipantsState extends State<MatchParticipants> {
         MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
         matchByChampList.add(matchByChamp);
       }
-
-      matchHistoryList.add(matchStats);
     }
-
-    return matchHistoryList;
+    return matchHistoryList2;
   }
 
   List<dynamic> getMapString(List<String>? list) {
@@ -748,27 +740,71 @@ class MatchParticipantsState extends State<MatchParticipants> {
   }
 
   Future<void> onTapClick() async {
-    final league = League(apiToken: apiToken, server: server);
-    var summoner =
-        await league.getSummonerInfo(summonerName: widget.playerName);
+    Summoner? summonerObject = Summoner();
+    await ItemApi.getSummoner(widget.playerName).then((response) {
+      Summoner object = Summoner.fromJson(
+        json.decode(
+          response.body,
+        ),
+      );
+      summonerObject = object;
+    });
 
-    if (summoner.puuid != null) {
-      ApiMethods apiMethods = ApiMethods();
-      String? accID = summoner.accID;
-      int? level = summoner.level;
-      int? profileIconID = summoner.profileIconID;
-      String? puuid = summoner.puuid;
-      String? summmonerID = summoner.summonerID;
-      String? summonerName = summoner.summonerName;
-      Rank? ranksoloQ = await apiMethods.getRankInfos(summonerID: summmonerID);
-      Rank? rankFlex = await apiMethods.getRankInfos2(summonerID: summmonerID);
+    if (summonerObject?.puuid != null) {
+      print(summonerObject?.puuid);
+      String? accID = summonerObject?.accID;
+      int? level = summonerObject?.level;
+      int? profileIconID = summonerObject?.profileIconID;
+      String? puuid = summonerObject?.puuid;
+      String? summmonerID = summonerObject?.summonerID;
 
-      List<ChampionMastery>? masteryList =
-          await league.getChampionMasteries(summonerID: summmonerID);
+      List<ChampionMastery>? champMasteryList = [];
+      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
+
+        champMasteryList =
+            list.map((model) => ChampionMastery.fromJson(model)).toList();
+        //print(matchHistoryList2);
+      });
+
+      List<Rank>? rankedList = [];
+      await ItemApi.getRanked(summmonerID!).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
+
+        rankedList = list.map((model) => Rank.fromJson(model)).toList();
+      });
+      Rank? ranksoloQ;
+      if (rankedList!.length < 1) {
+        ranksoloQ = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        ranksoloQ = rankedList![0];
+      }
+
+      Rank? rankFlex;
+      if (rankedList!.length < 2) {
+        rankFlex = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        rankFlex = rankedList![1];
+      }
 
       List<MatchStats>? matchHistory = await getGameHistory(
-        summonerName: summonerName,
-        puuid: summoner.puuid,
+        summonerName: widget.playerName,
       );
 
       MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
@@ -870,7 +906,7 @@ class MatchParticipantsState extends State<MatchParticipants> {
       var champs = getMapString(champNames);
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[0]) {
+        if (champs.isEmpty == false && player.champName == champs[0]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -962,7 +998,7 @@ class MatchParticipantsState extends State<MatchParticipants> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[1]) {
+        if (champs.length >= 2 && player.champName == champs[1]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -1054,7 +1090,7 @@ class MatchParticipantsState extends State<MatchParticipants> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[2]) {
+        if (champs.length >= 3 && player.champName == champs[2]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -1145,12 +1181,11 @@ class MatchParticipantsState extends State<MatchParticipants> {
           csTotal);
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[3]) {
+        if (champs.length >= 4 && player.champName == champs[3]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
       }
-
       MatchHistoryTotals matchHistoryTotalsChamp4 = MatchHistoryTotals(
           baronKillsTotal!,
           killsTotal!,
@@ -1244,11 +1279,10 @@ class MatchParticipantsState extends State<MatchParticipants> {
                   profileIconID: profileIconID,
                   puuid: puuid,
                   summonerID: summmonerID,
-                  summonerName: summonerName,
+                  summonerName: summonerObject?.summonerName,
                   server: server,
                   soloQRank: ranksoloQ,
                   flexRank: rankFlex,
-                  masteryList: masteryList,
                   matchHistoryList: matchHistory,
                   matchHistoryTotals: matchHistoryTotals,
                   matchHistoryTotalschamp1: matchHistoryTotalsChamp1,
@@ -1257,6 +1291,7 @@ class MatchParticipantsState extends State<MatchParticipants> {
                   matchHistoryTotalschamp3: matchHistoryTotalsChamp3,
                   matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
                   lane: lanePref,
+                  champMasteryList: champMasteryList,
                 )),
       );
     } else {

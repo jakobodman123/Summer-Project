@@ -203,8 +203,8 @@ class MHCardState extends State<MHCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 40,
-                          width: 40,
+                          height: 35,
+                          width: 35,
                           child: FittedBox(
                             fit: BoxFit.fill,
                             child: Image.asset(
@@ -215,8 +215,8 @@ class MHCardState extends State<MHCard> {
                           padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                         ),
                         SizedBox(
-                          height: 40,
-                          width: 40,
+                          height: 35,
+                          width: 35,
                           child: FittedBox(
                             fit: BoxFit.fill,
                             child: Image.asset(
@@ -510,22 +510,28 @@ class MHCardState extends State<MHCard> {
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[0],
+                    blueTeam: true,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[1],
+                    blueTeam: true,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[2],
+                    blueTeam: true,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[3],
+                    blueTeam: true,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[4],
+                    blueTeam: true,
+                    support: true,
                   ),
                 ],
               ),
@@ -535,22 +541,28 @@ class MHCardState extends State<MHCard> {
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[5],
+                    blueTeam: false,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[6],
+                    blueTeam: false,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[7],
+                    blueTeam: false,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[8],
+                    blueTeam: false,
                   ),
                   MatchParticipantsExtended(
                     player: widget.matchHistoryList![widget.matchID].info
                         ?.participants?[9],
+                    blueTeam: false,
+                    support: true,
                   ),
                 ],
               ),

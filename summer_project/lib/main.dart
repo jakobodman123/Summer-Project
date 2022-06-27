@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
+import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
@@ -22,6 +23,8 @@ import 'package:summer_project/matchHistoryTotals.dart';
 import 'package:summer_project/matchStats.dart';
 import 'package:summer_project/searchPage.dart';
 import 'package:summer_project/slides.dart';
+import 'package:summer_project/testClass.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
 Color colorDarkGrey = const Color(0xFF191919);
@@ -30,7 +33,14 @@ Color primaryColor = const Color(0xFF292C33).withOpacity(0.4);
 
 Color colorGrey = const Color(0xFF6B6A69).withOpacity(0.4);
 
-void main() => runApp(const SummerProject());
+//void main() => runApp(const SummerProject());
+
+void main() {
+  // Here we set the URL strategy for our web app.
+  // It is safe to call this function when running on mobile or desktop as well.
+  //setPathUrlStrategy();
+  runApp(const SummerProject());
+}
 
 class SummerProject extends StatelessWidget {
   const SummerProject();
@@ -68,17 +78,17 @@ class TestPage extends StatefulWidget {
       this.profileIconID,
       this.puuid,
       this.server,
-      required this.soloQRank,
-      required this.flexRank,
-      required this.masteryList,
-      required this.matchHistoryList,
+      this.soloQRank,
+      this.flexRank,
+      this.matchHistoryList,
       this.matchHistoryTotals,
       this.matchHistoryTotalschamp1,
       this.champsPlayedIds,
       this.matchHistoryTotalschamp2,
       this.matchHistoryTotalschamp3,
       this.matchHistoryTotalschamp4,
-      this.lane})
+      this.lane,
+      this.champMasteryList})
       : super(key: key);
 
   //TestPage();
@@ -90,9 +100,8 @@ class TestPage extends StatefulWidget {
   final int? profileIconID;
   final String? puuid;
   final String? server;
-  final Rank soloQRank;
-  final Rank flexRank;
-  final List<ChampionMastery>? masteryList;
+  final Rank? soloQRank;
+  final Rank? flexRank;
   final List<MatchStats>? matchHistoryList;
   final MatchHistoryTotals? matchHistoryTotals;
   final MatchHistoryTotals? matchHistoryTotalschamp1;
@@ -101,6 +110,7 @@ class TestPage extends StatefulWidget {
   final MatchHistoryTotals? matchHistoryTotalschamp4;
   final List<dynamic>? champsPlayedIds;
   final String? lane;
+  final List<ChampionMastery>? champMasteryList;
 
   @override
   _TestPageState createState() => _TestPageState();
@@ -185,37 +195,32 @@ class _TestPageState extends State<TestPage> {
   }
 
   Future<List<MatchStats>?> getGameHistory(
-      {String? summonerName,
-      String? puuid,
-      int start = 0,
-      int count = 30}) async {
+      {String? summonerName, int start = 0, int count = 10}) async {
     String europe = "europe";
-    var url =
-        'https://$europe.api.riotgames.com/lol/match/v5/matches/by-puuid/$puuid/ids?start=$start&count=$count&api_key=$apiToken';
-    var response = await http.get(
-      Uri.parse(url),
-    );
-    final matchIdList = json.decode(response.body);
-    print(matchIdList);
-    List<MatchStats>? matchHistoryList = [];
-    for (String id in matchIdList) {
-      var url =
-          'https://$europe.api.riotgames.com/lol/match/v5/matches/$id?api_key=$apiToken';
-      var response = await http.get(
-        Uri.parse(url),
-      );
 
-      final match = json.decode(response.body);
+    //test
+    List<MatchStats>? matchHistoryList2 = [];
+    await ItemApi.getGames(summonerName!).then((response) {
+      //print(response.body);
+      Iterable list = json.decode(response.body);
 
+      matchHistoryList2 =
+          list.map((model) => MatchStats.fromJson(model)).toList();
+      //print(matchHistoryList2);
+    });
+    for (MatchStats match in matchHistoryList2!) {
       ApiMethods apiMethods = ApiMethods();
+
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
-      Participants? player = matchStats.info?.participants?[await apiMethods
-          .findPersonUsingLoop(matchStats.info!.participants, summonerName)];
+
+      Participants? player = matchStats.info?.participants?[
+          await apiMethods.findPersonUsingLoop(
+              matchStats.info?.participants, summonerName.toLowerCase())];
 
       if (player != null) {
         String? champName = player.championName;
         String? lane = player.individualPosition;
-        //print(champName);
+        //print(lane);
 
         if (champName != null) {
           champNames?.add(champName);
@@ -231,16 +236,13 @@ class _TestPageState extends State<TestPage> {
         MatchByChamp matchByChamp = MatchByChamp(player.championName, player);
         matchByChampList.add(matchByChamp);
       }
-      matchHistoryList.add(matchStats);
     }
-
-    return matchHistoryList;
+    return matchHistoryList2;
   }
 
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return isLoading
         ? IntroSlider(
             slides: slides,
@@ -274,11 +276,11 @@ class _TestPageState extends State<TestPage> {
                 ),
               ],
             ),
-            body: Container(
-              color: colorDarkGrey,
+            body: SingleChildScrollView(
               //height: size.height,
               //width: size.width,
-              child: SingleChildScrollView(
+              child: Container(
+                color: colorDarkGrey,
                 child: Column(children: [
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -287,12 +289,11 @@ class _TestPageState extends State<TestPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                            bottom: 40,
+                            bottom: 80,
                           ),
                           child: SizedBox(
                             //height: MediaQuery.of(context).size.height,
                             width: 500,
-                            height: 1250,
                             child: MainProfile(
                                 widget.profileIconID.toString(),
                                 widget.level.toString(),
@@ -301,7 +302,8 @@ class _TestPageState extends State<TestPage> {
                                 widget.soloQRank,
                                 widget.flexRank,
                                 widget.matchHistoryTotals,
-                                widget.lane),
+                                widget.lane,
+                                widget.champMasteryList),
                           ),
                         ),
                         //Vit box
@@ -310,7 +312,6 @@ class _TestPageState extends State<TestPage> {
                           padding: const EdgeInsets.only(top: 40, left: 40),
                           child: BestChampionCard(
                             summonerName: widget.summonerName,
-                            champMastery: widget.masteryList![0].championPoints,
                             //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
                             champName: widget.champsPlayedIds![0],
                             matchHistoryTotals: widget.matchHistoryTotalschamp1,
@@ -335,43 +336,53 @@ class _TestPageState extends State<TestPage> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 50),
-                                child: AltChampsWidget(
-                                    widget.champsPlayedIds![1],
-                                    widget
-                                        .matchHistoryTotalschamp2?.gamesPlayed,
-                                    widget.matchHistoryTotalschamp2?.winsTotal,
-                                    widget.matchHistoryTotalschamp2),
+                              const SizedBox(
+                                width: 650,
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(top: 20, bottom: 50),
-                                child: AltChampsWidget(
-                                    widget.champsPlayedIds![2],
-                                    widget
-                                        .matchHistoryTotalschamp3?.gamesPlayed,
-                                    widget.matchHistoryTotalschamp3?.winsTotal,
-                                    widget.matchHistoryTotalschamp3),
+                                child: widget.champsPlayedIds!.length < 2
+                                    ? const SizedBox()
+                                    : AltChampsWidget(
+                                        widget.champsPlayedIds![1],
+                                        widget.matchHistoryTotalschamp2
+                                            ?.gamesPlayed,
+                                        widget.matchHistoryTotalschamp2
+                                            ?.winsTotal,
+                                        widget.matchHistoryTotalschamp2),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(top: 20, bottom: 50),
-                                child: AltChampsWidget(
-                                    widget.champsPlayedIds![3],
-                                    widget
-                                        .matchHistoryTotalschamp4?.gamesPlayed,
-                                    widget.matchHistoryTotalschamp4?.winsTotal,
-                                    widget.matchHistoryTotalschamp4),
+                                child: widget.champsPlayedIds!.length < 3
+                                    ? const SizedBox()
+                                    : AltChampsWidget(
+                                        widget.champsPlayedIds![2],
+                                        widget.matchHistoryTotalschamp3
+                                            ?.gamesPlayed,
+                                        widget.matchHistoryTotalschamp3
+                                            ?.winsTotal,
+                                        widget.matchHistoryTotalschamp3),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                child: widget.champsPlayedIds!.length < 4
+                                    ? const SizedBox()
+                                    : AltChampsWidget(
+                                        widget.champsPlayedIds![3],
+                                        widget.matchHistoryTotalschamp4
+                                            ?.gamesPlayed,
+                                        widget.matchHistoryTotalschamp4
+                                            ?.winsTotal,
+                                        widget.matchHistoryTotalschamp4),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                            left: 40,
-                          ),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: Column(children: [
                             const Padding(
                               padding: EdgeInsets.only(
@@ -1018,32 +1029,74 @@ class _TestPageState extends State<TestPage> {
   }
 
   Future<void> onTapLoad() async {
-    final league = League(apiToken: apiToken, server: server);
-    var summoner =
-        await league.getSummonerInfo(summonerName: summonerTextController.text);
+    Summoner? summonerObject = Summoner();
+    await ItemApi.getSummoner(summonerTextController.text).then((response) {
+      Summoner object = Summoner.fromJson(
+        json.decode(
+          response.body,
+        ),
+      );
+      summonerObject = object;
+    });
 
-    if (summoner.puuid != null) {
+    if (summonerObject?.puuid != null) {
+      print(summonerObject?.puuid);
       setState(() {
         isLoading = true;
       });
-      ApiMethods apiMethods = ApiMethods();
+      String? accID = summonerObject?.accID;
+      int? level = summonerObject?.level;
+      int? profileIconID = summonerObject?.profileIconID;
+      String? puuid = summonerObject?.puuid;
+      String? summmonerID = summonerObject?.summonerID;
 
-      String? accID = summoner.accID;
-      int? level = summoner.level;
-      int? profileIconID = summoner.profileIconID;
-      String? puuid = summoner.puuid;
-      String? summmonerID = summoner.summonerID;
-      String? summonerName = summoner.summonerName;
-      Rank? ranksoloQ = await apiMethods.getRankInfos(summonerID: summmonerID);
+      List<ChampionMastery>? champMasteryList = [];
+      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
 
-      Rank? rankFlex = await apiMethods.getRankInfos2(summonerID: summmonerID);
+        champMasteryList =
+            list.map((model) => ChampionMastery.fromJson(model)).toList();
+        //print(matchHistoryList2);
+      });
 
-      List<ChampionMastery>? masteryList =
-          await league.getChampionMasteries(summonerID: summmonerID);
+      List<Rank>? rankedList = [];
+      await ItemApi.getRanked(summmonerID!).then((response) {
+        //print(response.body);
+        Iterable list = json.decode(response.body);
+
+        rankedList = list.map((model) => Rank.fromJson(model)).toList();
+      });
+      Rank? ranksoloQ;
+      if (rankedList!.length < 1) {
+        ranksoloQ = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        ranksoloQ = rankedList![0];
+      }
+
+      Rank? rankFlex;
+      if (rankedList!.length < 2) {
+        rankFlex = Rank(
+            hotStreak: false,
+            wins: 0,
+            losses: 0,
+            rank: "",
+            leaguePoints: 0,
+            leagueId: "Unranked",
+            tier: "Unranked");
+      } else {
+        rankFlex = rankedList![1];
+      }
 
       List<MatchStats>? matchHistory = await getGameHistory(
-        summonerName: summonerName,
-        puuid: summoner.puuid,
+        summonerName: summonerTextController.text,
       );
 
       MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
@@ -1142,10 +1195,11 @@ class _TestPageState extends State<TestPage> {
       }
 
       //Most Played Map
+
       var champs = getMapString(champNames);
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[0]) {
+        if (champs.isEmpty == false && player.champName == champs[0]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -1237,7 +1291,7 @@ class _TestPageState extends State<TestPage> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[1]) {
+        if (champs.length >= 2 && player.champName == champs[1]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -1329,7 +1383,7 @@ class _TestPageState extends State<TestPage> {
 
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[2]) {
+        if (champs.length >= 3 && player.champName == champs[2]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
@@ -1420,12 +1474,11 @@ class _TestPageState extends State<TestPage> {
           csTotal);
       resetVariables();
       for (var player in matchByChampList) {
-        if (player.champName == champs[3]) {
+        if (champs.length >= 4 && player.champName == champs[3]) {
           //champTotals(player.playerInfo);
           matchTotals(player.playerInfo);
         }
       }
-
       MatchHistoryTotals matchHistoryTotalsChamp4 = MatchHistoryTotals(
           baronKillsTotal!,
           killsTotal!,
@@ -1521,11 +1574,10 @@ class _TestPageState extends State<TestPage> {
                   profileIconID: profileIconID,
                   puuid: puuid,
                   summonerID: summmonerID,
-                  summonerName: summonerName,
+                  summonerName: summonerObject?.summonerName,
                   server: server,
                   soloQRank: ranksoloQ,
                   flexRank: rankFlex,
-                  masteryList: masteryList,
                   matchHistoryList: matchHistory,
                   matchHistoryTotals: matchHistoryTotals,
                   matchHistoryTotalschamp1: matchHistoryTotalsChamp1,
@@ -1534,6 +1586,7 @@ class _TestPageState extends State<TestPage> {
                   matchHistoryTotalschamp3: matchHistoryTotalsChamp3,
                   matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
                   lane: lanePref,
+                  champMasteryList: champMasteryList,
                 )),
       );
     } else {

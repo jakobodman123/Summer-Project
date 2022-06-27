@@ -41,11 +41,11 @@ class AltAccoladesItem extends StatelessWidget {
     if (champName != null && games! >= 15) {
       accoladeList.add(accolades.champMain(games!.toDouble(), champName));
     }
-    if ((matchHistoryTotals!.killsTotal! / games!) >= 10) {
+    if ((matchHistoryTotals!.killsTotal! / games!) >= 10 && games! >= 3) {
       accoladeList.add(
           accolades.bloodThirsty(matchHistoryTotals!.killsTotal! / games!));
     }
-    if ((matchHistoryTotals!.pinkWardsTotal! / games!) >= 2) {
+    if ((matchHistoryTotals!.pinkWardsTotal! / games!) >= 2 && games! >= 3) {
       accoladeList.add(
           accolades.pinkWards(matchHistoryTotals!.pinkWardsTotal! / games!));
     }
@@ -64,42 +64,45 @@ class AltAccoladesItem extends StatelessWidget {
           .add(accolades.diesAlot(matchHistoryTotals!.deathsTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.baronKillsTotal! / games!) >= 0.5) {
+    if ((matchHistoryTotals!.baronKillsTotal! / games!) >= 0.5 && games! >= 3) {
       accoladeList.add(
           accolades.baronRaider(matchHistoryTotals!.baronKillsTotal! / games!));
     }
 
     if ((matchHistoryTotals!.endGameLevelTotal! / games!) >= 15 &&
-        matchHistoryTotals!.gameLengthTotal! / games! >= 1600) {
+        matchHistoryTotals!.gameLengthTotal! / games! >= 1600 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .lateGameLover(matchHistoryTotals!.endGameLevelTotal! / games!));
     }
 
     matchHistoryTotals!.gameLengthTotal;
 
-    if ((matchHistoryTotals!.visionScoreTotal! / games!) >= 35) {
+    if ((matchHistoryTotals!.visionScoreTotal! / games!) >= 35 && games! >= 3) {
       accoladeList.add(accolades
           .visionLegend(matchHistoryTotals!.visionScoreTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.visionScoreTotal! / games!) <= 15) {
+    if ((matchHistoryTotals!.visionScoreTotal! / games!) <= 15 && games! >= 3) {
       accoladeList.add(
           accolades.badVision(matchHistoryTotals!.visionScoreTotal! / games!));
     }
-    if ((matchHistoryTotals!.damageTotal! / games!) >= 25000) {
+    if ((matchHistoryTotals!.damageTotal! / games!) >= 25000 && games! >= 3) {
       accoladeList
           .add(accolades.highDamage(matchHistoryTotals!.damageTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.dmgToStructuresTotal! / games!) >= 5000) {
+    if ((matchHistoryTotals!.dmgToStructuresTotal! / games!) >= 5000 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .demolisher(matchHistoryTotals!.dmgToStructuresTotal! / games!));
     }
-    if ((matchHistoryTotals!.dragonKillsTotal! / games!) >= 0.5) {
+    if ((matchHistoryTotals!.dragonKillsTotal! / games!) >= 0.5 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .dragonTamer(matchHistoryTotals!.dragonKillsTotal! / games!));
     }
-    if ((matchHistoryTotals!.firstBloodTotal! / games!) >= 0.5) {
+    if ((matchHistoryTotals!.firstBloodTotal! / games!) >= 0.5 && games! >= 3) {
       accoladeList.add(accolades
           .firstBloodExpert(matchHistoryTotals!.firstBloodTotal! / games!));
     }
@@ -109,11 +112,13 @@ class AltAccoladesItem extends StatelessWidget {
           .epicStealer(matchHistoryTotals!.objectiveStealTotal! / games!));
     }
     if ((matchHistoryTotals!.damageTakenOnTeamPercentageTotal! / games!) >=
-        0.25) {
+            0.25 &&
+        games! >= 3) {
       accoladeList.add(accolades.tank(
           matchHistoryTotals!.damageTakenOnTeamPercentageTotal! / games!));
     }
-    if ((matchHistoryTotals!.turretKillsTotal! / games!) >= 1.0) {
+    if ((matchHistoryTotals!.turretKillsTotal! / games!) >= 1.0 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .turretKiller(matchHistoryTotals!.turretKillsTotal! / games!));
     }
@@ -122,7 +127,7 @@ class AltAccoladesItem extends StatelessWidget {
           matchHistoryTotals!.acesBefore15MinutesTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.buffStolenTotal! / games!) >= 1.0) {
+    if ((matchHistoryTotals!.buffStolenTotal! / games!) >= 1.0 && games! >= 3) {
       accoladeList.add(
           accolades.jungleThief(matchHistoryTotals!.buffStolenTotal! / games!));
     }
@@ -153,7 +158,8 @@ class AltAccoladesItem extends StatelessWidget {
           matchHistoryTotals!.gameEndedInSurrenderTotal!.toDouble()));
     }
 
-    if ((matchHistoryTotals!.goldEarnedTotal! / games!) >= 12000) {
+    if ((matchHistoryTotals!.goldEarnedTotal! / games!) >= 12000 &&
+        games! >= 3) {
       accoladeList.add(
           accolades.goldHoarder(matchHistoryTotals!.goldEarnedTotal! / games!));
     }
@@ -173,7 +179,8 @@ class AltAccoladesItem extends StatelessWidget {
           .layup(matchHistoryTotals!.immobilizeAndKillWithAllyTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.jungleCsBefore10MinutesTotal! / games!) >= 40) {
+    if ((matchHistoryTotals!.jungleCsBefore10MinutesTotal! / games!) >= 40 &&
+        games! >= 3) {
       accoladeList.add(accolades.powerFarmer(
           matchHistoryTotals!.jungleCsBefore10MinutesTotal! / games!));
     }
@@ -188,7 +195,8 @@ class AltAccoladesItem extends StatelessWidget {
           .badKp(matchHistoryTotals!.killParticipationTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.killsUnderOwnTurretTotal! / games!) >= 1) {
+    if ((matchHistoryTotals!.killsUnderOwnTurretTotal! / games!) >= 1 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .hardToDive(matchHistoryTotals!.killsUnderOwnTurretTotal! / games!));
     }
@@ -220,7 +228,8 @@ class AltAccoladesItem extends StatelessWidget {
     }
 
     if ((matchHistoryTotals!.multiTurretRiftHeraldCountTotal! / games!) >=
-        0.5) {
+            0.5 &&
+        games! >= 3) {
       accoladeList.add(accolades.heraldUsage(
           matchHistoryTotals!.multiTurretRiftHeraldCountTotal! / games!));
     }
@@ -250,7 +259,8 @@ class AltAccoladesItem extends StatelessWidget {
           .baronSolo(matchHistoryTotals!.soloBaronKillsTotal!.toDouble()));
     }
 
-    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 0.5) {
+    if ((matchHistoryTotals!.saveAllyFromDeathTotal! / games!) >= 0.5 &&
+        games! >= 3) {
       accoladeList.add(accolades
           .guardianAngel(matchHistoryTotals!.saveAllyFromDeathTotal! / games!));
     }

@@ -1,6 +1,8 @@
+import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:flutter/material.dart';
 import 'package:summer_project/accoladesPage.dart';
+import 'package:summer_project/champMasteryCard.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'package:summer_project/rankedCard.dart';
@@ -8,8 +10,16 @@ import 'package:summer_project/rankedCard.dart';
 //https://pbs.twimg.com/media/B8jEndNIYAEavcH.jpg
 
 class MainProfile extends StatefulWidget {
-  const MainProfile(this.iconID, this.level, this.summonerName, this.summonerID,
-      this.soloQRank, this.flexQRank, this.matchHistoryTotals, this.lane);
+  const MainProfile(
+      this.iconID,
+      this.level,
+      this.summonerName,
+      this.summonerID,
+      this.soloQRank,
+      this.flexQRank,
+      this.matchHistoryTotals,
+      this.lane,
+      this.championMasteryList);
 
   final String? iconID; //"4884"
   final String? level;
@@ -19,6 +29,7 @@ class MainProfile extends StatefulWidget {
   final Rank? flexQRank;
   final MatchHistoryTotals? matchHistoryTotals;
   final String? lane;
+  final List<ChampionMastery>? championMasteryList;
 
   @override
   MainProfileState createState() => MainProfileState();
@@ -72,8 +83,8 @@ class MainProfileState extends State<MainProfile> {
     return Card(
         shape: const BeveledRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(150),
-              bottomRight: Radius.circular(150)),
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50)),
         ),
         color: colorLightGrey,
         elevation: 10,
@@ -148,7 +159,22 @@ class MainProfileState extends State<MainProfile> {
                     games: widget.matchHistoryTotals?.gamesPlayed,
                   ),
                 ],
-              )
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Top Champion Masteries',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  ChampMasteryCard(
+                    championMasteryList: widget.championMasteryList,
+                  )
+                ],
+              ),
             ],
           ),
         ));
