@@ -33,12 +33,12 @@ class AccoladesItem extends StatelessWidget {
               ? const Color(0xFF6082B6).withOpacity(0.3)
               : const Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),
           child: Container(
-            padding: EdgeInsets.all(7),
+            padding: EdgeInsets.all(7 * 0.7),
             child: Text(
               title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 17,
+                fontSize: 17 * 0.7,
                 fontWeight: FontWeight.bold,
               ),
             ),

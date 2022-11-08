@@ -292,12 +292,12 @@ class AccoladesPage extends StatelessWidget {
         elevation: 20,
         color: colorGrey,
         child: SizedBox(
-          height: 220,
-          width: 460,
+          height: 220 * 0.7,
+          width: 460 * 0.7,
           child: SingleChildScrollView(
             child: Wrap(
-              spacing: 15,
-              runSpacing: 15,
+              spacing: 15 * 0.7,
+              runSpacing: 15 * 0.7,
               children: accoladeList,
             ),
           ),

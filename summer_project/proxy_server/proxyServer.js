@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors());
 
-const API_KEY = "joel";
+const API_KEY = "RGAPI-dc8682ac-331c-481e-a1bb-7c4c8d074950";
 const server = "europe";
 
 
@@ -69,6 +69,8 @@ app.get('/getChallenges', async (req, res) => {
 
 const API_CALL = "https://euw1.api.riotgames.com/lol/challenges/v1/player-data/" + PUUID  + "?api_key=" + API_KEY;
 const challenges = await axios.get(API_CALL).then(response => response.data).catch(err => err);
+
+console.log(response.data);
 
 
 res.json(challenges);

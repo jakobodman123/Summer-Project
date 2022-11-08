@@ -499,4 +499,41 @@ class Accolades {
         score: score,
         positive: true);
   }
+
+  AccoladesItem winStreak(double score) {
+    return AccoladesItem(
+        value: 1,
+        title: "Win Streak",
+        description: "This player is on a winstreak! Consecutive wins ",
+        score: score,
+        positive: true);
+  }
+
+  AccoladesItem loseStreak(double score) {
+    return AccoladesItem(
+        value: 1,
+        title: "Lose Streak",
+        description: "This player is on a losstreak! Consecutive losses ",
+        score: score,
+        positive: false);
+  }
+
+  AccoladesItem stomped(double score) {
+    return AccoladesItem(
+        value: 1,
+        title: "Stomped",
+        description: "This player got ran over last game! Cheer him up!",
+        score: score,
+        positive: false);
+  }
+
+  AccoladesItem premade(double score) {
+    return AccoladesItem(
+        value: 2,
+        title: "Premade",
+        description:
+            "This player has " + score.toStringAsFixed(0) + " with PLAYERNAME!",
+        score: score,
+        positive: true);
+  }
 }

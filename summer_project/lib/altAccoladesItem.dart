@@ -293,12 +293,12 @@ class AltAccoladesItem extends StatelessWidget {
         elevation: 20,
         color: colorGrey,
         child: SizedBox(
-          height: 100,
-          width: 300,
+          height: 100 * 0.7,
+          width: 300 * 0.7,
           child: SingleChildScrollView(
             child: Wrap(
-              spacing: 10,
-              runSpacing: 15,
+              spacing: 10 * 0.7,
+              runSpacing: 15 * 0.7,
               children: accoladeList,
             ),
           ),

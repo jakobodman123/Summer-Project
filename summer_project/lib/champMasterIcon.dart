@@ -10,8 +10,8 @@ class ChampMasteryIcon extends StatelessWidget {
     // TODO: implement build
     return Column(children: [
       Container(
-        height: 100.0,
-        width: 100.0,
+        height: 100.0 * 0.7,
+        width: 100.0 * 0.7,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
@@ -26,24 +26,10 @@ class ChampMasteryIcon extends StatelessWidget {
       Text(
         "M: " + champMastery.toString(),
         style: const TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 18 * 0.7,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
-      /*
-      RichText(
-        text: TextSpan(
-          style: TextStyle(color: Colors.white, fontSize: 18),
-          children: <TextSpan>[
-            const TextSpan(
-              text: "M: ",
-            ),
-            TextSpan(
-                text: champMastery.toString(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.blue)),
-          ],
-        ),
-      )
-      */
     ]);
   }
 }

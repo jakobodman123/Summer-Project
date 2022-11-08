@@ -15,6 +15,7 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:summer_project/altChampsWidget.dart';
 import 'package:summer_project/apiMethods.dart';
 import 'package:summer_project/bestChampionCard.dart';
+import 'package:summer_project/challenges.dart';
 import 'package:summer_project/item.dart';
 import 'package:summer_project/mainProfile.dart';
 import 'package:summer_project/matchByChamp.dart';
@@ -88,7 +89,9 @@ class TestPage extends StatefulWidget {
       this.matchHistoryTotalschamp3,
       this.matchHistoryTotalschamp4,
       this.lane,
-      this.champMasteryList})
+      this.champMasteryList,
+      this.challenges,
+      this.playerIndexs})
       : super(key: key);
 
   //TestPage();
@@ -111,6 +114,8 @@ class TestPage extends StatefulWidget {
   final List<dynamic>? champsPlayedIds;
   final String? lane;
   final List<ChampionMastery>? champMasteryList;
+  final AccountChallenges? challenges;
+  final List<int>? playerIndexs;
 
   @override
   _TestPageState createState() => _TestPageState();
@@ -127,6 +132,7 @@ class _TestPageState extends State<TestPage> {
   List<String>? champNames = [];
   List<MatchByChamp> matchByChampList = [];
   List<String>? laneNames = [];
+  List<int>? playerIndexs = [];
 
   @override
   void initState() {
@@ -184,7 +190,7 @@ class _TestPageState extends State<TestPage> {
             border: OutlineInputBorder(),
           ),
           onSubmitted: (value) async {
-            await onTapLoad();
+            await onTapLoad1();
           },
           onTap: () {
             showTextField = false;
@@ -213,9 +219,12 @@ class _TestPageState extends State<TestPage> {
 
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
 
-      Participants? player = matchStats.info?.participants?[
-          await apiMethods.findPersonUsingLoop(
-              matchStats.info?.participants, summonerName.toLowerCase())];
+      int? playerIndex = await apiMethods.findPersonUsingLoop(
+          matchStats.info?.participants, summonerName.toLowerCase());
+
+      playerIndexs?.add(playerIndex);
+
+      Participants? player = matchStats.info?.participants?[playerIndex];
 
       if (player != null) {
         String? champName = player.championName;
@@ -248,14 +257,15 @@ class _TestPageState extends State<TestPage> {
             slides: slides,
           )
         : Scaffold(
-            extendBodyBehindAppBar: true,
+            //extendBodyBehindAppBar: true,
             appBar: AppBar(
               backgroundColor: colorDarkGrey,
               title: const Text('Play Easy Champion Selector'),
               actions: <Widget>[
                 Container(
-                  width: 400,
-                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  width: 400 * 0.7,
+                  padding: const EdgeInsets.fromLTRB(
+                      15.0 * 0.7, 0.0, 15.0 * 0.7, 0.0),
                   child: Row(
                     children: <Widget>[
                       showTextField ? _buildTextField() : Container(),
@@ -271,142 +281,109 @@ class _TestPageState extends State<TestPage> {
                   ),
                   tooltip: 'Go to the next page',
                   onPressed: () async {
-                    await onTapLoad();
+                    await onTapLoad1();
                   },
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              //height: size.height,
-              //width: size.width,
-              child: Container(
-                color: colorDarkGrey,
-                child: Column(children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 80,
-                          ),
-                          child: SizedBox(
-                            //height: MediaQuery.of(context).size.height,
-                            width: 500,
-                            child: MainProfile(
-                                widget.profileIconID.toString(),
-                                widget.level.toString(),
-                                widget.summonerName,
-                                widget.summonerID,
-                                widget.soloQRank,
-                                widget.flexRank,
-                                widget.matchHistoryTotals,
-                                widget.lane,
-                                widget.champMasteryList),
-                          ),
-                        ),
-                        //Vit box
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40, left: 40),
-                          child: BestChampionCard(
-                            summonerName: widget.summonerName,
-                            //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
-                            champName: widget.champsPlayedIds![0],
-                            matchHistoryTotals: widget.matchHistoryTotalschamp1,
-                            gamesPlayed:
-                                widget.matchHistoryTotalschamp1?.gamesPlayed,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40),
-                          child: Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  top: 0,
-                                ),
-                                child: Text(
-                                  "Alternative Champs",
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 650,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 50),
-                                child: widget.champsPlayedIds!.length < 2
-                                    ? const SizedBox()
-                                    : AltChampsWidget(
-                                        widget.champsPlayedIds![1],
-                                        widget.matchHistoryTotalschamp2
-                                            ?.gamesPlayed,
-                                        widget.matchHistoryTotalschamp2
-                                            ?.winsTotal,
-                                        widget.matchHistoryTotalschamp2),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 50),
-                                child: widget.champsPlayedIds!.length < 3
-                                    ? const SizedBox()
-                                    : AltChampsWidget(
-                                        widget.champsPlayedIds![2],
-                                        widget.matchHistoryTotalschamp3
-                                            ?.gamesPlayed,
-                                        widget.matchHistoryTotalschamp3
-                                            ?.winsTotal,
-                                        widget.matchHistoryTotalschamp3),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 50),
-                                child: widget.champsPlayedIds!.length < 4
-                                    ? const SizedBox()
-                                    : AltChampsWidget(
-                                        widget.champsPlayedIds![3],
-                                        widget.matchHistoryTotalschamp4
-                                            ?.gamesPlayed,
-                                        widget.matchHistoryTotalschamp4
-                                            ?.winsTotal,
-                                        widget.matchHistoryTotalschamp4),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40, right: 40),
-                          child: Column(children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 20,
-                              ),
-                              child: Text(
-                                "Match History",
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            MatchHistoryWidget(
-                              matchHistoryList: widget.matchHistoryList,
-                              summonerName: widget.summonerName,
-                            ),
-                          ]),
-                        ),
-                      ],
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: colorDarkGrey,
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 40 * 0.7,
+                  clipBehavior: Clip.hardEdge,
+                  children: [
+                    SizedBox(
+                      width: 500 * 0.7,
+                      height: 1250 * 0.7,
+                      child: MainProfile(
+                          widget.profileIconID.toString(),
+                          widget.level.toString(),
+                          widget.summonerName,
+                          widget.summonerID,
+                          widget.soloQRank,
+                          widget.flexRank,
+                          widget.matchHistoryTotals,
+                          widget.lane,
+                          widget.champMasteryList,
+                          widget.challenges),
                     ),
-                  ),
-                ]),
+
+                    //Vit box
+                    BestChampionCard(
+                      summonerName: widget.summonerName,
+                      //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
+                      champName: widget.champsPlayedIds![0],
+                      matchHistoryTotals: widget.matchHistoryTotalschamp1,
+                      gamesPlayed: widget.matchHistoryTotalschamp1?.gamesPlayed,
+                    ),
+                    Column(children: [
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 20 * 0.7,
+                        ),
+                        child: Text(
+                          "Match History",
+                          style: TextStyle(
+                            fontSize: 28 * 0.7,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      MatchHistoryWidget(
+                        matchHistoryList: widget.matchHistoryList,
+                        summonerName: widget.summonerName,
+                        playerIndexes: widget.playerIndexs,
+                      ),
+                    ]),
+                    SizedBox(
+                      width: 650 * 0.7,
+                      height: 1150 * 0.7,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              top: 0,
+                            ),
+                            child: Text(
+                              "Alternative Champs",
+                              style: TextStyle(
+                                fontSize: 28 * 0.7,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          widget.champsPlayedIds!.length < 2
+                              ? const SizedBox()
+                              : AltChampsWidget(
+                                  widget.champsPlayedIds![1],
+                                  widget.matchHistoryTotalschamp2?.gamesPlayed,
+                                  widget.matchHistoryTotalschamp2?.winsTotal,
+                                  widget.matchHistoryTotalschamp2),
+                          widget.champsPlayedIds!.length < 3
+                              ? const SizedBox()
+                              : AltChampsWidget(
+                                  widget.champsPlayedIds![2],
+                                  widget.matchHistoryTotalschamp3?.gamesPlayed,
+                                  widget.matchHistoryTotalschamp3?.winsTotal,
+                                  widget.matchHistoryTotalschamp3),
+                          widget.champsPlayedIds!.length < 4
+                              ? const SizedBox()
+                              : AltChampsWidget(
+                                  widget.champsPlayedIds![3],
+                                  widget.matchHistoryTotalschamp4?.gamesPlayed,
+                                  widget.matchHistoryTotalschamp4?.winsTotal,
+                                  widget.matchHistoryTotalschamp4),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ));
   }
@@ -1028,7 +1005,7 @@ class _TestPageState extends State<TestPage> {
     }
   }
 
-  Future<void> onTapLoad() async {
+  Future<void> onTapLoad1() async {
     Summoner? summonerObject = Summoner();
     await ItemApi.getSummoner(summonerTextController.text).then((response) {
       Summoner object = Summoner.fromJson(
@@ -1060,9 +1037,18 @@ class _TestPageState extends State<TestPage> {
         //print(matchHistoryList2);
       });
 
+      AccountChallenges challenges = AccountChallenges();
+      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
+        AccountChallenges object = AccountChallenges.fromJson(
+          json.decode(
+            response.body,
+          ),
+        );
+        challenges = object;
+      });
+
       List<Rank>? rankedList = [];
       await ItemApi.getRanked(summmonerID!).then((response) {
-        //print(response.body);
         Iterable list = json.decode(response.body);
 
         rankedList = list.map((model) => Rank.fromJson(model)).toList();
@@ -1099,92 +1085,6 @@ class _TestPageState extends State<TestPage> {
         summonerName: summonerTextController.text,
       );
 
-      MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-
-      //Most Played Map
-
       var lanes = getMapString(laneNames);
 
       String lanePref;
@@ -1196,372 +1096,15 @@ class _TestPageState extends State<TestPage> {
 
       //Most Played Map
 
-      var champs = getMapString(champNames);
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.isEmpty == false && player.champName == champs[0]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
+      List<dynamic> champs = getMapString(champNames);
 
-      MatchHistoryTotals matchHistoryTotalsChamp1 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
+      MatchHistoryTotals matchHistoryTotals = setTotals(champs, -1);
 
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 2 && player.champName == champs[1]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
+      MatchHistoryTotals matchHistoryTotalsChamp1 = setTotals(champs, 0);
+      MatchHistoryTotals matchHistoryTotalsChamp2 = setTotals(champs, 1);
+      MatchHistoryTotals matchHistoryTotalsChamp3 = setTotals(champs, 2);
+      MatchHistoryTotals matchHistoryTotalsChamp4 = setTotals(champs, 3);
 
-      MatchHistoryTotals matchHistoryTotalsChamp2 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 3 && player.champName == champs[2]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
-
-      MatchHistoryTotals matchHistoryTotalsChamp3 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 4 && player.champName == champs[3]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
-      MatchHistoryTotals matchHistoryTotalsChamp4 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
       setState(() {
         isLoading = false;
       });
@@ -1587,11 +1130,109 @@ class _TestPageState extends State<TestPage> {
                   matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
                   lane: lanePref,
                   champMasteryList: champMasteryList,
+                  challenges: challenges,
+                  playerIndexs: playerIndexs,
                 )),
       );
     } else {
       //alert no summoner with this name
       //print("Error");
     }
+  }
+
+  MatchHistoryTotals setTotals(List<dynamic> champs, int index) {
+    if (index >= 0) {
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (champs.length >= (index + 1) && player.champName == champs[index]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+    }
+    MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
+        baronKillsTotal!,
+        killsTotal!,
+        pinkWardsTotal!,
+        endGameLevelTotal!,
+        dmgToStructuresTotal!,
+        deathsTotal!,
+        dragonKillsTotal!,
+        firstBloodTotal!,
+        killingSpreeTotal!,
+        objectiveStealTotal!,
+        pentaKillsTotal!,
+        damageTotal!,
+        damageTakenTotal!,
+        turretKillsTotal!,
+        visionScoreTotal!,
+        wardsGuardedTotal!,
+        turretPlatesTakenTotal!,
+        soloKillsTotal!,
+        soloBaronKillsTotal!,
+        scuttleCrabKillsTotal!,
+        saveAllyFromDeathTotal!,
+        quickSoloKillsTotal!,
+        epicMonsterKillsNearEnemyJunglerTotal!,
+        enemyJungleMonsterKillsTotal!,
+        earlyLaningPhaseGoldExpAdvantageTotal!,
+        effectiveHealAndShieldingTotal!,
+        earliestBaronRecord!,
+        epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+        fasterSupportQuestCompletionTotal!,
+        firstTurretKilledTimeRecord!,
+        gameLengthTotal!,
+        goldPerMinuteTotal!,
+        hadOpenNexusWinsTotal!,
+        immobilizeAndKillWithAllyTotal!,
+        jungleCsBefore10MinutesTotal!,
+        junglerKillsEarlyJungleTotal!,
+        kdaTotal!,
+        killAfterHiddenWithAllyTotal!,
+        killParticipationTotal!,
+        killsNearEnemyTurretTotal!,
+        killsOnLanersEarlyJungleAsJunglerTotal!,
+        killsOnOtherLanesEarlyJungleAsLanerTotal!,
+        killsUnderOwnTurretTotal!,
+        landSkillShotsEarlyGameTotal!,
+        laneMinionsFirst10MinutesTotal!,
+        maxCsAdvantageOnLaneOpponentTotal!,
+        legendaryCountTotal!,
+        lostAnInhibitorWinsTotal!,
+        multiTurretRiftHeraldCountTotal!,
+        perfectDragonSoulsTakenTotal!,
+        multikillsAfterAggressiveFlashTotal!,
+        multikillsTotal!,
+        outnumberedKillsTotal!,
+        perfectGameTotal!,
+        quickCleanseTotal!,
+        dodgeSkillShotsSmallWindowTotal!,
+        damageTakenOnTeamPercentageTotal!,
+        damagePerMinuteTotal!,
+        acesBefore15MinutesTotal!,
+        tripleKillsTotal!,
+        inhibitorTakedownsTotal!,
+        totalHealTotal!,
+        timeCCingOthersTotal!,
+        neutralMinionsKilledTotal!,
+        quadraKillsTotal!,
+        timePlayedTotal!,
+        gameEndedInSurrenderTotal!,
+        goldEarnedTotal!,
+        firstTowerTotal!,
+        damageSelfMitigatedTotal!,
+        doubleKillsTotal!,
+        detectorWardsPlacedTotal!,
+        wardsPlacedTotal!,
+        wardsKilledTotal!,
+        alliedJungleMonsterKillsTotal!,
+        buffStolenTotal!,
+        teamDamagePercentageTotal!,
+        gamesPlayedTotal!,
+        assistsTotal!,
+        lossesTotal,
+        winsTotal,
+        csTotal);
+    return matchHistoryTotals;
   }
 }

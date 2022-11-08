@@ -10,7 +10,7 @@ class MasteryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 500,
+      width: 500 * 0.7,
       child: Card(
         color: colorGrey,
         shadowColor: Colors.blue,
@@ -21,8 +21,8 @@ class MasteryCard extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 100.0,
-              height: 100.0,
+              width: 100.0 * 0.7,
+              height: 100.0 * 0.7,
               child: FittedBox(
                   fit: BoxFit.fill,
                   child: Image.asset(
@@ -32,14 +32,14 @@ class MasteryCard extends StatelessWidget {
             const Text(
               ' Mastery Points: ',
               style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 28 * 0.7,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
             GlowText(
               mastery.toString(),
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 28 * 0.7,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
               ),

@@ -8,6 +8,7 @@ import 'package:dart_lol/LeagueStuff/game.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:dart_lol/dart_lol.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
@@ -23,6 +24,7 @@ import 'dart:convert';
 import 'package:summer_project/matchStats.dart';
 import 'package:summer_project/slides.dart';
 import 'package:summer_project/testClass.dart';
+import 'package:summer_project/titles.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -40,6 +42,8 @@ class _SearchPageState extends State<SearchPage> {
   List<MatchByChamp> matchByChampList = [];
 
   List<String>? laneNames = [];
+
+  List<int>? playerIndexs = [];
 
   bool isLoading = false;
 
@@ -67,9 +71,12 @@ class _SearchPageState extends State<SearchPage> {
 
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
 
-      Participants? player = matchStats.info?.participants?[
-          await apiMethods.findPersonUsingLoop(
-              matchStats.info?.participants, summonerName.toLowerCase())];
+      int? playerIndex = await apiMethods.findPersonUsingLoop(
+          matchStats.info?.participants, summonerName.toLowerCase());
+
+      playerIndexs?.add(playerIndex);
+
+      Participants? player = matchStats.info?.participants?[playerIndex];
 
       if (player != null) {
         String? champName = player.championName;
@@ -91,6 +98,7 @@ class _SearchPageState extends State<SearchPage> {
         matchByChampList.add(matchByChamp);
       }
     }
+
     return matchHistoryList2;
   }
 
@@ -113,146 +121,276 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: const Text('Play Easy Champion Selector'),
+        actions: <Widget>[
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: InkWell(
+                  onTap: () {
+                    print('Text Clicked');
+                  },
+                  child: const GlowText(
+                    "Other projects",
+                    glowColor: Colors.blue,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: InkWell(
+                  onTap: () {
+                    print('Text Clicked');
+                  },
+                  child: const GlowText(
+                    "About",
+                    glowColor: Colors.blue,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: InkWell(
+                  onTap: () {
+                    print('Text Clicked');
+                  },
+                  child: const GlowText(
+                    "Contact",
+                    glowColor: Colors.blue,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: isLoading
           ? IntroSlider(
               slides: slides,
               onDonePress: onDonePress,
             )
           : Container(
-              //color: colorDarkGrey,
-              //height: size.height,
-              //width: size.width,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 200,
-                    ),
-                    const GlowText(
-                      "League of Legends",
-                      glowColor: Colors.blue,
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const GlowText(
-                      "Play Easy Champions",
-                      glowColor: Colors.blue,
-                      style: TextStyle(
-                          fontSize: 42,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const GlowText(
-                      "By JakobCrya",
-                      glowColor: Colors.blue,
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Container(
-                      color: colorDarkGrey,
-                      //width: size.width * 0.6,
-                      width: 1500,
-                      child: TextField(
-                        onSubmitted: (value) async {
-                          await onTapLoad();
-                        },
-                        autofocus: true,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                        ),
-                        controller: summonerTextController,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(20),
-                        ],
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefix: DropdownButton(
-                              value: server,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  server = newValue!;
-                                });
-                              },
-                              items: dropdownItems),
-                          suffixIcon: InkWell(
-                            child: const GlowIcon(
-                              Icons.search,
-                              color: Colors.blue,
-                              glowColor: Colors.blue,
-                              size: 50,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 200,
+                      ),
+                      const GlowText(
+                        "League of Legends",
+                        glowColor: Colors.blue,
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const GlowText(
+                        "Play Easy Champions",
+                        glowColor: Colors.blue,
+                        style: TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const GlowText(
+                        "By JakobCrya",
+                        glowColor: Colors.blue,
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        width: 1500,
+                        child: TextField(
+                          onSubmitted: (value) async {
+                            await onTapLoad1();
+                          },
+                          //autofocus: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                          ),
+                          controller: summonerTextController,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(20),
+                          ],
+                          decoration: InputDecoration(
+                            fillColor: colorDarkGrey,
+                            filled: true,
+                            hintText: "E.g. \"Ritzler\"",
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
-                            onTap: () async {
-                              await onTapLoad();
-                            },
+                            /*
+                              prefix: DropdownButton(
+                                  value: server,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      server = newValue!;
+                                    });
+                                  },
+                                  items: dropdownItems), 
+                                  */
+                            suffixIcon: InkWell(
+                              child: const GlowIcon(
+                                Icons.search,
+                                color: Colors.blue,
+                                glowColor: Colors.blue,
+                                size: 50,
+                              ),
+                              onTap: () async {
+                                await onTapLoad1();
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    const GlowText(
-                      "How to Use",
-                      glowColor: Colors.blue,
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      width: 1000,
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                          //height: 400.0,
-                          enableInfiniteScroll: false,
-                        ),
-                        items: [
-                          const AssetImage("assets/helpIMG/matchHistory.png"),
-                          const AssetImage("assets/helpIMG/search.png"),
-                          const AssetImage("assets/helpIMG/loading.jpg"),
-                          const AssetImage("assets/helpIMG/profile.png"),
-                          const AssetImage(
-                              "assets/helpIMG/accountAccolades.png"),
-                          const AssetImage("assets/helpIMG/mainChampWR.png"),
-                          const AssetImage("assets/helpIMG/mainChampA.png"),
-                          const AssetImage("assets/helpIMG/altchamp.png"),
-                          const AssetImage("assets/helpIMG/mhExpanded.png"),
-                        ].map((i) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                //width: MediaQuery.of(context).size.width,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5.0),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.fitWidth,
-                                    //alignment: FractionalOffset.topCenter,
-                                    image: i,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
+                      const SizedBox(
+                        height: 50,
                       ),
-                    ),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.chart_bar_circle_fill,
+                            color: Colors.red,
+                          ),
+                          GlowText(
+                            "Advanced Player Stats",
+                            glowColor: Colors.blue,
+                            style: TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.star_fill,
+                            color: Colors.yellow,
+                          ),
+                          GlowText(
+                            "Player Accolades",
+                            glowColor: Colors.blue,
+                            style: TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.game_controller_solid,
+                            color: Colors.green,
+                          ),
+                          GlowText(
+                            "Match History",
+                            glowColor: Colors.blue,
+                            style: TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      SizedBox(
+                          width: 500,
+                          height: 300,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            elevation: 20,
+                            child: Image.asset(
+                              "assets/helpIMG/add_picture.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))
+                      /*
+                      GlowButton(
+                        glowColor: Colors.blue,
+                        child: const Text(
+                          'Tutorial',
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
+                        color: Colors.blueAccent,
+                        onPressed: () {},
+                      )
+                      */
+                      /*
+                      SizedBox(
+                        width: 1000,
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            //height: 400.0,
+                            enableInfiniteScroll: false,
+                          ),
+                          items: [
+                            const AssetImage("assets/helpIMG/matchHistory.png"),
+                            const AssetImage("assets/helpIMG/search.png"),
+                            const AssetImage("assets/helpIMG/loading.jpg"),
+                            const AssetImage("assets/helpIMG/profile.png"),
+                            const AssetImage(
+                                "assets/helpIMG/accountAccolades.png"),
+                            const AssetImage("assets/helpIMG/mainChampWR.png"),
+                            const AssetImage("assets/helpIMG/mainChampA.png"),
+                            const AssetImage("assets/helpIMG/altchamp.png"),
+                            const AssetImage("assets/helpIMG/mhExpanded.png"),
+                          ].map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  //width: MediaQuery.of(context).size.width,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      //alignment: FractionalOffset.topCenter,
+                                      image: i,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      */
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -343,7 +481,7 @@ class _SearchPageState extends State<SearchPage> {
   int? buffStolenTotal = 0;
   double? teamDamagePercentageTotal = 0;
 
-  Future<void> onTapLoad() async {
+  Future<void> onTapLoad1() async {
     Summoner? summonerObject = Summoner();
     await ItemApi.getSummoner(summonerTextController.text).then((response) {
       Summoner object = Summoner.fromJson(
@@ -365,21 +503,6 @@ class _SearchPageState extends State<SearchPage> {
       String? puuid = summonerObject?.puuid;
       String? summmonerID = summonerObject?.summonerID;
 
-      AccountChallenges? challengesObject = AccountChallenges();
-      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
-        AccountChallenges object = AccountChallenges.fromJson(
-          json.decode(
-            response.body,
-          ),
-        );
-        challengesObject = object;
-      });
-      print(challengesObject?.categoryPoints?.cOLLECTION?.current);
-      print(challengesObject?.categoryPoints?.cOLLECTION?.level);
-      print(challengesObject?.preferences?.title);
-      print(challengesObject?.preferences?.challengeIds);
-      print(challengesObject?.preferences?.bannerAccent);
-
       List<ChampionMastery>? champMasteryList = [];
       await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
         //print(response.body);
@@ -388,6 +511,16 @@ class _SearchPageState extends State<SearchPage> {
         champMasteryList =
             list.map((model) => ChampionMastery.fromJson(model)).toList();
         //print(matchHistoryList2);
+      });
+
+      AccountChallenges challenges = AccountChallenges();
+      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
+        AccountChallenges object = AccountChallenges.fromJson(
+          json.decode(
+            response.body,
+          ),
+        );
+        challenges = object;
       });
 
       List<Rank>? rankedList = [];
@@ -429,90 +562,6 @@ class _SearchPageState extends State<SearchPage> {
         summonerName: summonerTextController.text,
       );
 
-      MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-
       var lanes = getMapString(laneNames);
 
       String lanePref;
@@ -523,375 +572,16 @@ class _SearchPageState extends State<SearchPage> {
       }
 
       //Most Played Map
-      var champs = getMapString(champNames);
-      print(champs);
 
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.isEmpty == false && player.champName == champs[0]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
+      List<dynamic> champs = getMapString(champNames);
 
-      MatchHistoryTotals matchHistoryTotalsChamp1 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
+      MatchHistoryTotals matchHistoryTotals = setTotals(champs, -1);
 
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 2 && player.champName == champs[1]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
+      MatchHistoryTotals matchHistoryTotalsChamp1 = setTotals(champs, 0);
+      MatchHistoryTotals matchHistoryTotalsChamp2 = setTotals(champs, 1);
+      MatchHistoryTotals matchHistoryTotalsChamp3 = setTotals(champs, 2);
+      MatchHistoryTotals matchHistoryTotalsChamp4 = setTotals(champs, 3);
 
-      MatchHistoryTotals matchHistoryTotalsChamp2 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 3 && player.champName == champs[2]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
-
-      MatchHistoryTotals matchHistoryTotalsChamp3 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
-      resetVariables();
-      for (var player in matchByChampList) {
-        if (champs.length >= 4 && player.champName == champs[3]) {
-          //champTotals(player.playerInfo);
-          matchTotals(player.playerInfo);
-        }
-      }
-
-      MatchHistoryTotals matchHistoryTotalsChamp4 = MatchHistoryTotals(
-          baronKillsTotal!,
-          killsTotal!,
-          pinkWardsTotal!,
-          endGameLevelTotal!,
-          dmgToStructuresTotal!,
-          deathsTotal!,
-          dragonKillsTotal!,
-          firstBloodTotal!,
-          killingSpreeTotal!,
-          objectiveStealTotal!,
-          pentaKillsTotal!,
-          damageTotal!,
-          damageTakenTotal!,
-          turretKillsTotal!,
-          visionScoreTotal!,
-          wardsGuardedTotal!,
-          turretPlatesTakenTotal!,
-          soloKillsTotal!,
-          soloBaronKillsTotal!,
-          scuttleCrabKillsTotal!,
-          saveAllyFromDeathTotal!,
-          quickSoloKillsTotal!,
-          epicMonsterKillsNearEnemyJunglerTotal!,
-          enemyJungleMonsterKillsTotal!,
-          earlyLaningPhaseGoldExpAdvantageTotal!,
-          effectiveHealAndShieldingTotal!,
-          earliestBaronRecord!,
-          epicMonsterKillsWithin30SecondsOfSpawnTotal!,
-          fasterSupportQuestCompletionTotal!,
-          firstTurretKilledTimeRecord!,
-          gameLengthTotal!,
-          goldPerMinuteTotal!,
-          hadOpenNexusWinsTotal!,
-          immobilizeAndKillWithAllyTotal!,
-          jungleCsBefore10MinutesTotal!,
-          junglerKillsEarlyJungleTotal!,
-          kdaTotal!,
-          killAfterHiddenWithAllyTotal!,
-          killParticipationTotal!,
-          killsNearEnemyTurretTotal!,
-          killsOnLanersEarlyJungleAsJunglerTotal!,
-          killsOnOtherLanesEarlyJungleAsLanerTotal!,
-          killsUnderOwnTurretTotal!,
-          landSkillShotsEarlyGameTotal!,
-          laneMinionsFirst10MinutesTotal!,
-          maxCsAdvantageOnLaneOpponentTotal!,
-          legendaryCountTotal!,
-          lostAnInhibitorWinsTotal!,
-          multiTurretRiftHeraldCountTotal!,
-          perfectDragonSoulsTakenTotal!,
-          multikillsAfterAggressiveFlashTotal!,
-          multikillsTotal!,
-          outnumberedKillsTotal!,
-          perfectGameTotal!,
-          quickCleanseTotal!,
-          dodgeSkillShotsSmallWindowTotal!,
-          damageTakenOnTeamPercentageTotal!,
-          damagePerMinuteTotal!,
-          acesBefore15MinutesTotal!,
-          tripleKillsTotal!,
-          inhibitorTakedownsTotal!,
-          totalHealTotal!,
-          timeCCingOthersTotal!,
-          neutralMinionsKilledTotal!,
-          quadraKillsTotal!,
-          timePlayedTotal!,
-          gameEndedInSurrenderTotal!,
-          goldEarnedTotal!,
-          firstTowerTotal!,
-          damageSelfMitigatedTotal!,
-          doubleKillsTotal!,
-          detectorWardsPlacedTotal!,
-          wardsPlacedTotal!,
-          wardsKilledTotal!,
-          alliedJungleMonsterKillsTotal!,
-          buffStolenTotal!,
-          teamDamagePercentageTotal!,
-          gamesPlayedTotal!,
-          assistsTotal!,
-          lossesTotal,
-          winsTotal,
-          csTotal);
       setState(() {
         isLoading = false;
       });
@@ -917,12 +607,110 @@ class _SearchPageState extends State<SearchPage> {
                   matchHistoryTotalschamp4: matchHistoryTotalsChamp4,
                   lane: lanePref,
                   champMasteryList: champMasteryList,
+                  challenges: challenges,
+                  playerIndexs: playerIndexs,
                 )),
       );
     } else {
       //alert no summoner with this name
       //print("Error");
     }
+  }
+
+  MatchHistoryTotals setTotals(List<dynamic> champs, int index) {
+    if (index >= 0) {
+      resetVariables();
+      for (var player in matchByChampList) {
+        if (champs.length >= (index + 1) && player.champName == champs[index]) {
+          //champTotals(player.playerInfo);
+          matchTotals(player.playerInfo);
+        }
+      }
+    }
+    MatchHistoryTotals matchHistoryTotals = MatchHistoryTotals(
+        baronKillsTotal!,
+        killsTotal!,
+        pinkWardsTotal!,
+        endGameLevelTotal!,
+        dmgToStructuresTotal!,
+        deathsTotal!,
+        dragonKillsTotal!,
+        firstBloodTotal!,
+        killingSpreeTotal!,
+        objectiveStealTotal!,
+        pentaKillsTotal!,
+        damageTotal!,
+        damageTakenTotal!,
+        turretKillsTotal!,
+        visionScoreTotal!,
+        wardsGuardedTotal!,
+        turretPlatesTakenTotal!,
+        soloKillsTotal!,
+        soloBaronKillsTotal!,
+        scuttleCrabKillsTotal!,
+        saveAllyFromDeathTotal!,
+        quickSoloKillsTotal!,
+        epicMonsterKillsNearEnemyJunglerTotal!,
+        enemyJungleMonsterKillsTotal!,
+        earlyLaningPhaseGoldExpAdvantageTotal!,
+        effectiveHealAndShieldingTotal!,
+        earliestBaronRecord!,
+        epicMonsterKillsWithin30SecondsOfSpawnTotal!,
+        fasterSupportQuestCompletionTotal!,
+        firstTurretKilledTimeRecord!,
+        gameLengthTotal!,
+        goldPerMinuteTotal!,
+        hadOpenNexusWinsTotal!,
+        immobilizeAndKillWithAllyTotal!,
+        jungleCsBefore10MinutesTotal!,
+        junglerKillsEarlyJungleTotal!,
+        kdaTotal!,
+        killAfterHiddenWithAllyTotal!,
+        killParticipationTotal!,
+        killsNearEnemyTurretTotal!,
+        killsOnLanersEarlyJungleAsJunglerTotal!,
+        killsOnOtherLanesEarlyJungleAsLanerTotal!,
+        killsUnderOwnTurretTotal!,
+        landSkillShotsEarlyGameTotal!,
+        laneMinionsFirst10MinutesTotal!,
+        maxCsAdvantageOnLaneOpponentTotal!,
+        legendaryCountTotal!,
+        lostAnInhibitorWinsTotal!,
+        multiTurretRiftHeraldCountTotal!,
+        perfectDragonSoulsTakenTotal!,
+        multikillsAfterAggressiveFlashTotal!,
+        multikillsTotal!,
+        outnumberedKillsTotal!,
+        perfectGameTotal!,
+        quickCleanseTotal!,
+        dodgeSkillShotsSmallWindowTotal!,
+        damageTakenOnTeamPercentageTotal!,
+        damagePerMinuteTotal!,
+        acesBefore15MinutesTotal!,
+        tripleKillsTotal!,
+        inhibitorTakedownsTotal!,
+        totalHealTotal!,
+        timeCCingOthersTotal!,
+        neutralMinionsKilledTotal!,
+        quadraKillsTotal!,
+        timePlayedTotal!,
+        gameEndedInSurrenderTotal!,
+        goldEarnedTotal!,
+        firstTowerTotal!,
+        damageSelfMitigatedTotal!,
+        doubleKillsTotal!,
+        detectorWardsPlacedTotal!,
+        wardsPlacedTotal!,
+        wardsKilledTotal!,
+        alliedJungleMonsterKillsTotal!,
+        buffStolenTotal!,
+        teamDamagePercentageTotal!,
+        gamesPlayedTotal!,
+        assistsTotal!,
+        lossesTotal,
+        winsTotal,
+        csTotal);
+    return matchHistoryTotals;
   }
 
   void matchTotals(Participants? player) {

@@ -14,7 +14,7 @@ class KdaWidget extends StatelessWidget {
       required this.deaths,
       required this.assists,
       required this.gamesPlayed,
-      this.size = 28})
+      this.size = 28 * 0.7})
       : super(key: key);
 
   @override

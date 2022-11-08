@@ -52,8 +52,10 @@ class MatchParticipantsState extends State<MatchParticipants> {
 
       final matchStats = MatchStats.fromJson(json.decode(json.encode(match)));
 
-      Participants? player = matchStats.info?.participants?[await apiMethods
-          .findPersonUsingLoop(matchStats.info?.participants, summonerName)];
+      int? playerIndex = await apiMethods.findPersonUsingLoop(
+          matchStats.info?.participants, summonerName.toLowerCase());
+
+      Participants? player = matchStats.info?.participants?[playerIndex];
 
       if (player != null) {
         String? champName = player.championName;
@@ -94,26 +96,28 @@ class MatchParticipantsState extends State<MatchParticipants> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return InkWell(
+      /*
       onTap: () async {
         await onTapClick();
       },
+      */
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            height: 15,
-            width: 20,
+            height: 15 * 0.7,
+            width: 20 * 0.7,
             child: FittedBox(
               fit: BoxFit.fill,
               child: Image.asset("assets/img/champion/${widget.champion}.png"),
             ),
           ),
           SizedBox(
-            height: 15,
-            width: 75,
+            height: 15 * 0.7,
+            width: 75 * 0.7,
             child: Text(
               (widget.playerName != null) ? widget.playerName! : "NameError",
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 14 * 0.7, color: Colors.grey),
               overflow: TextOverflow.ellipsis,
             ),
           ),

@@ -5,7 +5,8 @@ class ItemBox extends StatelessWidget {
   final double? size;
   bool noIdItem = true;
 
-  ItemBox({Key? key, required this.itemID, this.size = 35}) : super(key: key);
+  ItemBox({Key? key, required this.itemID, this.size = 35 * 0.7})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     if (itemID == "0") {
@@ -27,9 +28,8 @@ class ItemBox extends StatelessWidget {
         child: noIdItem
             //lägg till asset med id 0
             ? Image.asset("assets/img/item/$itemID.png")
-            : Container(
-                color: Colors.grey,
-              ),
+            : Image.network(
+                "https://raw.communitydragon.org/latest/game/data/images/emptyicon.png"),
       ),
     );
   }

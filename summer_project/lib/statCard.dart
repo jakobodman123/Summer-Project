@@ -18,8 +18,8 @@ class StatCard extends StatelessWidget {
         elevation: 20,
         color: colorGrey,
         child: SizedBox(
-          height: 150,
-          width: 460,
+          height: 150 * 0.7,
+          width: 460 * 0.7,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -31,17 +31,17 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Gold: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.goldEarnedTotal! / games!)
-                                .toStringAsFixed(1) +
+                                .toStringAsFixed(0) +
                             "G",
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -52,17 +52,17 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'GPM: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.goldPerMinuteTotal! / games!)
-                                .toStringAsFixed(1) +
+                                .toStringAsFixed(0) +
                             "G",
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -73,17 +73,17 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'CS: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.csTotals! / games!)
-                                .toStringAsFixed(1) +
+                                .toStringAsFixed(0) +
                             "G",
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -99,15 +99,16 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Double Kills: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
-                        (matchHistoryTotals!.doubleKillsTotal!).toString(),
+                        (matchHistoryTotals!.doubleKillsTotal!)
+                            .toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -118,15 +119,16 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Tripple Kills: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
-                        (matchHistoryTotals!.tripleKillsTotal!).toString(),
+                        (matchHistoryTotals!.tripleKillsTotal!)
+                            .toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -137,15 +139,16 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Quadra Kills: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
-                        (matchHistoryTotals!.quadraKillsTotal!).toString(),
+                        (matchHistoryTotals!.quadraKillsTotal!)
+                            .toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -161,16 +164,16 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Dmg Dealt: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.damageTotal! / games!)
-                            .toStringAsFixed(1),
+                            .toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -181,16 +184,16 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Dmg Taken: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
                         (matchHistoryTotals!.damageTakenTotal! / games!)
-                            .toStringAsFixed(1),
+                            .toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
@@ -201,15 +204,15 @@ class StatCard extends StatelessWidget {
                       const Text(
                         'Total Kills: ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       GlowText(
-                        (matchHistoryTotals!.killsTotal!).toStringAsFixed(1),
+                        (matchHistoryTotals!.killsTotal!).toStringAsFixed(0),
                         glowColor: Colors.blue,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),

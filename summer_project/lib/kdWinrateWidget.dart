@@ -32,7 +32,7 @@ class KdWinrateWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 5,
+                left: 5 * 0.7,
               ),
               child: KdaWidget(
                 kills: kills,
@@ -43,18 +43,18 @@ class KdWinrateWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 5,
+                top: 5 * 0.7,
               ),
               child: Column(
                 children: [
                   CircularPercentIndicator(
-                    radius: 40.0,
-                    lineWidth: 5.0,
+                    radius: 40.0 * 0.7,
+                    lineWidth: 5.0 * 0.7,
                     percent: wins! / gamesPlayed!,
                     center: GlowText(
                       ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
                       style: const TextStyle(
-                        fontSize: 28,
+                        fontSize: 28 * 0.7,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
                       ),
@@ -64,7 +64,7 @@ class KdWinrateWidget extends StatelessWidget {
                   const Text(
                     "Winrate",
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 17 * 0.7,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -74,19 +74,19 @@ class KdWinrateWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                right: 5,
-                top: 5,
+                right: 5 * 0.7,
+                top: 5 * 0.7,
               ),
               child: Column(
                 children: [
                   CircularPercentIndicator(
-                    radius: 40.0,
-                    lineWidth: 5.0,
+                    radius: 40.0 * 0.7,
+                    lineWidth: 5.0 * 0.7,
                     percent: 1,
                     center: GlowText(
                       gamesPlayed.toString(),
                       style: const TextStyle(
-                        fontSize: 28,
+                        fontSize: 28 * 0.7,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
                       ),
@@ -96,7 +96,7 @@ class KdWinrateWidget extends StatelessWidget {
                   const Text(
                     "Games",
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 17 * 0.7,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

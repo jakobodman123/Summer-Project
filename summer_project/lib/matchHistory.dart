@@ -8,9 +8,14 @@ class MatchHistoryWidget extends StatefulWidget {
   final List<MatchStats>? matchHistoryList;
   final String? summonerName;
   final int? games;
+  final List<int>? playerIndexes;
 
   const MatchHistoryWidget(
-      {Key? key, this.matchHistoryList, this.summonerName, this.games})
+      {Key? key,
+      this.matchHistoryList,
+      this.summonerName,
+      this.games,
+      this.playerIndexes})
       : super(key: key);
   @override
   MatchHistoryWidgetState createState() => MatchHistoryWidgetState();
@@ -47,17 +52,20 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       child: Column(
         children: [
           SizedBox(
-            width: 750,
-            height: 1000,
+            width: 750 * 0.7,
+            height: MediaQuery.of(context).size.height,
             child: ListView.builder(
               //itemCount: widget.matchHistoryList!.length,
               itemCount: widget.matchHistoryList!.length <= 10
                   ? widget.matchHistoryList!.length
                   : itemCount,
               itemBuilder: (context, index) {
+                /*
                 int player = findPersonUsingLoop(
                     widget.matchHistoryList?[index].info?.participants,
                     widget.summonerName);
+                    */
+                int player = widget.playerIndexes![index];
                 return MHCard(
                   matchStats: widget.matchHistoryList?[index],
                   summonerName: widget.summonerName,
@@ -65,12 +73,15 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   matchHistoryList: widget.matchHistoryList,
                   player: widget
                       .matchHistoryList?[index].info?.participants?[player],
+                  date: DateTime.fromMicrosecondsSinceEpoch(
+                      widget.matchHistoryList![index].info!.gameEndTimestamp! *
+                          1000),
                 );
               },
             ),
           ),
           SizedBox(
-            width: 750,
+            width: 750 * 0.7,
             child: InkWell(
               onTap: () {
                 setState(() {
@@ -91,7 +102,7 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                       : "Load 5 more matches",
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 26,
+                    fontSize: 26 * 0.7,
                   ),
                   textAlign: TextAlign.center,
                 ),

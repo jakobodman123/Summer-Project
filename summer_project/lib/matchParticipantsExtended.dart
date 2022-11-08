@@ -26,8 +26,8 @@ class MatchParticipantsExtended extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height: 45.0,
-              width: 45.0,
+              height: 45.0 * 0.7,
+              width: 45.0 * 0.7,
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(15),
@@ -41,8 +41,8 @@ class MatchParticipantsExtended extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20,
-                  width: 20,
+                  height: 20 * 0.7,
+                  width: 20 * 0.7,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
@@ -50,8 +50,8 @@ class MatchParticipantsExtended extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
-                  width: 20,
+                  height: 20 * 0.7,
+                  width: 20 * 0.7,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
@@ -64,8 +64,8 @@ class MatchParticipantsExtended extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20,
-                  width: 20,
+                  height: 20 * 0.7,
+                  width: 20 * 0.7,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
@@ -73,8 +73,8 @@ class MatchParticipantsExtended extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
-                  width: 20,
+                  height: 20 * 0.7,
+                  width: 20 * 0.7,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset("assets/runesImg/7201_Precision.png"),
@@ -89,14 +89,14 @@ class MatchParticipantsExtended extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 15,
-                      width: 50,
+                      height: 15 * 0.7,
+                      width: 50 * 0.7,
                       child: Text(
                         (player?.summonerName != null)
                             ? player!.summonerName!
                             : "NameError",
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.grey),
+                        style: const TextStyle(
+                            fontSize: 14 * 0.7, color: Colors.grey),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -105,7 +105,7 @@ class MatchParticipantsExtended extends StatelessWidget {
                       deaths: player?.deaths,
                       assists: player?.assists,
                       gamesPlayed: 1,
-                      size: 14,
+                      size: 14 * 0.7,
                     )
                   ],
                 ),
@@ -114,31 +114,31 @@ class MatchParticipantsExtended extends StatelessWidget {
                   children: [
                     ItemBox(
                       itemID: player?.item0.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item1.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item2.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item3.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item4.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item5.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                     ItemBox(
                       itemID: player?.item6.toString(),
-                      size: 20,
+                      size: 20 * 0.7,
                     ),
                   ],
                 ),
@@ -149,17 +149,19 @@ class MatchParticipantsExtended extends StatelessWidget {
               children: [
                 Text(
                   "Dmg: " + player!.totalDamageDealtToChampions.toString(),
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style:
+                      const TextStyle(fontSize: 14 * 0.7, color: Colors.grey),
                 ),
                 Text(
                   "Cs: " + player!.totalMinionsKilled.toString(),
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style:
+                      const TextStyle(fontSize: 14 * 0.7, color: Colors.grey),
                 ),
               ],
             ),
             SizedBox(
-              height: 40,
-              width: 40,
+              height: 40 * 0.7,
+              width: 40 * 0.7,
               child: support!
                   ? FittedBox(
                       fit: BoxFit.fill,
