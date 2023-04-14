@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:summer_project/altAccoladesItem.dart';
+import 'package:summer_project/accolades/altAccoladesItem.dart';
 import 'package:summer_project/altStatCard.dart';
 import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';

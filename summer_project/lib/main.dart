@@ -37,9 +37,6 @@ Color colorGrey = const Color(0xFF6B6A69).withOpacity(0.4);
 //void main() => runApp(const SummerProject());
 
 void main() {
-  // Here we set the URL strategy for our web app.
-  // It is safe to call this function when running on mobile or desktop as well.
-  //setPathUrlStrategy();
   runApp(const SummerProject());
 }
 
@@ -183,11 +180,15 @@ class _TestPageState extends State<TestPage> {
     return Expanded(
       child: Center(
         child: TextField(
-          autofocus: true,
+          //autofocus: true,
           controller: summonerTextController,
           style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(width: 2, color: Colors.blue), //<-- SEE HERE
+            ),
           ),
           onSubmitted: (value) async {
             await onTapLoad1();
@@ -268,8 +269,9 @@ class _TestPageState extends State<TestPage> {
                       15.0 * 0.7, 0.0, 15.0 * 0.7, 0.0),
                   child: Row(
                     children: <Widget>[
-                      showTextField ? _buildTextField() : Container(),
-                      _buildFloatingSearchBtn(),
+                      //showTextField ? _buildTextField() : Container(),
+                      //_buildFloatingSearchBtn(),
+                      _buildTextField()
                     ],
                   ),
                 ),
@@ -292,7 +294,9 @@ class _TestPageState extends State<TestPage> {
               color: colorDarkGrey,
               child: SingleChildScrollView(
                 child: Wrap(
+                  runAlignment: WrapAlignment.spaceBetween,
                   spacing: 40 * 0.7,
+                  runSpacing: 30,
                   clipBehavior: Clip.hardEdge,
                   children: [
                     SizedBox(

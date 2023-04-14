@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:summer_project/accoladesPage.dart';
+import 'package:summer_project/accolades/accoladesPage.dart';
 import 'package:summer_project/bestChampionWidget.dart';
 import 'package:summer_project/kdWinrateWidget.dart';
 import 'package:summer_project/main.dart';

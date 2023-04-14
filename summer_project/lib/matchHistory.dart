@@ -53,7 +53,7 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
         children: [
           SizedBox(
             width: 750 * 0.7,
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: ListView.builder(
               //itemCount: widget.matchHistoryList!.length,
               itemCount: widget.matchHistoryList!.length <= 10

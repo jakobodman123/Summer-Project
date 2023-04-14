@@ -40,6 +40,7 @@ class _SearchPageState extends State<SearchPage> {
   List<MatchStats>? matchHistoryList;
   List<String>? champNames = [];
   List<MatchByChamp> matchByChampList = [];
+  int initializing = 0;
 
   List<String>? laneNames = [];
 
@@ -50,6 +51,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    // introDialog();
   }
 
   Future<List<MatchStats>?> getGameHistory(
@@ -106,6 +108,38 @@ class _SearchPageState extends State<SearchPage> {
 // Do what you want
   }
 
+  void showAlert(BuildContext context) {
+    initializing > 0
+        ? showDialog(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (context) => AlertDialog(
+                  title: const Text('Play Easy Champions ALPHA'),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: const <Widget>[
+                        Text(
+                            'This is a prototype application in development/testing phase!'),
+                        Text(
+                            'To use enter a player name such as "ritzler" in the search field ' +
+                                "to test the application!"),
+                        Text("Only EUW Players are currently supported!")
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Got it!'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ))
+        : Text("q");
+    initializing += 1;
+  }
+
   List<dynamic> getMapString(List<String>? list) {
     var map = Map();
     list!.forEach((e) => map.update(e, (x) => x + 1, ifAbsent: () => 1));
@@ -120,6 +154,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    //introDialog(context);
+    //showAlert(context);
+    //Future.delayed(Duration.zero, () => showAlert(context));
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -338,57 +375,6 @@ class _SearchPageState extends State<SearchPage> {
                               fit: BoxFit.cover,
                             ),
                           ))
-                      /*
-                      GlowButton(
-                        glowColor: Colors.blue,
-                        child: const Text(
-                          'Tutorial',
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                        color: Colors.blueAccent,
-                        onPressed: () {},
-                      )
-                      */
-                      /*
-                      SizedBox(
-                        width: 1000,
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            //height: 400.0,
-                            enableInfiniteScroll: false,
-                          ),
-                          items: [
-                            const AssetImage("assets/helpIMG/matchHistory.png"),
-                            const AssetImage("assets/helpIMG/search.png"),
-                            const AssetImage("assets/helpIMG/loading.jpg"),
-                            const AssetImage("assets/helpIMG/profile.png"),
-                            const AssetImage(
-                                "assets/helpIMG/accountAccolades.png"),
-                            const AssetImage("assets/helpIMG/mainChampWR.png"),
-                            const AssetImage("assets/helpIMG/mainChampA.png"),
-                            const AssetImage("assets/helpIMG/altchamp.png"),
-                            const AssetImage("assets/helpIMG/mhExpanded.png"),
-                          ].map((i) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                  //width: MediaQuery.of(context).size.width,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0),
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.fitWidth,
-                                      //alignment: FractionalOffset.topCenter,
-                                      image: i,
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      */
                     ],
                   ),
                 ),
