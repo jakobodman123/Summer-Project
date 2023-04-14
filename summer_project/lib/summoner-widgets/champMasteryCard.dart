@@ -1,6 +1,6 @@
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:flutter/material.dart';
-import 'package:summer_project/champMasterIcon.dart';
+import 'package:summer_project/summoner-widgets/champMasterIcon.dart';
 import 'package:summer_project/main.dart';
 
 class ChampMasteryCard extends StatelessWidget {

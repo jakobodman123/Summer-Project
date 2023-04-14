@@ -1,4 +1,4 @@
-import 'package:summer_project/accoladesItem.dart';
+import 'package:summer_project/accolades/accoladesItem.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 
 class Accolades {

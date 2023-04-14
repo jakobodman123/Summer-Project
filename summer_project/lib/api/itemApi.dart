@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ItemApi {
   //testCode
-/*
+
   static Future getGames(String summonerName) {
     return http.get(
       Uri.parse('http://localhost:4000/pastGames?summoner=' + summonerName),
@@ -68,7 +68,7 @@ class ItemApi {
       },
     );
   }
-*/
+/*
   //productionCode
 
   static Future getGames(String summonerName) {
@@ -130,4 +130,5 @@ class ItemApi {
       },
     );
   }
+  */
 }

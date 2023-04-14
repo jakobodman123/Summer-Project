@@ -13,18 +13,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:summer_project/apiMethods.dart';
-import 'package:summer_project/challenges.dart';
+import 'package:summer_project/api/apiMethods.dart';
+import 'package:summer_project/generated-classes/challenges.dart';
 import 'package:summer_project/main.dart';
 import 'package:http/http.dart' as http;
-import 'package:summer_project/matchByChamp.dart';
+import 'package:summer_project/generated-classes/matchByChamp.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'dart:convert';
 
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 import 'package:summer_project/slides.dart';
-import 'package:summer_project/testClass.dart';
-import 'package:summer_project/titles.dart';
+import 'package:summer_project/api/itemApi.dart';
+import 'package:summer_project/generated-classes/titles.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

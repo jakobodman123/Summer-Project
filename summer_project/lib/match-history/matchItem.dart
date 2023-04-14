@@ -1,7 +1,6 @@
 class MatchItem {
   final String gameType;
   final String date;
-  //gör alla dessa under till egna klasser
   final String summoner1;
   final String summoner2;
   final String mastery1;

@@ -5,16 +5,16 @@ import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
-import 'package:summer_project/apiMethods.dart';
+import 'package:summer_project/api/apiMethods.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchByChamp.dart';
+import 'package:summer_project/generated-classes/matchByChamp.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:summer_project/searchPage.dart';
-import 'package:summer_project/testClass.dart';
+import 'package:summer_project/api/itemApi.dart';
 
 class MatchParticipants extends StatefulWidget {
   final String? champion;

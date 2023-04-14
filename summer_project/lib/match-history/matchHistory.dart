@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:summer_project/apiMethods.dart';
-import 'package:summer_project/mHCard.dart';
+import 'package:summer_project/api/apiMethods.dart';
+import 'package:summer_project/match-history/mHCard.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 
 class MatchHistoryWidget extends StatefulWidget {
   final List<MatchStats>? matchHistoryList;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dart_lol/LeagueStuff/rank.dart';
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 import 'package:http/http.dart' as http;
 import 'package:summer_project/searchPage.dart';
 

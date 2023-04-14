@@ -1,10 +1,10 @@
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:flutter/material.dart';
-import 'package:summer_project/accoladesPage.dart';
-import 'package:summer_project/challenges.dart';
-import 'package:summer_project/challengesCard.dart';
-import 'package:summer_project/champMasteryCard.dart';
+import 'package:summer_project/accolades/accoladesPage.dart';
+import 'package:summer_project/generated-classes/challenges.dart';
+import 'package:summer_project/summoner-widgets/challengesCard.dart';
+import 'package:summer_project/summoner-widgets/champMasteryCard.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/matchHistoryTotals.dart';
 import 'package:summer_project/rankedCard.dart';

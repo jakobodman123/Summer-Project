@@ -1,4 +1,4 @@
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 
 class MatchByChamp {
   final String? champName;

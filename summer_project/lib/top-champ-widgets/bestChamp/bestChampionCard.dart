@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:summer_project/accolades/accoladesPage.dart';
-import 'package:summer_project/bestChampionWidget.dart';
+import 'package:summer_project/top-champ-widgets/bestChamp/bestChampionWidget.dart';
 import 'package:summer_project/kdWinrateWidget.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/masteryCard.dart';

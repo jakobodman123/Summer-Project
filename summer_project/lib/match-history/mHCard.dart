@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:summer_project/itemBox.dart';
+import 'package:summer_project/match-history/itemBox.dart';
 import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchParticipants.dart';
-import 'package:summer_project/matchParticipantsExtended.dart';
-import 'package:summer_project/matchStats.dart';
+import 'package:summer_project/match-history/matchParticipants.dart';
+import 'package:summer_project/match-history/matchParticipantsExtended.dart';
+import 'package:summer_project/generated-classes/matchStats.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class MHCard extends StatefulWidget {
