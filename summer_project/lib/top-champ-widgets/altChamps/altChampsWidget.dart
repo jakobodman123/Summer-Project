@@ -5,7 +5,7 @@ import 'package:summer_project/accolades/altAccoladesItem.dart';
 import 'package:summer_project/top-champ-widgets/altChamps/altStatCard.dart';
 import 'package:summer_project/kdaWidget.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class AltChampsWidget extends StatelessWidget {
   final String? champName;

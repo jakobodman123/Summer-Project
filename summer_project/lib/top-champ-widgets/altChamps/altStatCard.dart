@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class AltStatCard extends StatelessWidget {
   final MatchHistoryTotals? matchHistoryTotals;

@@ -6,8 +6,8 @@ import 'package:summer_project/generated-classes/challenges.dart';
 import 'package:summer_project/summoner-widgets/challengesCard.dart';
 import 'package:summer_project/summoner-widgets/champMasteryCard.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
-import 'package:summer_project/rankedCard.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
+import 'package:summer_project/summoner-widgets/rankedCard.dart';
 
 //https://pbs.twimg.com/media/B8jEndNIYAEavcH.jpg
 

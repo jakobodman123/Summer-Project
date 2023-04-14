@@ -5,8 +5,8 @@ import 'package:summer_project/top-champ-widgets/bestChamp/bestChampionWidget.da
 import 'package:summer_project/kdWinrateWidget.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/masteryCard.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
-import 'package:summer_project/statCard.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
+import 'package:summer_project/top-champ-widgets/bestChamp/statCard.dart';
 
 class BestChampionCard extends StatelessWidget {
   final String? champName;

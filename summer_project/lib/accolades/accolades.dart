@@ -1,5 +1,5 @@
 import 'package:summer_project/accolades/accoladesItem.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class Accolades {
   final MatchHistoryTotals? matchHistoryTotals;

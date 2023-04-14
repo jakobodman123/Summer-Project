@@ -3,7 +3,7 @@ import 'package:summer_project/accolades/accolades.dart';
 
 import 'package:summer_project/accolades/accoladesItem.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class AccoladesPage extends StatelessWidget {
   final List<AccoladesItem> accoladeList = [];

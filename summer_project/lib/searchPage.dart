@@ -18,13 +18,22 @@ import 'package:summer_project/generated-classes/challenges.dart';
 import 'package:summer_project/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:summer_project/generated-classes/matchByChamp.dart';
-import 'package:summer_project/matchHistoryTotals.dart';
+import 'package:summer_project/util/matchHistoryTotals.dart';
 import 'dart:convert';
 
 import 'package:summer_project/generated-classes/matchStats.dart';
-import 'package:summer_project/slides.dart';
+import 'package:summer_project/util/slides.dart';
 import 'package:summer_project/api/itemApi.dart';
 import 'package:summer_project/generated-classes/titles.dart';
+
+import 'homePage.dart';
+
+Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
+Color colorDarkGrey = const Color(0xFF191919);
+
+Color primaryColor = const Color(0xFF292C33).withOpacity(0.4);
+
+Color colorGrey = const Color(0xFF6B6A69).withOpacity(0.4);
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
