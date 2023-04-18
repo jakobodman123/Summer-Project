@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:summer_project/match-history/itemBox.dart';
-import 'package:summer_project/kdaWidget.dart';
+import 'package:summer_project/util/kdaWidget.dart';
 import 'package:summer_project/generated-classes/matchStats.dart';
 
 class MatchParticipantsExtended extends StatelessWidget {

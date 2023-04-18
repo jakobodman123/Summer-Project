@@ -28,19 +28,6 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
     super.initState();
   }
 
-  int findPersonUsingLoop(List<Participants>? people, String? summonerName) {
-    if (people != null) {
-      for (var i = 0; i < people.length; i++) {
-        if (people[i].summonerName?.toLowerCase() ==
-            summonerName?.toLowerCase()) {
-          // Found the person, stop the loop
-          return i;
-        }
-      }
-    }
-    return 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -55,16 +42,10 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             width: 750 * 0.7,
             height: MediaQuery.of(context).size.height * 0.7,
             child: ListView.builder(
-              //itemCount: widget.matchHistoryList!.length,
               itemCount: widget.matchHistoryList!.length <= 10
                   ? widget.matchHistoryList!.length
                   : itemCount,
               itemBuilder: (context, index) {
-                /*
-                int player = findPersonUsingLoop(
-                    widget.matchHistoryList?[index].info?.participants,
-                    widget.summonerName);
-                    */
                 int player = widget.playerIndexes![index];
                 return MHCard(
                   matchStats: widget.matchHistoryList?[index],

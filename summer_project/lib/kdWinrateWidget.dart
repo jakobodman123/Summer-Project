@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:summer_project/kdaWidget.dart';
+import 'package:summer_project/util/kdaWidget.dart';
 import 'package:summer_project/main.dart';
 
 class KdWinrateWidget extends StatelessWidget {
