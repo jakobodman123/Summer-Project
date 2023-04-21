@@ -15,7 +15,7 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         shadowColor: Colors.blue,
-        elevation: 20,
+        elevation: 10,
         color: colorGrey,
         child: SizedBox(
           height: 150 * 0.7,

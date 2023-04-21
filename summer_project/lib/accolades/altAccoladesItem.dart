@@ -122,10 +122,6 @@ class AltAccoladesItem extends StatelessWidget {
       accoladeList.add(accolades
           .turretKiller(matchHistoryTotals!.turretKillsTotal! / games!));
     }
-    if ((matchHistoryTotals!.acesBefore15MinutesTotal! / games!) >= 0.5) {
-      accoladeList.add(accolades.earlyTeamfighter(
-          matchHistoryTotals!.acesBefore15MinutesTotal! / games!));
-    }
 
     if ((matchHistoryTotals!.buffStolenTotal! / games!) >= 1.0 && games! >= 3) {
       accoladeList.add(
@@ -174,11 +170,6 @@ class AltAccoladesItem extends StatelessWidget {
           .comebackKid(matchHistoryTotals!.hadOpenNexusWinsTotal!.toDouble()));
     }
 
-    if ((matchHistoryTotals!.immobilizeAndKillWithAllyTotal! / games!) >= 10) {
-      accoladeList.add(accolades
-          .layup(matchHistoryTotals!.immobilizeAndKillWithAllyTotal! / games!));
-    }
-
     if ((matchHistoryTotals!.jungleCsBefore10MinutesTotal! / games!) >= 40 &&
         games! >= 3) {
       accoladeList.add(accolades.powerFarmer(
@@ -201,11 +192,6 @@ class AltAccoladesItem extends StatelessWidget {
           .hardToDive(matchHistoryTotals!.killsUnderOwnTurretTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.landSkillShotsEarlyGameTotal! / games!) >= 20) {
-      accoladeList.add(accolades.highPrecision(
-          matchHistoryTotals!.landSkillShotsEarlyGameTotal! / games!));
-    }
-
     if ((matchHistoryTotals!.laneMinionsFirst10MinutesTotal! / games!) >= 60) {
       accoladeList.add(accolades.goodCS(
           matchHistoryTotals!.laneMinionsFirst10MinutesTotal! / games!));
@@ -221,12 +207,6 @@ class AltAccoladesItem extends StatelessWidget {
           .legendaryGamer(matchHistoryTotals!.legendaryCountTotal! / games!));
     }
 
-    if ((matchHistoryTotals!.maxCsAdvantageOnLaneOpponentTotal! / games!) >=
-        50) {
-      accoladeList.add(accolades.laneBully(
-          matchHistoryTotals!.maxCsAdvantageOnLaneOpponentTotal! / games!));
-    }
-
     if ((matchHistoryTotals!.multiTurretRiftHeraldCountTotal! / games!) >=
             0.5 &&
         games! >= 3) {
@@ -237,11 +217,6 @@ class AltAccoladesItem extends StatelessWidget {
     if ((matchHistoryTotals!.outnumberedKillsTotal! / games!) >= 2) {
       accoladeList.add(accolades
           .outplayArtist(matchHistoryTotals!.outnumberedKillsTotal! / games!));
-    }
-
-    if ((matchHistoryTotals!.quickCleanseTotal! / games!) >= 1) {
-      accoladeList.add(accolades
-          .cleanseAbuse(matchHistoryTotals!.quickCleanseTotal! / games!));
     }
 
     if ((matchHistoryTotals!.quickSoloKillsTotal! / games!) >= 2) {
@@ -269,22 +244,13 @@ class AltAccoladesItem extends StatelessWidget {
       accoladeList.add(accolades
           .scuttleWarrior(matchHistoryTotals!.scuttleCrabKillsTotal! / games!));
     }
-
-    //error
-    matchHistoryTotals!.earlyLaningPhaseGoldExpAdvantageTotal;
-    //error
-
     matchHistoryTotals!.turretPlatesTakenTotal;
     matchHistoryTotals!.alliedJungleMonsterKillsTotal;
-    matchHistoryTotals!.multikillsAfterAggressiveFlashTotal;
-    matchHistoryTotals!.damageSelfMitigatedTotal;
     matchHistoryTotals!.doubleKillsTotal;
     matchHistoryTotals!.quadraKillsTotal;
     matchHistoryTotals!.pentaKillsTotal;
-    matchHistoryTotals!.killAfterHiddenWithAllyTotal;
-    matchHistoryTotals!.lostAnInhibitorWinsTotal;
+
     matchHistoryTotals!.perfectGameTotal;
-    matchHistoryTotals!.perfectDragonSoulsTakenTotal;
 
     accoladeList.sort((a, b) => a.value.compareTo(b.value));
 

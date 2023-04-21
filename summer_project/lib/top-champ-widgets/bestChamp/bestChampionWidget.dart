@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:summer_project/main.dart';
 
-//https://pbs.twimg.com/media/B8jEndNIYAEavcH.jpg
 class BestChampionPicture extends StatelessWidget {
   final String champName;
 
@@ -9,7 +8,6 @@ class BestChampionPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       color: colorGrey.withOpacity(0),
       shadowColor: Colors.blue,

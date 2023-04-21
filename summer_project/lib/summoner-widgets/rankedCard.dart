@@ -22,7 +22,7 @@ class RankedCard extends StatelessWidget {
       color: colorGrey,
       child: ClipPath(
         child: Container(
-          height: 100 * 0.7,
+          height: 105 * 0.7,
           decoration: BoxDecoration(
               border: Border(
                   right: BorderSide(
@@ -67,9 +67,16 @@ class RankedCard extends StatelessWidget {
                         Text(
                           rank,
                           style: const TextStyle(
-                            fontSize: 22 * 0.7,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            //color: Colors.white
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
                           ),
                         ),
                         Text(

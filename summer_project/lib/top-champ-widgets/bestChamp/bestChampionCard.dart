@@ -26,64 +26,52 @@ class BestChampionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       color: colorLightGrey,
       elevation: 10,
       child: SizedBox(
         width: 500 * 0.7,
         height: 1150 * 0.7,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                summonerName! + "'s most played is " + champName!,
-                style: const TextStyle(
-                  fontSize: 24 * 0.7,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                now,
-                style: const TextStyle(fontSize: 20 * 0.7, color: Colors.grey),
-              ),
-              BestChampionPicture(champName!),
-              KdWinrateWidget(
-                matchHistoryTotals!.gamesPlayed,
-                matchHistoryTotals!.killsTotal,
-                matchHistoryTotals!.deathsTotal,
-                matchHistoryTotals!.assistsTotal,
-                matchHistoryTotals!.winsTotal,
-                matchHistoryTotals!.lossesTotal,
-              ),
-              const Text(
-                'Champion Accolades',
-                style: TextStyle(
-                    fontSize: 20 * 0.7,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              AccoladesPage(
-                  matchHistoryTotals: matchHistoryTotals,
-                  games: gamesPlayed,
-                  champName: champName),
-              const Text(
-                'Champion Stats',
-                style: TextStyle(
-                    fontSize: 20 * 0.7,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              StatCard(
-                matchHistoryTotals: matchHistoryTotals,
-                games: gamesPlayed,
-              ),
-            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Text(
+            now,
+            style: const TextStyle(fontSize: 20 * 0.7, color: Colors.grey),
+          ),
+          BestChampionPicture(champName!),
+          KdWinrateWidget(
+            matchHistoryTotals!.gamesPlayed,
+            matchHistoryTotals!.killsTotal,
+            matchHistoryTotals!.deathsTotal,
+            matchHistoryTotals!.assistsTotal,
+            matchHistoryTotals!.winsTotal,
+            matchHistoryTotals!.lossesTotal,
+          ),
+          const Text(
+            'Champion Accolades',
+            style: TextStyle(
+                fontSize: 20 * 0.7,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          ),
+          AccoladesPage(
+              matchHistoryTotals: matchHistoryTotals,
+              games: gamesPlayed,
+              champName: champName),
+          const Text(
+            'Champion Stats',
+            style: TextStyle(
+                fontSize: 20 * 0.7,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          ),
+          StatCard(
+            matchHistoryTotals: matchHistoryTotals,
+            games: gamesPlayed,
+          ),
+        ]),
       ),
     );
   }

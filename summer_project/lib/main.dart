@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:summer_project/searchPage.dart';
 
+import 'about_page.dart';
+
 Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
 Color colorDarkGrey = const Color(0xFF191919);
 
@@ -19,6 +21,7 @@ class SummerProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.mouse,
@@ -33,6 +36,7 @@ class SummerProject extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const SearchPage(),
+        '/about': (context) => const AboutPage(),
       },
     );
   }

@@ -25,7 +25,7 @@ class KdWinrateWidget extends StatelessWidget {
         shadowColor: Colors.blue,
         elevation: 20,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,13 +53,16 @@ class KdWinrateWidget extends StatelessWidget {
                     percent: wins! / gamesPlayed!,
                     center: GlowText(
                       ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
-                      style: const TextStyle(
-                        fontSize: 28 * 0.7,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
+                      style: TextStyle(
+                          fontSize: 28 * 0.7,
+                          fontWeight: FontWeight.bold,
+                          color: (wins! / gamesPlayed! * 100) >= 50.0
+                              ? Colors.green
+                              : Colors.red),
                     ),
-                    progressColor: Colors.green,
+                    progressColor: (wins! / gamesPlayed! * 100) >= 50.0
+                        ? Colors.green
+                        : Colors.red,
                   ),
                   const Text(
                     "Winrate",

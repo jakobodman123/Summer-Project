@@ -3,36 +3,43 @@ import 'package:summer_project/api/apiMethods.dart';
 import 'package:summer_project/match-history/mHCard.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/generated-classes/matchStats.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MatchHistoryWidget extends StatefulWidget {
   final List<MatchStats>? matchHistoryList;
   final String? summonerName;
-  final int? games;
-  final List<int>? playerIndexes;
+  final Function(List<MatchStats>?) onUpdate;
+  final List<int>? playerIndexs;
 
-  const MatchHistoryWidget(
-      {Key? key,
-      this.matchHistoryList,
-      this.summonerName,
-      this.games,
-      this.playerIndexes})
-      : super(key: key);
+  const MatchHistoryWidget({
+    Key? key,
+    this.matchHistoryList,
+    this.summonerName,
+    required this.onUpdate,
+    this.playerIndexs,
+  }) : super(key: key);
   @override
   MatchHistoryWidgetState createState() => MatchHistoryWidgetState();
 }
 
 class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
-  int itemCount = 10;
+  bool loading = false;
+
   @override
   void initState() {
     super.initState();
+    for (int i = 0; i < widget.matchHistoryList!.length; i++) {
+      int? playerIndex = ApiMethods().findPersonUsingLoop(
+          widget.matchHistoryList![i].info?.participants, widget.summonerName);
+      widget.playerIndexs?.add(playerIndex);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       color: colorLightGrey,
       elevation: 10,
@@ -42,11 +49,9 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             width: 750 * 0.7,
             height: MediaQuery.of(context).size.height * 0.7,
             child: ListView.builder(
-              itemCount: widget.matchHistoryList!.length <= 10
-                  ? widget.matchHistoryList!.length
-                  : itemCount,
+              itemCount: widget.matchHistoryList!.length,
               itemBuilder: (context, index) {
-                int player = widget.playerIndexes![index];
+                int player = widget.playerIndexs![index];
                 return MHCard(
                   matchStats: widget.matchHistoryList?[index],
                   summonerName: widget.summonerName,
@@ -64,30 +69,42 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
           SizedBox(
             width: 750 * 0.7,
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 setState(() {
-                  //extend matchHistory by 5
-                  if (itemCount != widget.matchHistoryList?.length) {
-                    itemCount += 5;
-                  }
+                  loading = true;
+                });
+                List<MatchStats>? matchHistory = await ApiMethods()
+                    .getGameHistory(
+                        summonerName: widget.summonerName,
+                        start: widget.matchHistoryList?.length);
+                widget.onUpdate(matchHistory);
+                setState(() {
+                  loading = false;
                 });
               },
-              child: Card(
-                elevation: 5,
-                color: itemCount == widget.matchHistoryList?.length
-                    ? Colors.red.withOpacity(0.3)
-                    : colorGrey,
-                child: Text(
-                  itemCount == widget.matchHistoryList?.length
-                      ? "Unable to Load more matches"
-                      : "Load 5 more matches",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 26 * 0.7,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              child: SizedBox(
+                  height: 50,
+                  child: Card(
+                      elevation: 5,
+                      color: const Color(0xFF6082B6).withOpacity(0.3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          loading == false
+                              ? const Text(
+                                  "Load More Matches",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const SpinKitFadingCube(
+                                  color: Colors.white,
+                                  size: 25,
+                                )
+                        ],
+                      ))),
             ),
           ),
         ],

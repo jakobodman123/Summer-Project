@@ -22,7 +22,6 @@ class AltChampsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SizedBox(
       width: 615 * 0.7,
       child: Card(
@@ -77,13 +76,17 @@ class AltChampsWidget extends StatelessWidget {
                             percent: wins! / gamesPlayed!,
                             center: GlowText(
                               ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 28 * 0.7,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.green,
+                                color: (wins! / gamesPlayed! * 100) >= 50.0
+                                    ? Colors.green
+                                    : Colors.red,
                               ),
                             ),
-                            progressColor: Colors.green,
+                            progressColor: (wins! / gamesPlayed! * 100) >= 50.0
+                                ? Colors.green
+                                : Colors.red,
                           ),
                           const Text(
                             "Winrate",

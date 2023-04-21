@@ -44,7 +44,7 @@ class MHCardState extends State<MHCard> {
       padding: const EdgeInsets.fromLTRB(0, 3 * 0.7, 0, 0),
       child: ExpansionTileCard(
         elevation: 5,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         baseColor: widget.player!.win!
             ? const Color(0xFF6082B6).withOpacity(0.3)
             : const Color.fromRGBO(255, 82, 82, 1).withOpacity(0.3),

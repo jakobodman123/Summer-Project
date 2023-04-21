@@ -26,7 +26,7 @@ class VariableHell {
   int? damageTakenTotal = 0;
   int? turretKillsTotal = 0;
   int? visionScoreTotal = 0;
-  int? wardsGuardedTotal = 0;
+
   int? turretPlatesTakenTotal = 0;
   int? soloKillsTotal = 0;
   int? soloBaronKillsTotal = 0;
@@ -35,52 +35,50 @@ class VariableHell {
   int? quickSoloKillsTotal = 0;
   int? epicMonsterKillsNearEnemyJunglerTotal = 0;
   double? enemyJungleMonsterKillsTotal = 0;
-  int? earlyLaningPhaseGoldExpAdvantageTotal = 0;
+
   double? effectiveHealAndShieldingTotal = 0;
-  double? earliestBaronRecord = 0;
+
   int? epicMonsterKillsWithin30SecondsOfSpawnTotal = 0;
-  int? fasterSupportQuestCompletionTotal = 0;
-  double? firstTurretKilledTimeRecord = 0;
+
   double? gameLengthTotal = 0;
   double? goldPerMinuteTotal = 0;
   int? hadOpenNexusWinsTotal = 0;
-  int? immobilizeAndKillWithAllyTotal = 0;
+
   double? jungleCsBefore10MinutesTotal = 0;
   int? junglerKillsEarlyJungleTotal = 0;
   double? kdaTotal = 0;
-  int? killAfterHiddenWithAllyTotal = 0;
+
   double? killParticipationTotal = 0;
   int? killsNearEnemyTurretTotal = 0;
   int? killsOnLanersEarlyJungleAsJunglerTotal = 0;
   int? killsOnOtherLanesEarlyJungleAsLanerTotal = 0;
   int? killsUnderOwnTurretTotal = 0;
-  int? landSkillShotsEarlyGameTotal = 0;
+
   int? laneMinionsFirst10MinutesTotal = 0;
-  double? maxCsAdvantageOnLaneOpponentTotal = 0;
+
   int? legendaryCountTotal = 0;
-  int? lostAnInhibitorWinsTotal = 0;
+
   int? multiTurretRiftHeraldCountTotal = 0;
-  int? perfectDragonSoulsTakenTotal = 0;
-  int? multikillsAfterAggressiveFlashTotal = 0;
+
   int? multikillsTotal = 0;
   int? outnumberedKillsTotal = 0;
   int? perfectGameTotal = 0;
-  int? quickCleanseTotal = 0;
+
   int? dodgeSkillShotsSmallWindowTotal = 0;
   double? damageTakenOnTeamPercentageTotal = 0;
   double? damagePerMinuteTotal = 0;
-  int? acesBefore15MinutesTotal = 0;
+
   int? tripleKillsTotal = 0;
   int? inhibitorTakedownsTotal = 0;
   int? totalHealTotal = 0;
-  int? timeCCingOthersTotal = 0;
+
   int? neutralMinionsKilledTotal = 0;
   int? quadraKillsTotal = 0;
   int? timePlayedTotal = 0;
   int? gameEndedInSurrenderTotal = 0;
   int? goldEarnedTotal = 0;
   int? firstTowerTotal = 0;
-  int? damageSelfMitigatedTotal = 0;
+
   int? doubleKillsTotal = 0;
   int? assistsTotal = 0;
   int? detectorWardsPlacedTotal = 0;
@@ -112,7 +110,6 @@ class VariableHell {
     damageTakenTotal = 0;
     turretKillsTotal = 0;
     visionScoreTotal = 0;
-    wardsGuardedTotal = 0;
     turretPlatesTakenTotal = 0;
     soloKillsTotal = 0;
     soloBaronKillsTotal = 0;
@@ -121,52 +118,49 @@ class VariableHell {
     quickSoloKillsTotal = 0;
     epicMonsterKillsNearEnemyJunglerTotal = 0;
     enemyJungleMonsterKillsTotal = 0;
-    earlyLaningPhaseGoldExpAdvantageTotal = 0;
     effectiveHealAndShieldingTotal = 0;
-    earliestBaronRecord = 0;
+
     epicMonsterKillsWithin30SecondsOfSpawnTotal = 0;
-    fasterSupportQuestCompletionTotal = 0;
-    firstTurretKilledTimeRecord = 0;
+
     gameLengthTotal = 0;
     goldPerMinuteTotal = 0;
     hadOpenNexusWinsTotal = 0;
-    immobilizeAndKillWithAllyTotal = 0;
+
     jungleCsBefore10MinutesTotal = 0;
     junglerKillsEarlyJungleTotal = 0;
     kdaTotal = 0;
-    killAfterHiddenWithAllyTotal = 0;
+
     killParticipationTotal = 0;
     killsNearEnemyTurretTotal = 0;
     killsOnLanersEarlyJungleAsJunglerTotal = 0;
     killsOnOtherLanesEarlyJungleAsLanerTotal = 0;
     killsUnderOwnTurretTotal = 0;
-    landSkillShotsEarlyGameTotal = 0;
+
     laneMinionsFirst10MinutesTotal = 0;
-    maxCsAdvantageOnLaneOpponentTotal = 0;
+
     legendaryCountTotal = 0;
-    lostAnInhibitorWinsTotal = 0;
+
     multiTurretRiftHeraldCountTotal = 0;
-    perfectDragonSoulsTakenTotal = 0;
-    multikillsAfterAggressiveFlashTotal = 0;
+
     multikillsTotal = 0;
     outnumberedKillsTotal = 0;
     perfectGameTotal = 0;
-    quickCleanseTotal = 0;
+
     dodgeSkillShotsSmallWindowTotal = 0;
     damageTakenOnTeamPercentageTotal = 0;
     damagePerMinuteTotal = 0;
-    acesBefore15MinutesTotal = 0;
+
     tripleKillsTotal = 0;
     inhibitorTakedownsTotal = 0;
     totalHealTotal = 0;
-    timeCCingOthersTotal = 0;
+
     neutralMinionsKilledTotal = 0;
     quadraKillsTotal = 0;
     timePlayedTotal = 0;
     gameEndedInSurrenderTotal = 0;
     goldEarnedTotal = 0;
     firstTowerTotal = 0;
-    damageSelfMitigatedTotal = 0;
+
     doubleKillsTotal = 0;
     assistsTotal = 0;
     detectorWardsPlacedTotal = 0;
@@ -186,7 +180,6 @@ class VariableHell {
 
   void matchTotals(Participants? player) {
     try {
-      //print(player!.challenges!.gameLength);
       if (gamesPlayedTotal != null) {
         gamesPlayedTotal = gamesPlayedTotal! + 1;
       }
@@ -199,10 +192,8 @@ class VariableHell {
         int? loss = 1;
         lossesTotal = (lossesTotal! + loss);
       }
-
       baronKillsTotal =
           incrementNumber(player?.challenges?.baronTakedowns, baronKillsTotal!);
-
       killsTotal = incrementNumber(player?.kills, killsTotal!);
       pinkWardsTotal =
           incrementNumber(player?.visionWardsBoughtInGame, pinkWardsTotal!);
@@ -226,6 +217,7 @@ class VariableHell {
         int? firstBlood = 0;
         firstBloodTotal = (firstBloodTotal! + firstBlood);
       }
+
       bool? firstBloodAssist = player?.firstBloodAssist;
       if (firstBloodAssist != null && firstBloodAssist == true) {
         int? firstBlood = 1;
@@ -277,6 +269,7 @@ class VariableHell {
         int? firstTower = 0;
         firstTowerTotal = (firstTowerTotal! + firstTower);
       }
+
       bool? gameEndedInSurrender = player?.gameEndedInSurrender;
       if (gameEndedInSurrender != null && gameEndedInSurrender == true) {
         int? gameEndedInSurrender = 1;
@@ -299,6 +292,7 @@ class VariableHell {
           player?.neutralMinionsKilled, neutralMinionsKilledTotal!);
 
       totalHealTotal = incrementNumber(player?.totalHeal, totalHealTotal!);
+
       inhibitorTakedownsTotal =
           incrementNumber(player?.inhibitorTakedowns, inhibitorTakedownsTotal!);
 
@@ -346,14 +340,17 @@ class VariableHell {
       epicMonsterKillsWithin30SecondsOfSpawnTotal = incrementNumber(
           player?.challenges?.epicMonsterKillsWithin30SecondsOfSpawn,
           epicMonsterKillsWithin30SecondsOfSpawnTotal!);
+
       double? gameLength = player?.challenges?.gameLength;
       if (gameLength != null) {
         gameLengthTotal = (gameLengthTotal! + gameLength);
       }
+
       double? goldPerMinute = player?.challenges?.goldPerMinute;
       if (goldPerMinute != null) {
         goldPerMinuteTotal = (goldPerMinuteTotal! + goldPerMinute);
       }
+
       int? hadOpenNexus = player?.challenges?.hadOpenNexus;
       if ((hadOpenNexus != null && hadOpenNexus >= 1) &&
           playerWin != null &&
@@ -361,16 +358,19 @@ class VariableHell {
         int? hadOpenNexusWins = 1;
         hadOpenNexusWinsTotal = (hadOpenNexusWinsTotal! + hadOpenNexusWins);
       }
+
       double? jungleCsBefore10Minutes =
           player?.challenges?.jungleCsBefore10Minutes;
       if (jungleCsBefore10Minutes != null) {
         jungleCsBefore10MinutesTotal =
             (jungleCsBefore10MinutesTotal! + jungleCsBefore10Minutes);
       }
+
       double? kda = player?.challenges?.kda;
       if (kda != null) {
         kdaTotal = (kdaTotal! + kda);
       }
+
       double? killParticipation = player?.challenges?.killParticipation;
       if (killParticipation != null) {
         killParticipationTotal = (killParticipationTotal! + killParticipation);
@@ -404,30 +404,21 @@ class VariableHell {
           player?.challenges?.saveAllyFromDeath, saveAllyFromDeathTotal!);
       scuttleCrabKillsTotal = incrementNumber(
           player?.challenges?.scuttleCrabKills, scuttleCrabKillsTotal!);
-      int? soloBaronKills = player?.challenges?.soloBaronKills;
-      if (soloBaronKills != null) {
-        soloBaronKillsTotal = (soloBaronKillsTotal! + soloBaronKills);
-      }
-      int? soloKills = player?.challenges?.soloKills;
-      if (soloKills != null) {
-        soloKillsTotal = (soloKillsTotal! + soloKills);
-      }
-      int? turretPlatesTaken = player?.challenges?.turretPlatesTaken;
-      if (turretPlatesTaken != null) {
-        turretPlatesTakenTotal = (turretPlatesTakenTotal! + turretPlatesTaken);
-      }
+      soloBaronKillsTotal = incrementNumber(
+          player?.challenges?.soloBaronKills, soloBaronKillsTotal!);
+      soloKillsTotal =
+          incrementNumber(player?.challenges?.soloKills, soloKillsTotal!);
+      turretPlatesTakenTotal = incrementNumber(
+          player?.challenges?.turretPlatesTaken, turretPlatesTakenTotal!);
       double? teamDamagePercentage = player?.challenges?.teamDamagePercentage;
       if (teamDamagePercentage != null) {
         teamDamagePercentageTotal =
             (teamDamagePercentageTotal! + teamDamagePercentage);
       }
 
-      int? cs = player?.totalMinionsKilled;
-      if (cs != null) {
-        csTotal = (csTotal! + cs);
-      }
+      csTotal = incrementNumber(player?.totalMinionsKilled, csTotal!);
     } catch (e) {
-      print("Something ");
+      print(e);
     }
   }
 }
