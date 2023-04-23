@@ -32,7 +32,10 @@ class SupportMethods {
           title: Text('Error'),
           content: Text(errorMessage),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();

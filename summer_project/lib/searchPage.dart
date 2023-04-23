@@ -1,15 +1,13 @@
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/game.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
-import 'package:dart_lol/LeagueStuff/summoner.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:summer_project/about_page.dart';
-import 'package:summer_project/util/appbarButton.dart';
-import 'package:summer_project/util/customDialog.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:summer_project/generated-classes/challenges.dart';
 import 'package:summer_project/util/custom_appbar.dart';
 import 'dart:convert';
@@ -21,6 +19,7 @@ import 'package:summer_project/api/itemApi.dart';
 import 'package:summer_project/helpClasses/variableHell.dart';
 
 import 'api/apiMethods.dart';
+import 'generated-classes/summoner.dart';
 import 'helpClasses/supportMethods.dart';
 import 'homePage.dart';
 
@@ -110,110 +109,114 @@ class _SearchPageState extends State<SearchPage>
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.5),
           ),
-          child: SlideTransition(
-            position: _animation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(),
-                Column(
-                  children: [
-                    Image.asset(
-                      "assets/helpIMG/mascot.png",
-                      fit: BoxFit.cover,
-                      scale: 2,
-                    ),
-                    const Text(
-                      "Play Easy Champions",
-                      style: TextStyle(
-                          shadows: [
-                            Shadow(
-                              blurRadius: 2.0,
-                              color: Colors.black,
-                              offset: Offset(2.0, 2.0),
-                            ),
-                          ],
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const Text(
-                      "By Jakob Ödman",
-                      style: TextStyle(
-                          shadows: [
-                            Shadow(
-                              blurRadius: 2.0,
-                              color: Colors.black,
-                              offset: Offset(2.0, 2.0),
-                            ),
-                          ],
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    SizedBox(
-                      width: 1000,
-                      child: TextField(
-                        onSubmitted: (value) async {
-                          await onTapLoad();
-                        },
-                        //autofocus: true,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                        controller: summonerTextController,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(20),
-                        ],
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: "E.g. \"Ritzler\"",
-                          hintStyle: const TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide:
-                                const BorderSide(width: 2, color: Colors.blue),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SlideTransition(
+              position: _animation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Image.asset(
+                        "assets/helpIMG/mascot.png",
+                        fit: BoxFit.cover,
+                        scale: 2,
+                      ),
+                      const Text(
+                        "Play Easy Champions",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const Text(
+                        "By Jakob Ödman",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        width: 1000,
+                        child: TextField(
+                          onSubmitted: (value) async {
+                            await onTapLoad();
+                          },
+                          //autofocus: true,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
                           ),
-                          suffixIcon: isLoading
-                              ? const SpinKitFadingCube(
-                                  color: Colors.cyan,
-                                  size: 35,
-                                )
-                              : InkWell(
-                                  child: const GlowIcon(
-                                    Icons.search,
-                                    color: Colors.blue,
-                                    glowColor: Colors.blue,
+                          controller: summonerTextController,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(20),
+                          ],
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: "E.g. \"Ritzler\"",
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(
+                                  width: 2, color: Colors.blue),
+                            ),
+                            suffixIcon: isLoading
+                                ? const SpinKitFadingCube(
+                                    color: Colors.cyan,
                                     size: 35,
+                                  )
+                                : InkWell(
+                                    child: const GlowIcon(
+                                      Icons.search,
+                                      color: Colors.blue,
+                                      glowColor: Colors.blue,
+                                      size: 35,
+                                    ),
+                                    onTap: () async {
+                                      await onTapLoad();
+                                    },
                                   ),
-                                  onTap: () async {
-                                    await onTapLoad();
-                                  },
-                                ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  "Play Easy Champions isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.\nLeague of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.",
-                  style: TextStyle(shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.black,
-                      offset: Offset(2.0, 2.0),
-                    ),
-                  ], fontSize: 11, color: Colors.white),
-                ),
-              ],
+                    ],
+                  ),
+                  const Text(
+                    "Play Easy Champions isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.\nLeague of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.",
+                    style: TextStyle(shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.black,
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ], fontSize: 11, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        )
       ]),
     );
   }

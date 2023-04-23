@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
-import 'package:dart_lol/LeagueStuff/summoner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:summer_project/top-champ-widgets/altChamps/altChampsSection.dart';
 import 'package:summer_project/top-champ-widgets/altChamps/altChampsWidget.dart';
 import 'package:summer_project/api/apiMethods.dart';
@@ -23,6 +23,7 @@ import 'package:summer_project/util/slides.dart';
 import 'package:summer_project/api/itemApi.dart';
 import 'package:summer_project/helpClasses/variableHell.dart';
 
+import 'generated-classes/summoner.dart';
 import 'helpClasses/supportMethods.dart';
 
 Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
@@ -217,85 +218,94 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
           )
         ],
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.topCenter,
-        color: colorDarkGrey,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SlideTransition(
-                  position: _animation1,
-                  child: SizedBox(
-                    width: 500 * 0.7,
-                    height: 1250 * 0.7,
-                    child: MainProfile(
-                        widget.summoner!.profileIconID.toString(),
-                        widget.summoner!.level.toString(),
-                        widget.summoner!.summonerName,
-                        widget.summoner!.summonerID,
-                        widget.soloQRank,
-                        widget.flexRank,
-                        widget.matchHistoryTotals,
-                        widget.lane,
-                        widget.champMasteryList,
-                        widget.challenges),
-                  ),
-                ),
-                SlideTransition(
-                    position: _animation2,
-                    child: BestChampSection(
-                      champName: widget.champsPlayedIds![0],
-                      mht1: widget.matchHistoryTotalschamp1,
-                      summonerName: widget.summoner!.summonerName,
-                    )),
-                SlideTransition(
-                  position: _animation3,
-                  child: Column(children: [
-                    const Text(
-                      "Match History",
-                      style: TextStyle(
-                        fontSize: 28 * 0.7,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 2.0,
-                            color: Colors.blue,
-                            offset: Offset(2.0, 2.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                    MatchHistoryWidget(
-                      matchHistoryList: widget.matchHistoryList,
-                      summonerName: widget.summoner!.summonerName,
-                      onUpdate: updateMH,
-                      playerIndexs: playerIndexs,
-                    ),
-                  ]),
-                ),
-                SlideTransition(
-                    position: _animation4,
-                    child: AltchampSection(
-                      champsPlayedIds: widget.champsPlayedIds,
-                      mht2: widget.matchHistoryTotalschamp2,
-                      mht3: widget.matchHistoryTotalschamp3,
-                      mht4: widget.matchHistoryTotalschamp4,
-                    )),
-              ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          alignment: Alignment.topCenter,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
+              fit: BoxFit.cover,
             ),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SlideTransition(
+                position: _animation1,
+                child: SizedBox(
+                  width: 450 * 0.7,
+                  height: 1200 * 0.7,
+                  child: MainProfile(
+                      widget.summoner!.profileIconID.toString(),
+                      widget.summoner!.level.toString(),
+                      widget.summoner!.summonerName,
+                      widget.summoner!.summonerID,
+                      widget.soloQRank,
+                      widget.flexRank,
+                      widget.matchHistoryTotals,
+                      widget.lane,
+                      widget.champMasteryList,
+                      widget.challenges),
+                ),
+              ),
+              SlideTransition(
+                  position: _animation2,
+                  child: BestChampSection(
+                    champName: widget.champsPlayedIds![0],
+                    mht1: widget.matchHistoryTotalschamp1,
+                    summonerName: widget.summoner!.summonerName,
+                  )),
+              SlideTransition(
+                position: _animation3,
+                child: Column(children: [
+                  const Text(
+                    "Match History",
+                    style: TextStyle(
+                      fontSize: 28 * 0.7,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2.0,
+                          color: Colors.blue,
+                          offset: Offset(2.0, 2.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  MatchHistoryWidget(
+                    matchHistoryList: widget.matchHistoryList,
+                    summonerName: widget.summoner!.summonerName,
+                    onUpdate: updateMH,
+                    playerIndexs: playerIndexs,
+                  ),
+                ]),
+              ),
+              SlideTransition(
+                  position: _animation4,
+                  child: AltchampSection(
+                    champsPlayedIds: widget.champsPlayedIds,
+                    mht2: widget.matchHistoryTotalschamp2,
+                    mht3: widget.matchHistoryTotalschamp3,
+                    mht4: widget.matchHistoryTotalschamp4,
+                  )),
+            ],
           ),
         ),
       ),
     );
   }
 
+/*
+  ResponsiveBreakpoints.of(context).screenWidth > 1400
+              ? 4
+              : (ResponsiveBreakpoints.of(context).screenWidth > 1000 &&
+                      ResponsiveBreakpoints.of(context).screenWidth < 1400)
+                  ? 2
+                  : 1,
+*/
   Future<void> onTapLoad1() async {
     Summoner? summonerObject = Summoner();
     await ItemApi.getSummoner(summonerTextController.text).then((response) {

@@ -31,8 +31,10 @@ class CustomDialogBox extends StatelessWidget {
       ),
       actions: <Widget>[
         Center(
-          child: FlatButton(
-            color: Colors.blue,
+          child: TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            ),
             child: const Text('Got it!'),
             onPressed: () {
               Navigator.of(context).pop();

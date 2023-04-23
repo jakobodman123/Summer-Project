@@ -18,7 +18,7 @@ class AltStatCard extends StatelessWidget {
         color: colorGrey,
         child: SizedBox(
           height: 100 * 0.7,
-          width: 280 * 0.7,
+          width: 250 * 0.7,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

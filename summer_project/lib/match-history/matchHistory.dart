@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:summer_project/api/apiMethods.dart';
 import 'package:summer_project/match-history/mHCard.dart';
 import 'package:summer_project/main.dart';
@@ -46,8 +47,22 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       child: Column(
         children: [
           SizedBox(
-            width: 750 * 0.7,
-            height: MediaQuery.of(context).size.height * 0.7,
+            width: ResponsiveValue(
+              context,
+              defaultValue: 750 * 0.7,
+              valueWhen: const [
+                Condition.smallerThan(
+                  name: TABLET,
+                  value: 600 * 0.7,
+                ),
+                Condition.largerThan(
+                  name: TABLET,
+                  value: 750 * 0.7,
+                )
+              ],
+            ).value,
+            //width: 750 * 0.7,
+            height: 1075 * 0.7,
             child: ListView.builder(
               itemCount: widget.matchHistoryList!.length,
               itemBuilder: (context, index) {
@@ -67,7 +82,20 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             ),
           ),
           SizedBox(
-            width: 750 * 0.7,
+            width: ResponsiveValue(
+              context,
+              defaultValue: 750 * 0.7,
+              valueWhen: const [
+                Condition.smallerThan(
+                  name: TABLET,
+                  value: 600 * 0.7,
+                ),
+                Condition.largerThan(
+                  name: TABLET,
+                  value: 750 * 0.7,
+                )
+              ],
+            ).value,
             child: InkWell(
               onTap: () async {
                 setState(() {

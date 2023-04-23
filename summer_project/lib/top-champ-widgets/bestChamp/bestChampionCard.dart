@@ -33,7 +33,7 @@ class BestChampionCard extends StatelessWidget {
       color: colorLightGrey,
       elevation: 10,
       child: SizedBox(
-        width: 500 * 0.7,
+        width: 450 * 0.7,
         height: 1150 * 0.7,
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(

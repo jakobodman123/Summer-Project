@@ -28,14 +28,24 @@ class _CustomAppbarButtonState extends State<CustomAppbarButton> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: _isHovering ? Colors.blue : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
+            gradient: _isHovering
+                ? const LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 8, 66, 131),
+                      Colors.blue,
+                      Colors.white
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : null,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
             widget.text,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: _isHovering ? Colors.black : Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

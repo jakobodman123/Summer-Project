@@ -1,10 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:summer_project/searchPage.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'about_page.dart';
 
-Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
+Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.7);
 Color colorDarkGrey = const Color(0xFF191919);
 
 Color primaryColor = const Color(0xFF292C33).withOpacity(0.4);
@@ -21,6 +22,15 @@ class SummerProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, widget) => ResponsiveWrapper.builder(
+        ClampingScrollWrapper.builder(context, widget!),
+        breakpoints: const [
+          ResponsiveBreakpoint.resize(350, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(600, name: TABLET),
+          ResponsiveBreakpoint.resize(800, name: DESKTOP),
+          ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
+        ],
+      ),
       initialRoute: '/',
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
@@ -36,7 +46,7 @@ class SummerProject extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const SearchPage(),
-        '/about': (context) => const AboutPage(),
+        '/about': (context) => AboutPage(),
       },
     );
   }

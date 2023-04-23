@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:summer_project/util/custom_appbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+class AboutPage extends StatefulWidget {
+  AboutPageState createState() => AboutPageState();
+}
+
+class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +37,6 @@ class AboutPage extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
@@ -22,87 +45,184 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: FadeTransition(
+                  opacity: _animation,
+                  child: ResponsiveRowColumn(
+                    rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    rowPadding: const EdgeInsets.only(top: 100),
+                    columnPadding: const EdgeInsets.all(30),
+                    layout: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 150, right: 200),
-                        child: Text(
-                          "This is Play Easy Champions",
-                          style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.black,
-                                  offset: Offset(2.0, 2.0),
-                                ),
-                              ],
-                              fontSize: 55,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                      const ResponsiveRowColumnItem(
+                        child: SizedBox(),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 5, left: 150, right: 200),
-                        child: Text(
-                          "A Riot API webscrapper",
-                          style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.black,
-                                  offset: Offset(2.0, 2.0),
-                                ),
-                              ],
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                      ),
-                      SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 30, left: 150, right: 200),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.40,
-                              child: const Text(
-                                "Play Easy Champion uses the riot api to fetch game data from summoners' recent ranked matches and calculates the performance of these games. The calculation takes the summoners 4 most played champions and displays relevant stats such as kills/deaths/assists. The stats are gathered from the matches displayed in the Match History section in the middle of the screen, which shows more in depth data of each individual match. There is also a Summoner section where account data is displayed, such as ranked data, summoner icon etc. To increase the amount of games calculated you can click the “load more matches” button under match history to increase the sample size. This is a limitation to avoid initial slow load on many matches having to be loaded at the same time. Overall I hope you enjoy the app and if there are any issues you can reach out to me from the contact section.",
-                                style: TextStyle(shadows: [
-                                  Shadow(
-                                    blurRadius: 2.0,
-                                    color: Colors.black,
-                                    offset: Offset(2.0, 2.0),
-                                  ),
-                                ], fontSize: 18, color: Colors.white),
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 0, right: 0),
+                              child: Text(
+                                "This is Play Easy Champions",
+                                style: TextStyle(
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 2.0,
+                                        color: Colors.black,
+                                        offset: Offset(2.0, 2.0),
+                                      ),
+                                    ],
+                                    fontSize: 55,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ),
-                          ))
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                top: 5,
+                              ),
+                              child: Text(
+                                "A Riot API webscrapper",
+                                style: TextStyle(
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 2.0,
+                                        color: Colors.black,
+                                        offset: Offset(2.0, 2.0),
+                                      ),
+                                    ],
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                top: 30,
+                                bottom: 30,
+                              ),
+                              child: SizedBox(
+                                width: 600,
+                                child: Text(
+                                  "Play Easy Champion uses the riot api to fetch game data from summoners' recent ranked matches and calculates the performance of these games. The calculation takes the summoners 4 most played champions and displays relevant stats such as kills/deaths/assists. The stats are gathered from the matches displayed in the Match History section in the middle of the screen, which shows more in depth data of each individual match. There is also a Summoner section where account data is displayed, such as ranked data, summoner icon etc. To increase the amount of games calculated you can click the “load more matches” button under match history to increase the sample size. This is a limitation to avoid initial slow load on many matches having to be loaded at the same time. Overall I hope you enjoy the app and if there are any issues you can reach out to me from the contact section.",
+                                  style: TextStyle(shadows: [
+                                    Shadow(
+                                      blurRadius: 2.0,
+                                      color: Colors.black,
+                                      offset: Offset(2.0, 2.0),
+                                    ),
+                                  ], fontSize: 18, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 150,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(255, 8, 66, 131),
+                                        Colors.blue,
+                                        Colors.white
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black,
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Try it out',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 40,
+                                ),
+                                InkResponse(
+                                  onTap: () {
+                                    launchUrl(Uri.parse(
+                                        'https://github.com/jakobodman123/Summer-Project'));
+                                  },
+                                  child: Container(
+                                    width: 150,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            'Github',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      ResponsiveRowColumnItem(
+                          rowFlex: 1,
+                          child: SizedBox(
+                            height: 500,
+                            width: 400,
+                            child: Image.asset(
+                              "assets/helpIMG/mascot_upscaled.jpg",
+                              fit: BoxFit.cover,
+                              scale: 2,
+                            ),
+                          )),
+                      const ResponsiveRowColumnItem(
+                        child: SizedBox(),
+                      ),
+                      const ResponsiveRowColumnItem(
+                        child: SizedBox(),
+                      ),
                     ],
                   ),
-                  const SizedBox(),
-                  SizedBox(
-                    child: Image.asset(
-                      "assets/helpIMG/mascot_upscaled.jpg",
-                      fit: BoxFit.cover,
-                      scale: 2,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+                ),
+              ))
         ],
       ),
     );
