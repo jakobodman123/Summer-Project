@@ -255,7 +255,7 @@ class AccoladesPage extends StatelessWidget {
 
     accoladeList.sort((a, b) => a.value.compareTo(b.value));
     return Card(
-        shadowColor: Colors.blue,
+        shadowColor: Colors.black,
         elevation: 10,
         color: colorGrey,
         child: SizedBox(

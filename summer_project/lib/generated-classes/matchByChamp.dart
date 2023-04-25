@@ -1,8 +1,8 @@
 import 'package:summer_project/generated-classes/matchStats.dart';
 
 class MatchByChamp {
-  final String? champName;
+  final int? champId;
   final Participants? playerInfo;
 
-  MatchByChamp(this.champName, this.playerInfo);
+  MatchByChamp(this.champId, this.playerInfo);
 }

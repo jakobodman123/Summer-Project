@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:summer_project/match-history/itemBox.dart';
+import 'package:summer_project/match-history/components/itemBox.dart';
 import 'package:summer_project/util/kdaWidget.dart';
 import 'package:summer_project/generated-classes/matchStats.dart';
 
@@ -34,8 +34,8 @@ class MatchParticipantsExtended extends StatelessWidget {
                       topLeft: Radius.circular(15)),
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(
-                          "assets/img/champion/${player?.championName}.png"))),
+                      image: NetworkImage(
+                          "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player?.championId}.png"))),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -158,25 +158,6 @@ class MatchParticipantsExtended extends StatelessWidget {
                       const TextStyle(fontSize: 14 * 0.7, color: Colors.grey),
                 ),
               ],
-            ),
-            SizedBox(
-              height: 40 * 0.7,
-              width: 40 * 0.7,
-              child: support!
-                  ? FittedBox(
-                      fit: BoxFit.fill,
-                      child: player?.lane == "NONE"
-                          ? const SizedBox()
-                          : Image.asset(
-                              "assets/rankedIcons/Position_Diamond-Utility.png"),
-                    )
-                  : FittedBox(
-                      fit: BoxFit.fill,
-                      child: player?.lane == "NONE"
-                          ? const SizedBox()
-                          : Image.asset(
-                              "assets/rankedIcons/Position_Diamond-${player?.lane}.png"),
-                    ),
             ),
           ],
         ));

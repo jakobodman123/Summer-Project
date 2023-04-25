@@ -62,8 +62,10 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
               ],
             ).value,
             //width: 750 * 0.7,
-            height: 1075 * 0.7,
+            //height: 1075 * 0.7,
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               itemCount: widget.matchHistoryList!.length,
               itemBuilder: (context, index) {
                 int player = widget.playerIndexs![index];

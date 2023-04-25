@@ -57,7 +57,8 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                   child: ResponsiveRowColumn(
                     rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
                     rowPadding: const EdgeInsets.only(top: 100),
-                    columnPadding: const EdgeInsets.all(30),
+                    columnPadding: const EdgeInsets.only(
+                        top: 100, left: 10, right: 10, bottom: 10),
                     layout: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
                         ? ResponsiveRowColumnType.COLUMN
                         : ResponsiveRowColumnType.ROW,
@@ -129,7 +130,7 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                             Row(
                               children: [
                                 Container(
-                                  width: 150,
+                                  width: 140,
                                   height: 50,
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
@@ -163,7 +164,7 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 40,
+                                  width: 30,
                                 ),
                                 InkResponse(
                                   onTap: () {
@@ -171,7 +172,7 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                         'https://github.com/jakobodman123/Summer-Project'));
                                   },
                                   child: Container(
-                                    width: 150,
+                                    width: 140,
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
@@ -181,18 +182,14 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Center(
-                                      child: Row(
-                                        children: const [
-                                          Text(
-                                            'Github',
-                                            style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ],
+                                    child: const Center(
+                                      child: Text(
+                                        'Github',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
                                   ),

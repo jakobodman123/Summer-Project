@@ -174,7 +174,7 @@ class _SearchPageState extends State<SearchPage>
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
-                            hintText: "E.g. \"Ritzler\"",
+                            hintText: "E.g. \"theodmino\"",
                             hintStyle: const TextStyle(color: Colors.grey),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
@@ -231,7 +231,6 @@ class _SearchPageState extends State<SearchPage>
       );
       summonerObject = object;
     });
-
     if (summonerObject?.puuid != null) {
       setState(() {
         isLoading = true;
@@ -240,9 +239,12 @@ class _SearchPageState extends State<SearchPage>
 
       List<ChampionMastery>? champMasteryList = [];
       await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
+        //print(response.body);
         Iterable list = json.decode(response.body);
+
         champMasteryList =
             list.map((model) => ChampionMastery.fromJson(model)).toList();
+        //print(matchHistoryList2);
       });
 
       AccountChallenges challenges = AccountChallenges();
@@ -257,7 +259,6 @@ class _SearchPageState extends State<SearchPage>
 
       List<Rank>? rankedList = [];
       await ItemApi.getRanked(summmonerID!).then((response) {
-        //print(response.body);
         Iterable list = json.decode(response.body);
 
         rankedList = list.map((model) => Rank.fromJson(model)).toList();
@@ -293,17 +294,10 @@ class _SearchPageState extends State<SearchPage>
       List<MatchStats>? matchHistory = await ApiMethods()
           .getGameHistory(summonerName: summonerTextController.text, start: 0);
 
-      var lanes = SupportMethods().getMapString(laneNames);
-
-      String lanePref;
-      if (lanes.isEmpty) {
-        lanePref = "UTILITY";
-      } else {
-        lanePref = lanes[0];
-      }
       setState(() {
         isLoading = false;
       });
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -312,7 +306,6 @@ class _SearchPageState extends State<SearchPage>
                   soloQRank: ranksoloQ,
                   flexRank: rankFlex,
                   matchHistoryList: matchHistory,
-                  lane: lanePref,
                   champMasteryList: champMasteryList,
                   challenges: challenges,
                 )),

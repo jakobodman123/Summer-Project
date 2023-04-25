@@ -24,7 +24,7 @@ class AccoladesItem extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
         ),
         child: Card(
-          shadowColor: Colors.blue,
+          shadowColor: Colors.black,
           elevation: 10,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),

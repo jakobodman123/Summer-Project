@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class SupportMethods {
-  List<dynamic> getMapString(List<String>? list) {
+  List<dynamic> getMapString(List<int>? list) {
     var map = Map();
     list!.forEach((e) => map.update(e, (x) => x + 1, ifAbsent: () => 1));
 

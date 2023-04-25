@@ -8,13 +8,13 @@ import 'package:summer_project/main.dart';
 import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class AltChampsWidget extends StatelessWidget {
-  final String? champName;
+  final int? champId;
   final int? gamesPlayed;
   final int? wins;
   final MatchHistoryTotals? matchHistoryTotals;
 
   const AltChampsWidget(
-    this.champName,
+    this.champId,
     this.gamesPlayed,
     this.wins,
     this.matchHistoryTotals,
@@ -32,6 +32,7 @@ class AltChampsWidget extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
               children: [
@@ -45,19 +46,18 @@ class AltChampsWidget extends StatelessWidget {
                       image: DecorationImage(
                           fit: BoxFit.fitWidth,
                           //alignment: FractionalOffset.topCenter,
-                          image: AssetImage(
-                              "assets/img/splash/${champName}_0.jpg"))),
+                          image: NetworkImage(
+                              "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${champId}/${champId}000.jpg"))),
                 ),
                 InkWell(
                     onTap: () {},
                     child: AltAccoladesItem(
                         matchHistoryTotals: matchHistoryTotals,
                         games: gamesPlayed,
-                        champName: champName))
+                        champName: champId.toString()))
               ],
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 KdaWidget(
                   kills: matchHistoryTotals!.killsTotal,
@@ -124,6 +124,9 @@ class AltChampsWidget extends StatelessWidget {
                       ],
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 9,
                 ),
                 AltStatCard(
                   matchHistoryTotals: matchHistoryTotals,

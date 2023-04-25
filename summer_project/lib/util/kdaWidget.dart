@@ -22,45 +22,66 @@ class KdaWidget extends StatelessWidget {
     // TODO: implement build
     return Row(
       children: [
-        GlowText(
+        Text(
           gamesPlayed == 1
               ? kills!.toString()
               : (kills! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
+            shadows: const [
+              Shadow(
+                blurRadius: 2.0,
+                color: Colors.black,
+                offset: Offset(2.0, 2.0),
+              ),
+            ],
             fontSize: size,
             fontWeight: FontWeight.bold,
             color: Colors.blue,
           ),
         ),
-        GlowText(
+        Text(
           " / ",
           style: TextStyle(
             fontSize: size! * 0.71,
             color: Colors.black,
           ),
         ),
-        GlowText(
+        Text(
           gamesPlayed == 1
               ? deaths!.toString()
               : (deaths! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
+            shadows: const [
+              Shadow(
+                blurRadius: 2.0,
+                color: Colors.black,
+                offset: Offset(2.0, 2.0),
+              ),
+            ],
             fontSize: size,
             fontWeight: FontWeight.bold,
             color: Colors.red,
           ),
         ),
-        GlowText(
+        Text(
           " / ",
           style: TextStyle(
             fontSize: size! * 0.71,
             color: Colors.black,
           ),
         ),
-        GlowText(
+        Text(
           gamesPlayed == 1
               ? assists!.toString()
               : (assists! / gamesPlayed!).toStringAsFixed(1),
           style: TextStyle(
+            shadows: const [
+              Shadow(
+                blurRadius: 2.0,
+                color: Colors.black,
+                offset: Offset(2.0, 2.0),
+              ),
+            ],
             fontSize: size,
             fontWeight: FontWeight.bold,
             color: Colors.green,

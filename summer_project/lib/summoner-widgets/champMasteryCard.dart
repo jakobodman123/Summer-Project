@@ -12,7 +12,7 @@ class ChampMasteryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: colorGrey,
-      shadowColor: Colors.blue,
+      shadowColor: Colors.black,
       elevation: 20,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -21,19 +21,19 @@ class ChampMasteryCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ChampMasteryIcon(
-            champName: championMasteryList?[0].championName,
+            champID: championMasteryList?[0].championID,
             champMastery: championMasteryList?[0].championPoints,
           ),
           ChampMasteryIcon(
-            champName: championMasteryList?[1].championName,
+            champID: championMasteryList?[1].championID,
             champMastery: championMasteryList?[1].championPoints,
           ),
           ChampMasteryIcon(
-            champName: championMasteryList?[2].championName,
+            champID: championMasteryList?[2].championID,
             champMastery: championMasteryList?[2].championPoints,
           ),
           ChampMasteryIcon(
-            champName: championMasteryList?[3].championName,
+            champID: championMasteryList?[3].championID,
             champMastery: championMasteryList?[3].championPoints,
           ),
         ],

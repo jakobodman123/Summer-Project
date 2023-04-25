@@ -14,7 +14,7 @@ import 'package:summer_project/api/apiMethods.dart';
 import 'package:summer_project/top-champ-widgets/bestChamp/bestChampSection.dart';
 import 'package:summer_project/top-champ-widgets/bestChamp/bestChampionCard.dart';
 import 'package:summer_project/generated-classes/challenges.dart';
-import 'package:summer_project/mainProfile.dart';
+import 'package:summer_project/summoner-widgets/mainProfile.dart';
 import 'package:summer_project/generated-classes/matchByChamp.dart';
 import 'package:summer_project/match-history/matchHistory.dart';
 import 'package:summer_project/util/matchHistoryTotals.dart';
@@ -74,7 +74,7 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   VariableHell vh = VariableHell();
   bool showTextField = false;
   final summonerTextController = TextEditingController();
-  List<String>? champNames = [];
+  List<int>? champIDs = [];
   List<MatchByChamp> matchByChampList = [];
   List<String>? laneNames = [];
   List<int>? playerIndexs = [];
@@ -118,7 +118,7 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
     //calculate stats
     ApiMethods api = ApiMethods();
     playerIndexs = [];
-    champNames = [];
+    champIDs = [];
     matchByChampList = [];
     widget.matchHistoryTotals = null;
     widget.matchHistoryTotalschamp1 = null;
@@ -132,9 +132,9 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
       playerIndexs?.add(playerIndex);
       Participants? player = matchStats.info?.participants?[playerIndex];
 
-      String? champName = player?.championName;
+      int? champID = player?.championId;
       String? lane = player?.individualPosition;
-      champNames?.add(champName!);
+      champIDs?.add(champID!);
 
       switch (matchStats.info?.queueId) {
         case 400:
@@ -146,10 +146,10 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
           break;
       }
       vh.matchTotals(player);
-      MatchByChamp matchByChamp = MatchByChamp(champName, player);
+      MatchByChamp matchByChamp = MatchByChamp(champID, player);
       matchByChampList.add(matchByChamp);
     }
-    widget.champsPlayedIds = SupportMethods().getMapString(champNames);
+    widget.champsPlayedIds = SupportMethods().getMapString(champIDs);
     widget.matchHistoryTotals = setTotals(widget.champsPlayedIds, -1);
     widget.matchHistoryTotalschamp1 = setTotals(widget.champsPlayedIds, 0);
     widget.matchHistoryTotalschamp2 = setTotals(widget.champsPlayedIds, 1);
@@ -183,6 +183,7 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       //extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -190,7 +191,20 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         title: const Text('Play Easy Champions'),
         actions: <Widget>[
           Container(
-            width: 400 * 0.7,
+            width: ResponsiveValue(
+              context,
+              defaultValue: 250.0,
+              valueWhen: const [
+                Condition.smallerThan(
+                  name: MOBILE,
+                  value: 200.0,
+                ),
+                Condition.largerThan(
+                  name: TABLET,
+                  value: 400.0,
+                )
+              ],
+            ).value,
             padding:
                 const EdgeInsets.fromLTRB(15.0 * 0.7, 0.0, 15.0 * 0.7, 0.0),
             child: Row(
@@ -245,7 +259,6 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                       widget.soloQRank,
                       widget.flexRank,
                       widget.matchHistoryTotals,
-                      widget.lane,
                       widget.champMasteryList,
                       widget.challenges),
                 ),
@@ -253,44 +266,80 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
               SlideTransition(
                   position: _animation2,
                   child: BestChampSection(
-                    champName: widget.champsPlayedIds![0],
+                    champID: widget.champsPlayedIds?[0],
                     mht1: widget.matchHistoryTotalschamp1,
                     summonerName: widget.summoner!.summonerName,
                   )),
-              SlideTransition(
-                position: _animation3,
-                child: Column(children: [
-                  const Text(
-                    "Match History",
-                    style: TextStyle(
-                      fontSize: 28 * 0.7,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 2.0,
-                          color: Colors.blue,
-                          offset: Offset(2.0, 2.0),
+              screenWidth >= 800
+                  ? SlideTransition(
+                      position: _animation3,
+                      child: Column(children: [
+                        const Text(
+                          "Match History",
+                          style: TextStyle(
+                            fontSize: 28 * 0.7,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  MatchHistoryWidget(
-                    matchHistoryList: widget.matchHistoryList,
-                    summonerName: widget.summoner!.summonerName,
-                    onUpdate: updateMH,
-                    playerIndexs: playerIndexs,
-                  ),
-                ]),
-              ),
-              SlideTransition(
-                  position: _animation4,
-                  child: AltchampSection(
-                    champsPlayedIds: widget.champsPlayedIds,
-                    mht2: widget.matchHistoryTotalschamp2,
-                    mht3: widget.matchHistoryTotalschamp3,
-                    mht4: widget.matchHistoryTotalschamp4,
-                  )),
+                        MatchHistoryWidget(
+                          matchHistoryList: widget.matchHistoryList,
+                          summonerName: widget.summoner!.summonerName,
+                          onUpdate: updateMH,
+                          playerIndexs: playerIndexs,
+                        ),
+                      ]),
+                    )
+                  : SlideTransition(
+                      position: _animation4,
+                      child: AltchampSection(
+                        champsPlayedIds: widget.champsPlayedIds,
+                        mht2: widget.matchHistoryTotalschamp2,
+                        mht3: widget.matchHistoryTotalschamp3,
+                        mht4: widget.matchHistoryTotalschamp4,
+                      )),
+              screenWidth <= 800
+                  ? SlideTransition(
+                      position: _animation3,
+                      child: Column(children: [
+                        const Text(
+                          "Match History",
+                          style: TextStyle(
+                            fontSize: 28 * 0.7,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        MatchHistoryWidget(
+                          matchHistoryList: widget.matchHistoryList,
+                          summonerName: widget.summoner!.summonerName,
+                          onUpdate: updateMH,
+                          playerIndexs: playerIndexs,
+                        ),
+                      ]),
+                    )
+                  : SlideTransition(
+                      position: _animation4,
+                      child: AltchampSection(
+                        champsPlayedIds: widget.champsPlayedIds,
+                        mht2: widget.matchHistoryTotalschamp2,
+                        mht3: widget.matchHistoryTotalschamp3,
+                        mht4: widget.matchHistoryTotalschamp4,
+                      )),
             ],
           ),
         ),
@@ -379,17 +428,10 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
       List<MatchStats>? matchHistory = await ApiMethods()
           .getGameHistory(summonerName: summonerTextController.text, start: 0);
 
-      var lanes = SupportMethods().getMapString(laneNames);
-
-      String lanePref;
-      if (lanes.isEmpty) {
-        lanePref = "UTILITY";
-      } else {
-        lanePref = lanes[0];
-      }
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -398,7 +440,6 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   soloQRank: ranksoloQ,
                   flexRank: rankFlex,
                   matchHistoryList: matchHistory,
-                  lane: lanePref,
                   champMasteryList: champMasteryList,
                   challenges: challenges,
                 )),
@@ -413,8 +454,7 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
     if (index >= 0) {
       vh.resetVariables();
       for (var player in matchByChampList) {
-        if (champs!.length >= (index + 1) &&
-            player.champName == champs[index]) {
+        if (champs!.length >= (index + 1) && player.champId == champs[index]) {
           vh.matchTotals(player.playerInfo);
         }
       }

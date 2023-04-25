@@ -38,7 +38,7 @@ class AltchampSection extends StatelessWidget {
         ),
         SizedBox(
           width: 535 * 0.7,
-          height: 1150 * 0.7,
+          //height: 1150 * 0.7,
           child: Column(
             children: [
               champsPlayedIds!.length < 2

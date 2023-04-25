@@ -6,13 +6,13 @@ import 'bestChampionCard.dart';
 class BestChampSection extends StatelessWidget {
   final MatchHistoryTotals? mht1;
   final String? summonerName;
-  final String? champName;
+  final int? champID;
 
   const BestChampSection(
       {Key? key,
       required this.mht1,
       required this.summonerName,
-      required this.champName})
+      required this.champID})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class BestChampSection extends StatelessWidget {
       BestChampionCard(
         summonerName: summonerName,
         //champName: widget.masteryList![0].championName?.replaceAll(RegExp(r"\s+\b|\b\s"), ""),
-        champName: champName,
+        champID: champID,
         matchHistoryTotals: mht1,
         gamesPlayed: mht1!.gamesPlayed,
       ),

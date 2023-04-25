@@ -192,8 +192,9 @@ class VariableHell {
         int? loss = 1;
         lossesTotal = (lossesTotal! + loss);
       }
-      baronKillsTotal =
-          incrementNumber(player?.challenges?.baronTakedowns, baronKillsTotal!);
+
+      baronKillsTotal = incrementNumber(
+          player?.challenges?.baronTakedowns as int?, baronKillsTotal!);
       killsTotal = incrementNumber(player?.kills, killsTotal!);
       pinkWardsTotal =
           incrementNumber(player?.visionWardsBoughtInGame, pinkWardsTotal!);
@@ -247,8 +248,8 @@ class VariableHell {
       visionScoreTotal =
           incrementNumber(player?.visionScore, visionScoreTotal!);
 
-      buffStolenTotal =
-          incrementNumber(player?.challenges?.buffsStolen, buffStolenTotal!);
+      buffStolenTotal = incrementNumber(
+          player?.challenges?.buffsStolen as int?, buffStolenTotal!);
 
       wardsKilledTotal =
           incrementNumber(player?.wardsKilled, wardsKilledTotal!);
@@ -299,46 +300,46 @@ class VariableHell {
       tripleKillsTotal =
           incrementNumber(player?.tripleKills, tripleKillsTotal!);
 
-      double? damagePerMinute = player?.challenges?.damagePerMinute;
+      num? damagePerMinute = player?.challenges?.damagePerMinute;
       if (damagePerMinute != null) {
         damagePerMinuteTotal = (damagePerMinuteTotal! + damagePerMinute);
       }
 
-      double? damageTakenOnTeamPercentage =
+      num? damageTakenOnTeamPercentage =
           player?.challenges!.damageTakenOnTeamPercentage;
       if (damageTakenOnTeamPercentage != null) {
         damageTakenOnTeamPercentageTotal =
             (damageTakenOnTeamPercentageTotal! + damageTakenOnTeamPercentage);
       }
-      int? dodgeSkillShotsSmallWindow =
+      num? dodgeSkillShotsSmallWindow =
           player?.challenges?.dodgeSkillShotsSmallWindow;
       if (dodgeSkillShotsSmallWindow != null) {
-        dodgeSkillShotsSmallWindowTotal =
-            (dodgeSkillShotsSmallWindowTotal! + dodgeSkillShotsSmallWindow);
+        dodgeSkillShotsSmallWindowTotal = (dodgeSkillShotsSmallWindowTotal! +
+            dodgeSkillShotsSmallWindow) as int?;
       }
 
       dodgeSkillShotsSmallWindowTotal = incrementNumber(
-          player?.challenges?.dodgeSkillShotsSmallWindow,
+          player?.challenges?.dodgeSkillShotsSmallWindow as int?,
           dodgeSkillShotsSmallWindowTotal!);
 
-      double? effectiveHealAndShielding =
+      num? effectiveHealAndShielding =
           player?.challenges?.effectiveHealAndShielding;
       if (effectiveHealAndShielding != null) {
         effectiveHealAndShieldingTotal =
             (effectiveHealAndShieldingTotal! + effectiveHealAndShielding);
       }
-      double? enemyJungleMonsterKills =
+      num? enemyJungleMonsterKills =
           player?.challenges?.enemyJungleMonsterKills;
       if (enemyJungleMonsterKills != null) {
         enemyJungleMonsterKillsTotal =
             (enemyJungleMonsterKillsTotal! + enemyJungleMonsterKills);
       }
       epicMonsterKillsNearEnemyJunglerTotal = incrementNumber(
-          player?.challenges?.epicMonsterKillsNearEnemyJungler,
+          player?.challenges?.epicMonsterKillsNearEnemyJungler as int?,
           epicMonsterKillsNearEnemyJunglerTotal!);
 
       epicMonsterKillsWithin30SecondsOfSpawnTotal = incrementNumber(
-          player?.challenges?.epicMonsterKillsWithin30SecondsOfSpawn,
+          player?.challenges?.epicMonsterKillsWithin30SecondsOfSpawn as int?,
           epicMonsterKillsWithin30SecondsOfSpawnTotal!);
 
       double? gameLength = player?.challenges?.gameLength;
@@ -351,7 +352,7 @@ class VariableHell {
         goldPerMinuteTotal = (goldPerMinuteTotal! + goldPerMinute);
       }
 
-      int? hadOpenNexus = player?.challenges?.hadOpenNexus;
+      num? hadOpenNexus = player?.challenges?.hadOpenNexus;
       if ((hadOpenNexus != null && hadOpenNexus >= 1) &&
           playerWin != null &&
           playerWin == true) {
@@ -359,58 +360,62 @@ class VariableHell {
         hadOpenNexusWinsTotal = (hadOpenNexusWinsTotal! + hadOpenNexusWins);
       }
 
-      double? jungleCsBefore10Minutes =
+      num? jungleCsBefore10Minutes =
           player?.challenges?.jungleCsBefore10Minutes;
       if (jungleCsBefore10Minutes != null) {
         jungleCsBefore10MinutesTotal =
             (jungleCsBefore10MinutesTotal! + jungleCsBefore10Minutes);
       }
 
-      double? kda = player?.challenges?.kda;
+      num? kda = player?.challenges?.kda;
       if (kda != null) {
         kdaTotal = (kdaTotal! + kda);
       }
 
-      double? killParticipation = player?.challenges?.killParticipation;
+      num? killParticipation = player?.challenges?.killParticipation;
       if (killParticipation != null) {
         killParticipationTotal = (killParticipationTotal! + killParticipation);
       }
 
       killsNearEnemyTurretTotal = incrementNumber(
-          player?.challenges?.killsNearEnemyTurret, killsNearEnemyTurretTotal!);
+          player?.challenges?.killsNearEnemyTurret as int?,
+          killsNearEnemyTurretTotal!);
       killsUnderOwnTurretTotal = incrementNumber(
-          player?.challenges?.killsUnderOwnTurret, killsUnderOwnTurretTotal!);
+          player?.challenges?.killsUnderOwnTurret as int?,
+          killsUnderOwnTurretTotal!);
       laneMinionsFirst10MinutesTotal = incrementNumber(
-          player?.challenges?.laneMinionsFirst10Minutes,
+          player?.challenges?.laneMinionsFirst10Minutes as int?,
           laneMinionsFirst10MinutesTotal!);
       legendaryCountTotal = incrementNumber(
-          player?.challenges?.legendaryCount, legendaryCountTotal!);
+          player?.challenges?.legendaryCount as int?, legendaryCountTotal!);
 
       multiTurretRiftHeraldCountTotal = incrementNumber(
-          player?.challenges?.multiTurretRiftHeraldCount,
+          player?.challenges?.multiTurretRiftHeraldCount as int?,
           multiTurretRiftHeraldCountTotal!);
       multiTurretRiftHeraldCountTotal = incrementNumber(
-          player?.challenges?.multiTurretRiftHeraldCount,
+          player?.challenges?.multiTurretRiftHeraldCount as int?,
           multiTurretRiftHeraldCountTotal!);
-      multikillsTotal =
-          incrementNumber(player?.challenges?.multikills, multikillsTotal!);
+      multikillsTotal = incrementNumber(
+          player?.challenges?.multikills as int?, multikillsTotal!);
       outnumberedKillsTotal = incrementNumber(
-          player?.challenges?.outnumberedKills, outnumberedKillsTotal!);
-      perfectGameTotal =
-          incrementNumber(player?.challenges?.perfectGame, perfectGameTotal!);
+          player?.challenges?.outnumberedKills as int?, outnumberedKillsTotal!);
+      perfectGameTotal = incrementNumber(
+          player?.challenges?.perfectGame as int?, perfectGameTotal!);
       quickSoloKillsTotal = incrementNumber(
-          player?.challenges?.quickSoloKills, quickSoloKillsTotal!);
+          player?.challenges?.quickSoloKills as int?, quickSoloKillsTotal!);
       saveAllyFromDeathTotal = incrementNumber(
-          player?.challenges?.saveAllyFromDeath, saveAllyFromDeathTotal!);
+          player?.challenges?.saveAllyFromDeath as int?,
+          saveAllyFromDeathTotal!);
       scuttleCrabKillsTotal = incrementNumber(
-          player?.challenges?.scuttleCrabKills, scuttleCrabKillsTotal!);
+          player?.challenges?.scuttleCrabKills as int?, scuttleCrabKillsTotal!);
       soloBaronKillsTotal = incrementNumber(
-          player?.challenges?.soloBaronKills, soloBaronKillsTotal!);
-      soloKillsTotal =
-          incrementNumber(player?.challenges?.soloKills, soloKillsTotal!);
+          player?.challenges?.soloBaronKills as int?, soloBaronKillsTotal!);
+      soloKillsTotal = incrementNumber(
+          player?.challenges?.soloKills as int?, soloKillsTotal!);
       turretPlatesTakenTotal = incrementNumber(
-          player?.challenges?.turretPlatesTaken, turretPlatesTakenTotal!);
-      double? teamDamagePercentage = player?.challenges?.teamDamagePercentage;
+          player?.challenges?.turretPlatesTaken as int?,
+          turretPlatesTakenTotal!);
+      num? teamDamagePercentage = player?.challenges?.teamDamagePercentage;
       if (teamDamagePercentage != null) {
         teamDamagePercentageTotal =
             (teamDamagePercentageTotal! + teamDamagePercentage);

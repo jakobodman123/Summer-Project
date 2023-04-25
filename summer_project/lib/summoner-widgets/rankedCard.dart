@@ -17,7 +17,7 @@ class RankedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Colors.blue,
+      shadowColor: Colors.black,
       elevation: 20,
       color: colorGrey,
       child: ClipPath(
@@ -55,9 +55,9 @@ class RankedCard extends StatelessWidget {
                       child: SizedBox(
                         width: 50.0 * 0.7,
                         height: 50.0 * 0.7,
-                        child: Image.asset(
-                          "/rankedIcons/Emblem_$rankedBorder.png",
-                          fit: BoxFit.cover,
+                        child: Image.network(
+                          "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/loadouts/summoneremotes/rewards/ranked/2019/split1/em_2019_1_$rankedBorder\_inventory.png",
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),

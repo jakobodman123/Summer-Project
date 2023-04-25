@@ -18,7 +18,7 @@ class AltStatCard extends StatelessWidget {
         color: colorGrey,
         child: SizedBox(
           height: 100 * 0.7,
-          width: 250 * 0.7,
+          width: 230 * 0.7,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -75,7 +75,7 @@ class AltStatCard extends StatelessWidget {
                   Row(
                     children: [
                       const Text(
-                        'Dmg Dealt: ',
+                        'Dmg: ',
                         style: TextStyle(
                             fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
