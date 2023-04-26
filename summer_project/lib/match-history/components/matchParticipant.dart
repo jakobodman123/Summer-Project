@@ -1,36 +1,12 @@
-import 'dart:collection';
-
-import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
-import 'package:dart_lol/LeagueStuff/rank.dart';
-import 'package:dart_lol/LeagueStuff/summoner.dart';
-import 'package:dart_lol/dart_lol.dart';
 import 'package:flutter/material.dart';
-import 'package:summer_project/api/apiMethods.dart';
-import 'package:summer_project/main.dart';
-import 'package:summer_project/generated-classes/matchByChamp.dart';
-import 'package:summer_project/util/matchHistoryTotals.dart';
-import 'package:summer_project/generated-classes/matchStats.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:summer_project/searchPage.dart';
-import 'package:summer_project/api/itemApi.dart';
-
-import '../../homePage.dart';
-
-class MatchParticipant extends StatefulWidget {
-  final int? championID;
+class MatchParticipant extends StatelessWidget {
+  final String? championName;
   final String? playerName;
   final String? server = "EUW1";
 
-  const MatchParticipant({Key? key, this.championID, this.playerName})
+  const MatchParticipant({Key? key, this.championName, this.playerName})
       : super(key: key);
-  @override
-  MatchParticipantsState createState() => MatchParticipantsState();
-}
-
-class MatchParticipantsState extends State<MatchParticipant> {
-  List<MatchByChamp> matchByChampList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +19,14 @@ class MatchParticipantsState extends State<MatchParticipant> {
             width: 20 * 0.7,
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Image.network(
-                  "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${widget.championID}.png"),
+              child: Image.asset("assets/smallChampIcon/$championName.png"),
             ),
           ),
           SizedBox(
             height: 15 * 0.7,
             width: 75 * 0.7,
             child: Text(
-              (widget.playerName != null) ? widget.playerName! : "NameError",
+              (playerName != null) ? playerName! : "NameError",
               style: const TextStyle(fontSize: 14 * 0.7, color: Colors.grey),
               overflow: TextOverflow.ellipsis,
             ),

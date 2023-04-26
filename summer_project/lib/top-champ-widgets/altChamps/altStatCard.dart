@@ -13,7 +13,7 @@ class AltStatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shadowColor: Colors.blue,
+        shadowColor: Colors.black,
         elevation: 20,
         color: colorGrey,
         child: SizedBox(
@@ -34,12 +34,18 @@ class AltStatCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      GlowText(
+                      Text(
                         (matchHistoryTotals!.goldEarnedTotal! / games!)
                                 .toStringAsFixed(0) +
                             "G",
-                        glowColor: Colors.blue,
                         style: const TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
                             fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -55,12 +61,18 @@ class AltStatCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      GlowText(
+                      Text(
                         (matchHistoryTotals!.csTotals! / games!)
                                 .toStringAsFixed(0) +
                             "G",
-                        glowColor: Colors.blue,
                         style: const TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
                             fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -81,11 +93,17 @@ class AltStatCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      GlowText(
+                      Text(
                         (matchHistoryTotals!.damageTotal! / games!)
                             .toStringAsFixed(0),
-                        glowColor: Colors.blue,
                         style: const TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
                             fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
@@ -101,11 +119,16 @@ class AltStatCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      GlowText(
+                      Text(
                         (matchHistoryTotals!.killsTotal!).toStringAsFixed(0),
-                        //(matchHistoryTotals!.killsTotal!).toString(),
-                        glowColor: Colors.blue,
                         style: const TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.black,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
                             fontSize: 16 * 0.7,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),

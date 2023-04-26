@@ -18,24 +18,29 @@ class AltchampSection extends StatelessWidget {
     required this.mht4,
     required this.champsPlayedIds,
   }) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        const Text(
-          "Alternative Champs",
-          style: TextStyle(
-            fontSize: 28 * 0.7,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            shadows: [
-              Shadow(
-                blurRadius: 2.0,
-                color: Colors.blue,
-                offset: Offset(2.0, 2.0),
+        screenWidth <= 800 && champsPlayedIds!.length < 2
+            ? const SizedBox()
+            : const Text(
+                "Alternative Champs",
+                style: TextStyle(
+                  fontSize: 28 * 0.7,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.blue,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
         SizedBox(
           width: 535 * 0.7,
           //height: 1150 * 0.7,

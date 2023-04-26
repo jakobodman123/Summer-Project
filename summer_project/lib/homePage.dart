@@ -347,14 +347,6 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
     );
   }
 
-/*
-  ResponsiveBreakpoints.of(context).screenWidth > 1400
-              ? 4
-              : (ResponsiveBreakpoints.of(context).screenWidth > 1000 &&
-                      ResponsiveBreakpoints.of(context).screenWidth < 1400)
-                  ? 2
-                  : 1,
-*/
   Future<void> onTapLoad1() async {
     Summoner? summonerObject = Summoner();
     await ItemApi.getSummoner(summonerTextController.text).then((response) {

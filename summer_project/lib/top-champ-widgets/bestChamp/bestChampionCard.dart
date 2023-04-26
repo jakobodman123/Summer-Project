@@ -52,6 +52,13 @@ class BestChampionCard extends StatelessWidget {
           const Text(
             'Champion Accolades',
             style: TextStyle(
+                shadows: [
+                  Shadow(
+                    blurRadius: 2.0,
+                    color: Colors.black,
+                    offset: Offset(2.0, 2.0),
+                  ),
+                ],
                 fontSize: 20 * 0.7,
                 fontWeight: FontWeight.bold,
                 color: Colors.white),
@@ -63,6 +70,13 @@ class BestChampionCard extends StatelessWidget {
           const Text(
             'Champion Stats',
             style: TextStyle(
+                shadows: [
+                  Shadow(
+                    blurRadius: 2.0,
+                    color: Colors.black,
+                    offset: Offset(2.0, 2.0),
+                  ),
+                ],
                 fontSize: 20 * 0.7,
                 fontWeight: FontWeight.bold,
                 color: Colors.white),

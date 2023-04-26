@@ -12,8 +12,8 @@ class RuneSection extends StatelessWidget {
       Column(
         children: [
           SizedBox(
-            height: 45 * 0.7,
-            width: 45 * 0.7,
+            height: 40 * 0.7,
+            width: 40 * 0.7,
             child: FittedBox(
               fit: BoxFit.fill,
               child: Image.asset(
@@ -57,8 +57,8 @@ class RuneSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 35 * 0.7,
-            width: 35 * 0.7,
+            height: 27 * 0.7,
+            width: 27 * 0.7,
             child: FittedBox(
               fit: BoxFit.fill,
               child: Image.asset(
@@ -66,8 +66,8 @@ class RuneSection extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 35 * 0.7,
-            width: 35 * 0.7,
+            height: 27 * 0.7,
+            width: 27 * 0.7,
             child: FittedBox(
               fit: BoxFit.fill,
               child: Image.asset(

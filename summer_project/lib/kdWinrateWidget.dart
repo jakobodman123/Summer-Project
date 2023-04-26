@@ -22,24 +22,19 @@ class KdWinrateWidget extends StatelessWidget {
       //width: MediaQuery.of(context).size.width,
       child: Card(
         color: colorGrey,
-        shadowColor: Colors.blue,
+        shadowColor: Colors.black,
         elevation: 20,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 5 * 0.7,
-              ),
-              child: KdaWidget(
-                kills: kills,
-                deaths: deaths,
-                assists: assists,
-                gamesPlayed: gamesPlayed,
-              ),
+            KdaWidget(
+              kills: kills,
+              deaths: deaths,
+              assists: assists,
+              gamesPlayed: gamesPlayed,
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -51,9 +46,16 @@ class KdWinrateWidget extends StatelessWidget {
                     radius: 40.0 * 0.7,
                     lineWidth: 5.0 * 0.7,
                     percent: wins! / gamesPlayed!,
-                    center: GlowText(
+                    center: Text(
                       ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
                       style: TextStyle(
+                          shadows: const [
+                            Shadow(
+                              blurRadius: 2.0,
+                              color: Colors.black,
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
                           fontSize: 28 * 0.7,
                           fontWeight: FontWeight.bold,
                           color: (wins! / gamesPlayed! * 100) >= 50.0
@@ -86,9 +88,16 @@ class KdWinrateWidget extends StatelessWidget {
                     radius: 40.0 * 0.7,
                     lineWidth: 5.0 * 0.7,
                     percent: 1,
-                    center: GlowText(
+                    center: Text(
                       gamesPlayed.toString(),
                       style: const TextStyle(
+                        shadows: [
+                          Shadow(
+                            blurRadius: 2.0,
+                            color: Colors.black,
+                            offset: Offset(2.0, 2.0),
+                          ),
+                        ],
                         fontSize: 28 * 0.7,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,

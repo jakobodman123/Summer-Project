@@ -17,6 +17,45 @@ class SupportMethods {
     return sortedList;
   }
 
+  String getGameTypeFromID(int? queueId) {
+    String gameType = "Game";
+    if (queueId != null) {
+      switch (queueId) {
+        case 420:
+          {
+            gameType = "Ranked Solo";
+          }
+          break;
+
+        case 440:
+          {
+            gameType = "Ranked Flex";
+          }
+          break;
+
+        case 400:
+          {
+            gameType = "Normal Draft";
+          }
+          break;
+
+        case 450:
+          {
+            gameType = "Aram";
+          }
+          break;
+
+        default:
+          {
+            gameType = "Normal Game";
+          }
+          break;
+      }
+      return gameType;
+    }
+    return gameType;
+  }
+
   void showErrorDialog(BuildContext context, String errorMessage) {
     showDialog(
       context: context,

@@ -10,7 +10,7 @@ class BestChampionPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: colorGrey.withOpacity(0),
-      shadowColor: Colors.blue,
+      shadowColor: Colors.black,
       elevation: 20,
       child: SizedBox(
         height: 250 * 0.7,

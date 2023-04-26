@@ -19,23 +19,23 @@ class MatchParticipants extends StatelessWidget {
               //list[0].playerName;
               //list[0].champion;
               MatchParticipant(
-                championID: participants?[0].championId,
+                championName: participants?[0].championName,
                 playerName: participants?[0].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[1].championId,
+                championName: participants?[1].championName,
                 playerName: participants?[1].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[2].championId,
+                championName: participants?[2].championName,
                 playerName: participants?[2].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[3].championId,
+                championName: participants?[3].championName,
                 playerName: participants?[3].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[4].championId,
+                championName: participants?[4].championName,
                 playerName: participants?[4].summonerName,
               ),
             ],
@@ -49,23 +49,23 @@ class MatchParticipants extends StatelessWidget {
               //list[0].playerName;
               //list[0].champion;
               MatchParticipant(
-                championID: participants?[5].championId,
+                championName: participants?[5].championName,
                 playerName: participants?[5].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[6].championId,
+                championName: participants?[6].championName,
                 playerName: participants?[6].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[7].championId,
+                championName: participants?[7].championName,
                 playerName: participants?[7].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[8].championId,
+                championName: participants?[8].championName,
                 playerName: participants?[8].summonerName,
               ),
               MatchParticipant(
-                championID: participants?[9].championId,
+                championName: participants?[9].championName,
                 playerName: participants?[9].summonerName,
               ),
             ],

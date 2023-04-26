@@ -82,6 +82,8 @@ flutter:
     - assets/img/item/
     - assets/runesImg/
     - assets/helpIMG/
+    - assets/smallChampIcon/
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -73,9 +73,16 @@ class AltChampsWidget extends StatelessWidget {
                           radius: 40.0 * 0.7,
                           lineWidth: 5.0 * 0.7,
                           percent: wins! / gamesPlayed!,
-                          center: GlowText(
+                          center: Text(
                             ((wins! / gamesPlayed!) * 100).toStringAsFixed(1),
                             style: TextStyle(
+                              shadows: const [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.black,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
                               fontSize: 28 * 0.7,
                               fontWeight: FontWeight.bold,
                               color: (wins! / gamesPlayed! * 100) >= 50.0
@@ -103,9 +110,16 @@ class AltChampsWidget extends StatelessWidget {
                           radius: 40.0 * 0.7,
                           lineWidth: 5.0 * 0.7,
                           percent: 1,
-                          center: GlowText(
+                          center: Text(
                             gamesPlayed.toString(),
                             style: const TextStyle(
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.black,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
                               fontSize: 28 * 0.7,
                               fontWeight: FontWeight.bold,
                               color: Colors.blue,

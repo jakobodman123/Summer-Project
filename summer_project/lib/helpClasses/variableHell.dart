@@ -421,7 +421,9 @@ class VariableHell {
             (teamDamagePercentageTotal! + teamDamagePercentage);
       }
 
-      csTotal = incrementNumber(player?.totalMinionsKilled, csTotal!);
+      int? csPlusJungle =
+          player!.totalMinionsKilled! + (player.neutralMinionsKilled as int);
+      csTotal = incrementNumber(csPlusJungle, csTotal!);
     } catch (e) {
       print(e);
     }
