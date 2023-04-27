@@ -138,20 +138,31 @@ class _SearchPageState extends State<SearchPage>
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      const Text(
-                        "By Jakob Ödman",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2.0,
-                                color: Colors.black,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue),
+                      ShaderMask(
+                        shaderCallback: (bounds) => const LinearGradient(
+                          colors: [
+                            Colors.green,
+                            Color.fromARGB(255, 8, 66, 131),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          tileMode: TileMode.mirror,
+                        ).createShader(bounds),
+                        child: const Text(
+                          "By Jakob Lindecrantz",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.black,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue),
+                        ),
                       ),
                       const SizedBox(
                         height: 50,

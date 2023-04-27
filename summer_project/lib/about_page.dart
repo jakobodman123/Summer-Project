@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:summer_project/util/custom_appbar.dart';
+import 'package:summer_project/util/gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
@@ -72,40 +73,49 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 0, right: 0),
-                              child: Text(
-                                "This is Play Easy Champions",
-                                style: TextStyle(
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 2.0,
-                                        color: Colors.black,
-                                        offset: Offset(2.0, 2.0),
-                                      ),
-                                    ],
-                                    fontSize: 55,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
+                            const Text(
+                              "This is Play Easy Champions",
+                              style: TextStyle(
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 2.0,
+                                      color: Colors.black,
+                                      offset: Offset(2.0, 2.0),
+                                    ),
+                                  ],
+                                  fontSize: 55,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(
+                            Padding(
+                              padding: const EdgeInsets.only(
                                 top: 5,
                               ),
-                              child: Text(
-                                "A Riot API webscrapper",
-                                style: TextStyle(
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 2.0,
-                                        color: Colors.black,
-                                        offset: Offset(2.0, 2.0),
-                                      ),
-                                    ],
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue),
+                              child: ShaderMask(
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                  colors: [
+                                    Colors.green,
+                                    Color.fromARGB(255, 8, 66, 131),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  tileMode: TileMode.mirror,
+                                ).createShader(bounds),
+                                child: const Text(
+                                  "A Riot API webscrapper",
+                                  style: TextStyle(
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 2.0,
+                                          color: Colors.black,
+                                          offset: Offset(2.0, 2.0),
+                                        ),
+                                      ],
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                ),
                               ),
                             ),
                             const Padding(
@@ -129,39 +139,10 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                             ),
                             Row(
                               children: [
-                                Container(
+                                const GradientButton(
+                                  text: "Try it out",
                                   width: 140,
                                   height: 50,
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color.fromARGB(255, 8, 66, 131),
-                                        Colors.blue,
-                                        Colors.white
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Try it out',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
                                 ),
                                 const SizedBox(
                                   width: 30,

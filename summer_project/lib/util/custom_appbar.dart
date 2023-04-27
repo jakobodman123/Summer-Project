@@ -29,7 +29,7 @@ class CustomAppbar {
             CustomAppbarButton(
               text: "Contact",
               onPressed: () {
-                launchUrl(Uri.parse('https://github.com/jakobodman123'));
+                Navigator.pushNamed(context, "/contact");
               },
             ),
           ],

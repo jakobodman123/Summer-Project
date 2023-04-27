@@ -32,12 +32,11 @@ class _CustomAppbarButtonState extends State<CustomAppbarButton> {
             gradient: _isHovering
                 ? const LinearGradient(
                     colors: [
+                      Colors.green,
                       Color.fromARGB(255, 8, 66, 131),
-                      Colors.blue,
-                      Colors.white
                     ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
                   )
                 : null,
           ),
