@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:summer_project/accolades/accoladesPage.dart';
 import 'package:summer_project/top-champ-widgets/bestChamp/bestChampionWidget.dart';
-import 'package:summer_project/kdWinrateWidget.dart';
+import 'package:summer_project/summoner-widgets/kdWinrateWidget.dart';
 import 'package:summer_project/main.dart';
-import 'package:summer_project/masteryCard.dart';
+import 'package:summer_project/summoner-widgets/masteryCard.dart';
 import 'package:summer_project/util/matchHistoryTotals.dart';
 import 'package:summer_project/top-champ-widgets/bestChamp/statCard.dart';
 
 class BestChampionCard extends StatelessWidget {
-  final int? champID;
+  final String? champName;
   final String? summonerName;
   final MatchHistoryTotals? matchHistoryTotals;
   final int? gamesPlayed;
@@ -18,7 +18,7 @@ class BestChampionCard extends StatelessWidget {
 
   BestChampionCard(
       {Key? key,
-      required this.champID,
+      required this.champName,
       this.summonerName,
       this.matchHistoryTotals,
       this.gamesPlayed})
@@ -40,7 +40,7 @@ class BestChampionCard extends StatelessWidget {
             now,
             style: const TextStyle(fontSize: 20 * 0.7, color: Colors.grey),
           ),
-          BestChampionPicture(champID!),
+          BestChampionPicture(champName!),
           KdWinrateWidget(
             matchHistoryTotals!.gamesPlayed,
             matchHistoryTotals!.killsTotal,
@@ -66,7 +66,7 @@ class BestChampionCard extends StatelessWidget {
           AccoladesPage(
               matchHistoryTotals: matchHistoryTotals,
               games: gamesPlayed,
-              champName: champID.toString()),
+              champName: champName),
           const Text(
             'Champion Stats',
             style: TextStyle(

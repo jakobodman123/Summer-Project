@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:summer_project/helpClasses/supportMethods.dart';
+import 'package:summer_project/summoner_object.dart';
 import 'package:summer_project/util/custom_appbar.dart';
+import 'package:summer_project/util/custom_drawer.dart';
 import 'package:summer_project/util/gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'homePage.dart';
+
 class AboutPage extends StatefulWidget {
+  const AboutPage({Key? key}) : super(key: key);
+
   AboutPageState createState() => AboutPageState();
 }
 
@@ -32,9 +39,15 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppbar().customAppbar(context),
+      endDrawer: screenWidth >= 800 ? null : CustomDrawer(),
+      appBar: screenWidth <= 800
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+            )
+          : CustomAppbar().customAppbar(context),
       body: Stack(
         children: <Widget>[
           Container(
@@ -139,10 +152,20 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                             ),
                             Row(
                               children: [
-                                const GradientButton(
-                                  text: "Try it out",
-                                  width: 140,
-                                  height: 50,
+                                InkWell(
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TestPage(summonerName: "Ritzler"),
+                                        ));
+                                  },
+                                  child: const GradientButton(
+                                    text: "Try it out",
+                                    width: 140,
+                                    height: 50,
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 30,
@@ -165,7 +188,7 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                     ),
                                     child: const Center(
                                       child: Text(
-                                        'Github',
+                                        'Longer Desc',
                                         style: TextStyle(
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold,

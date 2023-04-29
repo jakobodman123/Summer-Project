@@ -8,13 +8,13 @@ import 'package:summer_project/main.dart';
 import 'package:summer_project/util/matchHistoryTotals.dart';
 
 class AltChampsWidget extends StatelessWidget {
-  final int? champId;
+  final String? champName;
   final int? gamesPlayed;
   final int? wins;
   final MatchHistoryTotals? matchHistoryTotals;
 
   const AltChampsWidget(
-    this.champId,
+    this.champName,
     this.gamesPlayed,
     this.wins,
     this.matchHistoryTotals,
@@ -46,15 +46,15 @@ class AltChampsWidget extends StatelessWidget {
                       image: DecorationImage(
                           fit: BoxFit.fitWidth,
                           //alignment: FractionalOffset.topCenter,
-                          image: NetworkImage(
-                              "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${champId}/${champId}000.jpg"))),
+                          image:
+                              AssetImage("assets/splash/${champName}_0.jpg"))),
                 ),
                 InkWell(
                     onTap: () {},
                     child: AltAccoladesItem(
                         matchHistoryTotals: matchHistoryTotals,
                         games: gamesPlayed,
-                        champName: champId.toString()))
+                        champName: champName))
               ],
             ),
             Column(

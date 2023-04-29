@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:summer_project/contact_page.dart';
+import 'package:summer_project/homePage.dart';
 import 'package:summer_project/searchPage.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -41,14 +42,26 @@ class SummerProject extends StatelessWidget {
           PointerDeviceKind.unknown
         },
       ),
+      onGenerateRoute: (settings) {
+        if (settings.name!.startsWith('/')) {
+          return MaterialPageRoute(
+            builder: (context) =>
+                TestPage(summonerName: settings.name!.substring(1)),
+            settings: settings,
+          );
+        }
+
+        return null;
+      },
       theme: ThemeData(
         primaryColor: primaryColor,
       ),
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const SearchPage(),
-        '/about': (context) => AboutPage(),
-        '/contact': (context) => ContactPage(),
+        '/about': (context) => const AboutPage(),
+        '/contact': (context) => const ContactPage(),
+        '/summoner': (context) => TestPage(),
       },
     );
   }

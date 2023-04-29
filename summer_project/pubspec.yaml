@@ -84,6 +84,7 @@ flutter:
     - assets/runesImg/
     - assets/helpIMG/
     - assets/smallChampIcon/
+    - assets/splash/
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

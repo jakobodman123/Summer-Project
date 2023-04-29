@@ -10,6 +10,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:summer_project/generated-classes/challenges.dart';
 import 'package:summer_project/util/custom_appbar.dart';
+import 'package:summer_project/util/custom_drawer.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,7 +40,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
-  static const String route = '/overview';
+  String _currentRouteName = "/";
   VariableHell vh = VariableHell();
   String server = "EUW1";
   final summonerTextController = TextEditingController();
@@ -91,9 +92,20 @@ class _SearchPageState extends State<SearchPage>
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CustomAppbar().customAppbar(context),
+      drawer: Drawer(
+          child: TextButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/${summonerTextController.text}',
+          );
+        },
+        child: Text("clickme"),
+      )),
       body: Stack(children: <Widget>[
         Container(
           alignment: Alignment.center,
@@ -171,7 +183,16 @@ class _SearchPageState extends State<SearchPage>
                         width: 1000,
                         child: TextField(
                           onSubmitted: (value) async {
-                            await onTapLoad();
+                            setState(() {
+                              isLoading = true;
+                            });
+                            Navigator.pushNamed(
+                              context,
+                              '/${summonerTextController.text}',
+                            );
+                            setState(() {
+                              isLoading = false;
+                            });
                           },
                           //autofocus: true,
                           style: const TextStyle(
@@ -205,7 +226,16 @@ class _SearchPageState extends State<SearchPage>
                                       size: 35,
                                     ),
                                     onTap: () async {
-                                      await onTapLoad();
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/${summonerTextController.text}',
+                                      );
+                                      setState(() {
+                                        isLoading = false;
+                                      });
                                     },
                                   ),
                           ),
@@ -230,100 +260,5 @@ class _SearchPageState extends State<SearchPage>
         )
       ]),
     );
-  }
-
-  Future<void> onTapLoad() async {
-    Summoner? summonerObject = Summoner();
-    await ItemApi.getSummoner(summonerTextController.text).then((response) {
-      Summoner object = Summoner.fromJson(
-        json.decode(
-          response.body,
-        ),
-      );
-      summonerObject = object;
-    });
-    if (summonerObject?.puuid != null) {
-      setState(() {
-        isLoading = true;
-      });
-      String? summmonerID = summonerObject?.summonerID;
-
-      List<ChampionMastery>? champMasteryList = [];
-      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
-        //print(response.body);
-        Iterable list = json.decode(response.body);
-
-        champMasteryList =
-            list.map((model) => ChampionMastery.fromJson(model)).toList();
-        //print(matchHistoryList2);
-      });
-
-      AccountChallenges challenges = AccountChallenges();
-      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
-        AccountChallenges object = AccountChallenges.fromJson(
-          json.decode(
-            response.body,
-          ),
-        );
-        challenges = object;
-      });
-
-      List<Rank>? rankedList = [];
-      await ItemApi.getRanked(summmonerID!).then((response) {
-        Iterable list = json.decode(response.body);
-
-        rankedList = list.map((model) => Rank.fromJson(model)).toList();
-      });
-      Rank? ranksoloQ;
-      if (rankedList!.isEmpty) {
-        ranksoloQ = Rank(
-            hotStreak: false,
-            wins: 0,
-            losses: 0,
-            rank: "",
-            leaguePoints: 0,
-            leagueId: "Unranked",
-            tier: "Unranked");
-      } else {
-        ranksoloQ = rankedList![0];
-      }
-
-      Rank? rankFlex;
-      if (rankedList!.length < 2) {
-        rankFlex = Rank(
-            hotStreak: false,
-            wins: 0,
-            losses: 0,
-            rank: "",
-            leaguePoints: 0,
-            leagueId: "Unranked",
-            tier: "Unranked");
-      } else {
-        rankFlex = rankedList![1];
-      }
-
-      List<MatchStats>? matchHistory = await ApiMethods()
-          .getGameHistory(summonerName: summonerTextController.text, start: 0);
-
-      setState(() {
-        isLoading = false;
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TestPage(
-                  summoner: summonerObject,
-                  soloQRank: ranksoloQ,
-                  flexRank: rankFlex,
-                  matchHistoryList: matchHistory,
-                  champMasteryList: champMasteryList,
-                  challenges: challenges,
-                )),
-      );
-    } else {
-      SupportMethods().showErrorDialog(context,
-          "This summoner was not found!\n Please check your spelling and if they player is on EUW.\n If the problem persist the server might be down.");
-    }
   }
 }

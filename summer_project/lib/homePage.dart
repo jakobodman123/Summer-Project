@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:summer_project/summoner_object.dart';
 import 'package:summer_project/top-champ-widgets/altChamps/altChampsSection.dart';
 import 'package:summer_project/top-champ-widgets/altChamps/altChampsWidget.dart';
 import 'package:summer_project/api/apiMethods.dart';
@@ -25,33 +26,21 @@ import 'package:summer_project/helpClasses/variableHell.dart';
 
 import 'generated-classes/summoner.dart';
 import 'helpClasses/supportMethods.dart';
+import 'main.dart';
 
 Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.4);
-Color colorDarkGrey = const Color(0xFF191919);
+//Color colorDarkGrey = const Color(0xFF191919);
 
 Color primaryColor = const Color(0xFF292C33).withOpacity(0.4);
 
 Color colorGrey = const Color(0xFF6B6A69).withOpacity(0.4);
 
 class TestPage extends StatefulWidget {
-  TestPage({
-    Key? key,
-    this.summoner,
-    this.soloQRank,
-    this.flexRank,
-    this.matchHistoryList,
-    this.matchHistoryTotals,
-    this.matchHistoryTotalschamp1,
-    this.champsPlayedIds,
-    this.matchHistoryTotalschamp2,
-    this.matchHistoryTotalschamp3,
-    this.matchHistoryTotalschamp4,
-    this.lane,
-    this.champMasteryList,
-    this.challenges,
-  }) : super(key: key);
+  TestPage({Key? key, this.summonerName}) : super(key: key);
 
   //TestPage();
+  final String? summonerName;
+  /*
   final Summoner? summoner;
   final Rank? soloQRank;
   final Rank? flexRank;
@@ -65,6 +54,7 @@ class TestPage extends StatefulWidget {
   final String? lane;
   final List<ChampionMastery>? champMasteryList;
   final AccountChallenges? challenges;
+  */
 
   @override
   _TestPageState createState() => _TestPageState();
@@ -74,10 +64,13 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   VariableHell vh = VariableHell();
   bool showTextField = false;
   final summonerTextController = TextEditingController();
+  bool isLoading = false;
   List<int>? champIDs = [];
+  List<String>? champNames = [];
   List<MatchByChamp> matchByChampList = [];
   List<String>? laneNames = [];
   List<int>? playerIndexs = [];
+  SummonerObject? _summonerObject;
 
   //animation variables
   late AnimationController _animationController1;
@@ -88,6 +81,21 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   late Animation<Offset> _animation2;
   late Animation<Offset> _animation3;
   late Animation<Offset> _animation4;
+
+  //test
+  late final Summoner? summoner;
+  late final Rank? soloQRank;
+  late final Rank? flexRank;
+  List<MatchStats>? matchHistoryList;
+  MatchHistoryTotals? matchHistoryTotals;
+  MatchHistoryTotals? matchHistoryTotalschamp1;
+  MatchHistoryTotals? matchHistoryTotalschamp2;
+  MatchHistoryTotals? matchHistoryTotalschamp3;
+  MatchHistoryTotals? matchHistoryTotalschamp4;
+  List<dynamic>? champsPlayedIds;
+  late final List<ChampionMastery>? champMasteryList;
+  late final AccountChallenges? challenges;
+  //test
 
   @override
   void dispose() {
@@ -101,30 +109,41 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    calculateStats(widget.summoner?.summonerName, widget.matchHistoryList);
+    fetchSummoner(widget.summonerName!);
     animations();
+  }
+
+  Future<void> fetchSummoner(String name) async {
+    // Fetch the summoner object from the server
+    SummonerObject? summoner = await SupportMethods().loadSummoner(name);
+    setState(() {
+      _summonerObject = summoner;
+    });
   }
 
   void updateMH(List<MatchStats>? updatedList) {
     setState(() {
-      List<MatchStats>? combinedList = widget.matchHistoryList! + updatedList!;
-      widget.matchHistoryList = combinedList;
-      calculateStats(widget.summoner?.summonerName, widget.matchHistoryList);
+      List<MatchStats>? combinedList =
+          _summonerObject!.matchHistoryList! + updatedList!;
+      _summonerObject?.matchHistoryList = combinedList;
+      calculateStats(widget.summonerName, _summonerObject?.matchHistoryList);
     });
   }
 
   void calculateStats(
       String? summonerName, List<MatchStats>? matchHistoryList) {
     //calculate stats
+
     ApiMethods api = ApiMethods();
     playerIndexs = [];
     champIDs = [];
+    champNames = [];
     matchByChampList = [];
-    widget.matchHistoryTotals = null;
-    widget.matchHistoryTotalschamp1 = null;
-    widget.matchHistoryTotalschamp2 = null;
-    widget.matchHistoryTotalschamp3 = null;
-    widget.matchHistoryTotalschamp4 = null;
+    _summonerObject!.matchHistoryTotals = null;
+    _summonerObject!.matchHistoryTotalschamp1 = null;
+    _summonerObject!.matchHistoryTotalschamp2 = null;
+    _summonerObject!.matchHistoryTotalschamp3 = null;
+    _summonerObject!.matchHistoryTotalschamp4 = null;
     for (int i = 0; i < matchHistoryList!.length; i++) {
       MatchStats matchStats = matchHistoryList[i];
       int? playerIndex = api.findPersonUsingLoop(
@@ -133,8 +152,10 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
       Participants? player = matchStats.info?.participants?[playerIndex];
 
       int? champID = player?.championId;
+      String? champName = player?.championName;
       String? lane = player?.individualPosition;
       champIDs?.add(champID!);
+      champNames?.add(champName!);
 
       switch (matchStats.info?.queueId) {
         case 400:
@@ -146,15 +167,22 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
           break;
       }
       vh.matchTotals(player);
-      MatchByChamp matchByChamp = MatchByChamp(champID, player);
+      MatchByChamp matchByChamp = MatchByChamp(champName, player);
       matchByChampList.add(matchByChamp);
     }
-    widget.champsPlayedIds = SupportMethods().getMapString(champIDs);
-    widget.matchHistoryTotals = setTotals(widget.champsPlayedIds, -1);
-    widget.matchHistoryTotalschamp1 = setTotals(widget.champsPlayedIds, 0);
-    widget.matchHistoryTotalschamp2 = setTotals(widget.champsPlayedIds, 1);
-    widget.matchHistoryTotalschamp3 = setTotals(widget.champsPlayedIds, 2);
-    widget.matchHistoryTotalschamp4 = setTotals(widget.champsPlayedIds, 3);
+    //widget.champsPlayedIds = SupportMethods().getMapString(champIDs);
+    _summonerObject!.champsPlayedIds =
+        SupportMethods().getMapString(champNames);
+    _summonerObject!.matchHistoryTotals =
+        setTotals(_summonerObject!.champsPlayedIds, -1);
+    _summonerObject!.matchHistoryTotalschamp1 =
+        setTotals(_summonerObject!.champsPlayedIds, 0);
+    _summonerObject!.matchHistoryTotalschamp2 =
+        setTotals(_summonerObject!.champsPlayedIds, 1);
+    _summonerObject!.matchHistoryTotalschamp3 =
+        setTotals(_summonerObject!.champsPlayedIds, 2);
+    _summonerObject!.matchHistoryTotalschamp4 =
+        setTotals(_summonerObject!.champsPlayedIds, 3);
   }
 
   Widget _buildTextField() {
@@ -170,7 +198,16 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
             ),
           ),
           onSubmitted: (value) async {
-            await onTapLoad1();
+            setState(() {
+              isLoading = true;
+            });
+            Navigator.pushNamed(
+              context,
+              '/${summonerTextController.text}',
+            );
+            setState(() {
+              isLoading = false;
+            });
           },
           onTap: () {
             showTextField = false;
@@ -180,8 +217,207 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
     );
   }
 
-  bool isLoading = false;
   @override
+  Widget build(BuildContext context) {
+    if (_summonerObject == null) {
+      return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: const Center(
+            child: SpinKitFadingCube(
+              color: Colors.cyan,
+              size: 50,
+            ),
+          ));
+    } else {
+      double screenWidth = MediaQuery.of(context).size.width;
+      calculateStats(_summonerObject!.summoner!.summonerName,
+          _summonerObject!.matchHistoryList);
+
+      return Scaffold(
+        //extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: colorDarkGrey,
+          title: const Text('Play Easy Champions'),
+          actions: <Widget>[
+            Container(
+              width: ResponsiveValue(
+                context,
+                defaultValue: 250.0,
+                valueWhen: const [
+                  Condition.smallerThan(
+                    name: MOBILE,
+                    value: 200.0,
+                  ),
+                  Condition.largerThan(
+                    name: TABLET,
+                    value: 400.0,
+                  )
+                ],
+              ).value,
+              padding:
+                  const EdgeInsets.fromLTRB(15.0 * 0.7, 0.0, 15.0 * 0.7, 0.0),
+              child: Row(
+                children: <Widget>[_buildTextField()],
+              ),
+            ),
+            isLoading
+                ? const SpinKitFadingCube(
+                    color: Colors.cyan,
+                    size: 25,
+                  )
+                : IconButton(
+                    icon: const GlowIcon(
+                      Icons.navigate_next,
+                      color: Colors.blue,
+                      glowColor: Colors.blue,
+                    ),
+                    tooltip: 'Go to the next page',
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TestPage(
+                                summonerName: summonerTextController.text),
+                          ));
+
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+                  ),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            alignment: Alignment.topCenter,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/helpIMG/highResRuinedMF.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SlideTransition(
+                  position: _animation1,
+                  child: SizedBox(
+                    width: 450 * 0.7,
+                    height: 1200 * 0.7,
+                    child: MainProfile(
+                        _summonerObject!.summoner!.profileIconID.toString(),
+                        _summonerObject!.summoner!.level.toString(),
+                        _summonerObject!.summoner!.summonerName,
+                        _summonerObject!.summoner!.summonerID,
+                        _summonerObject!.soloQRank,
+                        _summonerObject!.flexRank,
+                        _summonerObject!.matchHistoryTotals,
+                        _summonerObject!.champMasteryList,
+                        _summonerObject!.challenges),
+                  ),
+                ),
+                SlideTransition(
+                    position: _animation2,
+                    child: BestChampSection(
+                      champName: _summonerObject!.champsPlayedIds?[0],
+                      mht1: _summonerObject!.matchHistoryTotalschamp1,
+                      summonerName: _summonerObject!.summoner!.summonerName,
+                    )),
+                screenWidth >= 800
+                    ? SlideTransition(
+                        position: _animation3,
+                        child: Column(children: [
+                          const Text(
+                            "Match History",
+                            style: TextStyle(
+                              fontSize: 28 * 0.7,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          MatchHistoryWidget(
+                            matchHistoryList: _summonerObject!.matchHistoryList,
+                            summonerName:
+                                _summonerObject!.summoner!.summonerName,
+                            onUpdate: updateMH,
+                            playerIndexs: playerIndexs,
+                          ),
+                        ]),
+                      )
+                    : SlideTransition(
+                        position: _animation4,
+                        child: AltchampSection(
+                          champsPlayedIds: _summonerObject!.champsPlayedIds,
+                          mht2: _summonerObject!.matchHistoryTotalschamp2,
+                          mht3: _summonerObject!.matchHistoryTotalschamp3,
+                          mht4: _summonerObject!.matchHistoryTotalschamp4,
+                        )),
+                screenWidth <= 800
+                    ? SlideTransition(
+                        position: _animation3,
+                        child: Column(children: [
+                          const Text(
+                            "Match History",
+                            style: TextStyle(
+                              fontSize: 28 * 0.7,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          MatchHistoryWidget(
+                            matchHistoryList: _summonerObject!.matchHistoryList,
+                            summonerName:
+                                _summonerObject!.summoner!.summonerName,
+                            onUpdate: updateMH,
+                            playerIndexs: playerIndexs,
+                          ),
+                        ]),
+                      )
+                    : SlideTransition(
+                        position: _animation4,
+                        child: AltchampSection(
+                          champsPlayedIds: _summonerObject!.champsPlayedIds,
+                          mht2: _summonerObject!.matchHistoryTotalschamp2,
+                          mht3: _summonerObject!.matchHistoryTotalschamp3,
+                          mht4: _summonerObject!.matchHistoryTotalschamp4,
+                        )),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+/*
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -224,7 +460,20 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   ),
                   tooltip: 'Go to the next page',
                   onPressed: () async {
-                    await onTapLoad1();
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TestPage(
+                              summonerName: summonerTextController.text),
+                        ));
+
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                 ),
           const SizedBox(
@@ -252,23 +501,23 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   width: 450 * 0.7,
                   height: 1200 * 0.7,
                   child: MainProfile(
-                      widget.summoner!.profileIconID.toString(),
-                      widget.summoner!.level.toString(),
-                      widget.summoner!.summonerName,
-                      widget.summoner!.summonerID,
-                      widget.soloQRank,
-                      widget.flexRank,
-                      widget.matchHistoryTotals,
-                      widget.champMasteryList,
-                      widget.challenges),
+                      _summonerObject!.summoner!.profileIconID.toString(),
+                      _summonerObject!.summoner!.level.toString(),
+                      _summonerObject!.summoner!.summonerName,
+                      _summonerObject!.summoner!.summonerID,
+                      _summonerObject!.soloQRank,
+                      _summonerObject!.flexRank,
+                      _summonerObject!.matchHistoryTotals,
+                      _summonerObject!.champMasteryList,
+                      _summonerObject!.challenges),
                 ),
               ),
               SlideTransition(
                   position: _animation2,
                   child: BestChampSection(
-                    champID: widget.champsPlayedIds?[0],
-                    mht1: widget.matchHistoryTotalschamp1,
-                    summonerName: widget.summoner!.summonerName,
+                    champName: _summonerObject!.champsPlayedIds?[0],
+                    mht1: _summonerObject!.matchHistoryTotalschamp1,
+                    summonerName: _summonerObject!.summoner!.summonerName,
                   )),
               screenWidth >= 800
                   ? SlideTransition(
@@ -290,8 +539,8 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                           ),
                         ),
                         MatchHistoryWidget(
-                          matchHistoryList: widget.matchHistoryList,
-                          summonerName: widget.summoner!.summonerName,
+                          matchHistoryList: _summonerObject!.matchHistoryList,
+                          summonerName: _summonerObject!.summoner!.summonerName,
                           onUpdate: updateMH,
                           playerIndexs: playerIndexs,
                         ),
@@ -300,10 +549,10 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   : SlideTransition(
                       position: _animation4,
                       child: AltchampSection(
-                        champsPlayedIds: widget.champsPlayedIds,
-                        mht2: widget.matchHistoryTotalschamp2,
-                        mht3: widget.matchHistoryTotalschamp3,
-                        mht4: widget.matchHistoryTotalschamp4,
+                        champsPlayedIds: _summonerObject!.champsPlayedIds,
+                        mht2: _summonerObject!.matchHistoryTotalschamp2,
+                        mht3: _summonerObject!.matchHistoryTotalschamp3,
+                        mht4: _summonerObject!.matchHistoryTotalschamp4,
                       )),
               screenWidth <= 800
                   ? SlideTransition(
@@ -325,8 +574,8 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                           ),
                         ),
                         MatchHistoryWidget(
-                          matchHistoryList: widget.matchHistoryList,
-                          summonerName: widget.summoner!.summonerName,
+                          matchHistoryList: _summonerObject!.matchHistoryList,
+                          summonerName: _summonerObject!.summoner!.summonerName,
                           onUpdate: updateMH,
                           playerIndexs: playerIndexs,
                         ),
@@ -335,10 +584,10 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   : SlideTransition(
                       position: _animation4,
                       child: AltchampSection(
-                        champsPlayedIds: widget.champsPlayedIds,
-                        mht2: widget.matchHistoryTotalschamp2,
-                        mht3: widget.matchHistoryTotalschamp3,
-                        mht4: widget.matchHistoryTotalschamp4,
+                        champsPlayedIds: _summonerObject!.champsPlayedIds,
+                        mht2: _summonerObject!.matchHistoryTotalschamp2,
+                        mht3: _summonerObject!.matchHistoryTotalschamp3,
+                        mht4: _summonerObject!.matchHistoryTotalschamp4,
                       )),
             ],
           ),
@@ -346,107 +595,14 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  Future<void> onTapLoad1() async {
-    Summoner? summonerObject = Summoner();
-    await ItemApi.getSummoner(summonerTextController.text).then((response) {
-      Summoner object = Summoner.fromJson(
-        json.decode(
-          response.body,
-        ),
-      );
-      summonerObject = object;
-    });
-    if (summonerObject?.puuid != null) {
-      setState(() {
-        isLoading = true;
-      });
-      String? summmonerID = summonerObject?.summonerID;
-
-      List<ChampionMastery>? champMasteryList = [];
-      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
-        //print(response.body);
-        Iterable list = json.decode(response.body);
-
-        champMasteryList =
-            list.map((model) => ChampionMastery.fromJson(model)).toList();
-        //print(matchHistoryList2);
-      });
-
-      AccountChallenges challenges = AccountChallenges();
-      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
-        AccountChallenges object = AccountChallenges.fromJson(
-          json.decode(
-            response.body,
-          ),
-        );
-        challenges = object;
-      });
-
-      List<Rank>? rankedList = [];
-      await ItemApi.getRanked(summmonerID!).then((response) {
-        Iterable list = json.decode(response.body);
-
-        rankedList = list.map((model) => Rank.fromJson(model)).toList();
-      });
-      Rank? ranksoloQ;
-      if (rankedList!.isEmpty) {
-        ranksoloQ = Rank(
-            hotStreak: false,
-            wins: 0,
-            losses: 0,
-            rank: "",
-            leaguePoints: 0,
-            leagueId: "Unranked",
-            tier: "Unranked");
-      } else {
-        ranksoloQ = rankedList![0];
-      }
-
-      Rank? rankFlex;
-      if (rankedList!.length < 2) {
-        rankFlex = Rank(
-            hotStreak: false,
-            wins: 0,
-            losses: 0,
-            rank: "",
-            leaguePoints: 0,
-            leagueId: "Unranked",
-            tier: "Unranked");
-      } else {
-        rankFlex = rankedList![1];
-      }
-
-      List<MatchStats>? matchHistory = await ApiMethods()
-          .getGameHistory(summonerName: summonerTextController.text, start: 0);
-
-      setState(() {
-        isLoading = true;
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TestPage(
-                  summoner: summonerObject,
-                  soloQRank: ranksoloQ,
-                  flexRank: rankFlex,
-                  matchHistoryList: matchHistory,
-                  champMasteryList: champMasteryList,
-                  challenges: challenges,
-                )),
-      );
-    } else {
-      SupportMethods().showErrorDialog(context,
-          "This summoner was not found!\n Please check your spelling and if they player is on EUW.\n If the problem persist the server might be down.");
-    }
-  }
+  */
 
   MatchHistoryTotals setTotals(List<dynamic>? champs, int index) {
     if (index >= 0) {
       vh.resetVariables();
       for (var player in matchByChampList) {
-        if (champs!.length >= (index + 1) && player.champId == champs[index]) {
+        if (champs!.length >= (index + 1) &&
+            player.champName == champs[index]) {
           vh.matchTotals(player.playerInfo);
         }
       }
