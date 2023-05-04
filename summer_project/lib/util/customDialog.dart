@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:summer_project/searchPage.dart';
+import 'package:summer_project/pages/searchPage.dart';
 
 class CustomDialogBox extends StatelessWidget {
   const CustomDialogBox({Key? key}) : super(key: key);

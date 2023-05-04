@@ -51,6 +51,9 @@ dependencies:
   flutter_svg: ^1.0.3
   responsive_framework: ^0.1.4
   font_awesome_flutter: ^10.4.0
+  provider: ^6.0.5
+  google_fonts: ^4.0.4
+  gradient_borders: ^1.0.0
   
   
 

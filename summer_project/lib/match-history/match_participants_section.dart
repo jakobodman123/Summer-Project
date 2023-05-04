@@ -10,9 +10,10 @@ class MatchParticipants extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 95 * 0.7,
+          //height: 95 * 0.7,
           width: 95 * 0.7,
           child: Column(
             children: [
@@ -42,7 +43,6 @@ class MatchParticipants extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 95 * 0.7,
           width: 95 * 0.7,
           child: Column(
             children: [

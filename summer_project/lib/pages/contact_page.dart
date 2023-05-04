@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:summer_project/contact_card.dart';
+import 'package:summer_project/util/contact_card.dart';
 import 'package:summer_project/util/contact_profile.dart';
 import 'package:summer_project/util/custom_appbar.dart';
-import 'package:summer_project/util/custom_drawer.dart';
+
+import '../util/custom_drawer.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class ContactPageState extends State<ContactPage>
           ? AppBar(
               backgroundColor: Colors.transparent,
             )
-          : CustomAppbar().customAppbar(context),
+          : CustomAppbar().customAppbar(context, false),
       body: Stack(
         children: <Widget>[
           Container(

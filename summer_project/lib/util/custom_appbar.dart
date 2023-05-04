@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:summer_project/util/title_logo.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../about_page.dart';
+import '../pages/about_page.dart';
 import 'appbarButton.dart';
 
-class CustomAppbar {
-  AppBar customAppbar(BuildContext context) {
+class CustomAppbar extends AppBar {
+  AppBar customAppbar(BuildContext context, bool isSearchPage) {
     return AppBar(
+      title: TitleLogo(),
       elevation: 0,
+      automaticallyImplyLeading: isSearchPage ? false : true,
       backgroundColor: Colors.transparent,
       //add title widget
       actions: <Widget>[

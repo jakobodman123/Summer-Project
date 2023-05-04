@@ -2,9 +2,9 @@ import 'package:dart_lol/LeagueStuff/champion_mastery.dart';
 import 'package:dart_lol/LeagueStuff/rank.dart';
 import 'package:summer_project/util/matchHistoryTotals.dart';
 
-import 'generated-classes/challenges.dart';
-import 'generated-classes/matchStats.dart';
-import 'generated-classes/summoner.dart';
+import 'challenges.dart';
+import 'matchStats.dart';
+import 'summoner.dart';
 
 class SummonerObject {
   SummonerObject({

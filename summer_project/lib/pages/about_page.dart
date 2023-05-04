@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:summer_project/helpClasses/supportMethods.dart';
-import 'package:summer_project/summoner_object.dart';
+
 import 'package:summer_project/util/custom_appbar.dart';
-import 'package:summer_project/util/custom_drawer.dart';
+
 import 'package:summer_project/util/gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'homePage.dart';
+import '../util/custom_drawer.dart';
+import 'package:gradient_borders/gradient_borders.dart';
+
+import '../util/title_logo.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -46,8 +48,9 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
       appBar: screenWidth <= 800
           ? AppBar(
               backgroundColor: Colors.transparent,
+              title: TitleLogo(),
             )
-          : CustomAppbar().customAppbar(context),
+          : CustomAppbar().customAppbar(context, false),
       body: Stack(
         children: <Widget>[
           Container(
@@ -153,13 +156,11 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                             Row(
                               children: [
                                 InkWell(
-                                  onTap: () async {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              TestPage(summonerName: "Ritzler"),
-                                        ));
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/summoner/theodmino',
+                                    );
                                   },
                                   child: const GradientButton(
                                     text: "Try it out",
@@ -180,9 +181,12 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
+                                      border: const GradientBoxBorder(
+                                        gradient: LinearGradient(colors: [
+                                          Colors.green,
+                                          Color.fromARGB(255, 8, 66, 131)
+                                        ]),
+                                        width: 4,
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -190,8 +194,7 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                                       child: Text(
                                         'Longer Desc',
                                         style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                           fontSize: 18,
                                         ),
                                       ),

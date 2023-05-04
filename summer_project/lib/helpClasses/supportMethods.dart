@@ -10,9 +10,9 @@ import '../api/itemApi.dart';
 import '../generated-classes/challenges.dart';
 import '../generated-classes/matchStats.dart';
 import '../generated-classes/summoner.dart';
-import '../homePage.dart';
+import '../pages/homePage.dart';
 import '../main.dart';
-import '../summoner_object.dart';
+import '../generated-classes/summoner_object.dart';
 
 class SupportMethods {
   List<dynamic> getMapString(List<String>? list) {
@@ -96,23 +96,23 @@ class SupportMethods {
     );
   }
 
-  Future<SummonerObject> loadSummoner(
-    String? name,
-  ) async {
-    Summoner? summonerObject = Summoner();
-    await ItemApi.getSummoner(name).then((response) {
-      Summoner object = Summoner.fromJson(
+  Future loadSummoner(String? name) async {
+    Summoner? summonerObject;
+
+    summonerObject = await ItemApi.getSummoner(name).then((response) {
+      Summoner? object = Summoner.fromJson(
         json.decode(
           response.body,
         ),
       );
-      summonerObject = object;
+      return object;
     });
-    if (summonerObject?.puuid != null) {
-      String? summmonerID = summonerObject?.summonerID;
+
+    if (summonerObject != null) {
+      String? summmonerID = summonerObject.summonerID;
 
       List<ChampionMastery>? champMasteryList = [];
-      await ItemApi.getMasteries(summonerObject?.summonerID).then((response) {
+      await ItemApi.getMasteries(summonerObject.summonerID).then((response) {
         //print(response.body);
         Iterable list = json.decode(response.body);
 
@@ -122,7 +122,7 @@ class SupportMethods {
       });
 
       AccountChallenges challenges = AccountChallenges();
-      await ItemApi.getChallenges(summonerObject?.puuid).then((response) {
+      await ItemApi.getChallenges(summonerObject.puuid).then((response) {
         AccountChallenges object = AccountChallenges.fromJson(
           json.decode(
             response.body,
@@ -177,14 +177,7 @@ class SupportMethods {
         challenges: challenges,
       );
     } else {
-      return SummonerObject(
-        summoner: summonerObject,
-        soloQRank: null,
-        flexRank: null,
-        matchHistoryList: null,
-        champMasteryList: null,
-        challenges: null,
-      );
+      return null;
     }
   }
 }

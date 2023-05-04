@@ -43,8 +43,8 @@ class _CustomAppbarButtonState extends State<CustomAppbarButton> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
             widget.text,
-            style: TextStyle(
-              color: _isHovering ? Colors.black : Colors.white,
+            style: const TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

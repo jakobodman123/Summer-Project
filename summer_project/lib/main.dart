@@ -1,11 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:summer_project/contact_page.dart';
-import 'package:summer_project/homePage.dart';
-import 'package:summer_project/searchPage.dart';
+import 'package:summer_project/pages/contact_page.dart';
+import 'package:summer_project/pages/homePage.dart';
+import 'package:summer_project/pages/searchPage.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'about_page.dart';
+import 'pages/about_page.dart';
 
 Color colorLightGrey = const Color(0xFF292C33).withOpacity(0.7);
 Color colorDarkGrey = const Color(0xFF191919);
@@ -43,10 +43,10 @@ class SummerProject extends StatelessWidget {
         },
       ),
       onGenerateRoute: (settings) {
-        if (settings.name!.startsWith('/')) {
+        if (settings.name!.startsWith('/summoner/')) {
           return MaterialPageRoute(
             builder: (context) =>
-                TestPage(summonerName: settings.name!.substring(1)),
+                TestPage(summonerName: settings.name!.substring(10)),
             settings: settings,
           );
         }
@@ -61,7 +61,9 @@ class SummerProject extends StatelessWidget {
         '/': (context) => const SearchPage(),
         '/about': (context) => const AboutPage(),
         '/contact': (context) => const ContactPage(),
-        '/summoner': (context) => TestPage(),
+        '/summoner': (context) => TestPage(
+              summonerName: "",
+            ),
       },
     );
   }
