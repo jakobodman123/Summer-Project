@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:summer_project/api/apiMethods.dart';
+import 'package:summer_project/match-history/components/pages_item.dart';
 import 'package:summer_project/match-history/mHCard.dart';
 import 'package:summer_project/main.dart';
 import 'package:summer_project/generated-classes/matchStats.dart';
@@ -10,6 +11,7 @@ class MatchHistoryWidget extends StatefulWidget {
   final List<MatchStats>? matchHistoryList;
   final String? summonerName;
   final Function(List<MatchStats>?) onUpdate;
+
   final List<int>? playerIndexs;
 
   const MatchHistoryWidget({
@@ -25,6 +27,8 @@ class MatchHistoryWidget extends StatefulWidget {
 
 class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   bool loading = false;
+  int _currentPage = 1;
+  final int _pageSize = 8;
 
   @override
   void initState() {
@@ -34,6 +38,19 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
           widget.matchHistoryList![i].info?.participants, widget.summonerName);
       widget.playerIndexs?.add(playerIndex);
     }
+  }
+
+  int _getPageItemCount() {
+    final itemCount = widget.matchHistoryList!.length;
+    final startIndex = (_currentPage - 1) * _pageSize;
+    final remainingCount = itemCount - startIndex;
+    return (remainingCount >= _pageSize) ? _pageSize : remainingCount;
+  }
+
+  void updatePage(int? currentPage) {
+    setState(() {
+      _currentPage = currentPage!;
+    });
   }
 
   @override
@@ -46,6 +63,10 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       elevation: 10,
       child: Column(
         children: [
+          PagesItem(
+            itemCount: widget.matchHistoryList!.length,
+            onPageUpdate: updatePage,
+          ),
           SizedBox(
             width: ResponsiveValue(
               context,
@@ -66,31 +87,23 @@ class MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              /* 
-              prototypeItem: MHCard(
-                matchStats: widget.matchHistoryList?[0],
-                summonerName: widget.summonerName,
-                matchID: 0,
-                matchHistoryList: widget.matchHistoryList,
-                player: widget.matchHistoryList?[0].info
-                    ?.participants?[widget.playerIndexs![0]],
-                date: DateTime.fromMicrosecondsSinceEpoch(
-                    widget.matchHistoryList![0].info!.gameEndTimestamp! * 1000),
-              ),
-              */
-              itemCount: widget.matchHistoryList!.length,
+              itemCount: _getPageItemCount(),
               itemBuilder: (context, index) {
-                int player = widget.playerIndexs![index];
+                // Calculate the index of the item to display based on the current page
+                final itemIndex = (index + (_currentPage - 1) * _pageSize);
+                int player = widget.playerIndexs![itemIndex];
                 return MHCard(
-                  matchStats: widget.matchHistoryList?[index],
+                  matchStats: widget.matchHistoryList?[itemIndex],
                   summonerName: widget.summonerName,
-                  matchID: index,
+                  matchID: itemIndex,
                   matchHistoryList: widget.matchHistoryList,
                   player: widget
-                      .matchHistoryList?[index].info?.participants?[player],
-                  date: DateTime.fromMicrosecondsSinceEpoch(
-                      widget.matchHistoryList![index].info!.gameEndTimestamp! *
-                          1000),
+                      .matchHistoryList?[itemIndex].info?.participants?[player],
+                  date: DateTime.fromMicrosecondsSinceEpoch(widget
+                          .matchHistoryList![itemIndex]
+                          .info!
+                          .gameEndTimestamp! *
+                      1000),
                 );
               },
             ),

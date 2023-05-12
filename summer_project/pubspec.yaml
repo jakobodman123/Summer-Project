@@ -54,6 +54,7 @@ dependencies:
   provider: ^6.0.5
   google_fonts: ^4.0.4
   gradient_borders: ^1.0.0
+  box2d_flame: ^0.4.6
   
   
 

@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  box2d_flame:
+    dependency: "direct main"
+    description:
+      name: box2d_flame
+      sha256: ab4ce47ea486e836284c06c915e85d4f56c652e3e2d14178cc4f644ca5b07406
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.6"
   carousel_slider:
     dependency: "direct main"
     description:

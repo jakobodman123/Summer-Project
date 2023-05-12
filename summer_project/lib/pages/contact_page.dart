@@ -42,7 +42,7 @@ class ContactPageState extends State<ContactPage>
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      endDrawer: screenWidth >= 800 ? null : CustomDrawer(),
+      endDrawer: screenWidth >= 800 ? null : const CustomDrawer(),
       appBar: screenWidth <= 800
           ? AppBar(
               backgroundColor: Colors.transparent,

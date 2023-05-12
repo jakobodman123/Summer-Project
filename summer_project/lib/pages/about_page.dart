@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:summer_project/tictactoe_bord.dart';
 
 import 'package:summer_project/util/custom_appbar.dart';
 
@@ -207,16 +208,17 @@ class AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
                         ),
                       ),
                       ResponsiveRowColumnItem(
-                          rowFlex: 1,
-                          child: SizedBox(
-                            height: 500,
-                            width: 400,
-                            child: Image.asset(
-                              "assets/helpIMG/mascot_upscaled.jpg",
-                              fit: BoxFit.cover,
-                              scale: 2,
-                            ),
-                          )),
+                        rowFlex: 1,
+                        child: SizedBox(
+                          height: 500,
+                          width: 400,
+                          child: Image.asset(
+                            "assets/helpIMG/mascot_upscaled.jpg",
+                            fit: BoxFit.cover,
+                            scale: 2,
+                          ),
+                        ),
+                      ),
                       const ResponsiveRowColumnItem(
                         child: SizedBox(),
                       ),

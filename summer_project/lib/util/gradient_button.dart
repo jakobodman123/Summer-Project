@@ -16,7 +16,7 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Colors.green,
+            Color(0xFF006400),
             Color.fromARGB(255, 8, 66, 131),
           ],
           begin: Alignment.bottomLeft,

@@ -231,6 +231,42 @@ class MHCardState extends State<MHCard> {
                         ],
                       ),
                     ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Gold: ",
+                            style: TextStyle(
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.black,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                              fontSize: 13 * 0.7,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          TextSpan(
+                            text: widget.player!.goldEarned.toString(),
+                            style: const TextStyle(
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.black,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                              fontSize: 13 * 0.7,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

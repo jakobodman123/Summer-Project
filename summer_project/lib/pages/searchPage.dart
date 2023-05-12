@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/input_borders/gradient_outline_input_border.dart';
 import 'package:summer_project/util/custom_drawer.dart';
@@ -99,27 +100,53 @@ class _SearchPageState extends State<SearchPage>
                 children: [
                   Column(
                     children: [
-                      Image.asset(
-                        "assets/helpIMG/mascot.png",
-                        fit: BoxFit.cover,
-                        scale: 2,
-                      ),
-                      Text(
-                        "Play Easy Champs",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.blackOpsOne(
-                          textStyle: const TextStyle(
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.black,
-                                  offset: Offset(2.0, 2.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Play Easy",
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.blackOpsOne(
+                                  textStyle: const TextStyle(
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 2.0,
+                                          color: Colors.black,
+                                          offset: Offset(2.0, 2.0),
+                                        ),
+                                      ],
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
-                              ],
-                              fontSize: 50,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                              ),
+                              Text(
+                                "Champs",
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.blackOpsOne(
+                                  textStyle: const TextStyle(
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 2.0,
+                                          color: Colors.black,
+                                          offset: Offset(2.0, 2.0),
+                                        ),
+                                      ],
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Image.asset(
+                            "assets/helpIMG/mascot.png",
+                            fit: BoxFit.cover,
+                            scale: 2,
+                          ),
+                        ],
                       ),
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
@@ -132,7 +159,7 @@ class _SearchPageState extends State<SearchPage>
                           tileMode: TileMode.mirror,
                         ).createShader(bounds),
                         child: Text(
-                          "By Jakob Lindecrantz",
+                          "-By Jakob Lindecrantz-",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.blackOpsOne(
                             textStyle: const TextStyle(
@@ -143,7 +170,7 @@ class _SearchPageState extends State<SearchPage>
                                     offset: Offset(2.0, 2.0),
                                   ),
                                 ],
-                                fontSize: 28,
+                                fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue),
                           ),
@@ -171,6 +198,13 @@ class _SearchPageState extends State<SearchPage>
                             LengthLimitingTextInputFormatter(20),
                           ],
                           decoration: InputDecoration(
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.only(top: 4, left: 7),
+                              child: Icon(
+                                FontAwesomeIcons.magnifyingGlass,
+                                color: Color.fromARGB(255, 8, 66, 131),
+                              ),
+                            ),
                             fillColor: Colors.white,
                             filled: true,
                             hintText: "E.g. \"theodmino\"",
@@ -180,8 +214,10 @@ class _SearchPageState extends State<SearchPage>
                             ),
                             focusedBorder: GradientOutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15.0),
-                                gradient: const LinearGradient(
-                                    colors: [Colors.green, Colors.blue]),
+                                gradient: const LinearGradient(colors: [
+                                  Color.fromARGB(255, 8, 66, 131),
+                                  Color(0xFF006400),
+                                ]),
                                 width: 2),
                             suffixIcon: InkWell(
                               child: const Padding(
