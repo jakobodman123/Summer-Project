@@ -10,7 +10,7 @@ Play Easy Champion uses the riot api to fetch game data from summoners' recent r
 
 ### Website
 
-Visit https://jakobodman123.github.io/#/ to view page.
+Visit https://www.playeasychamps.com/#/ to view page.
 
 ## Help
 
